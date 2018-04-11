@@ -77,7 +77,7 @@ class Login extends Component{
             />
           </Box>
           <Box paddingY={2}>
-            <Link to="/join/"><Text align="center" >没有账号？</Text></Link>
+            <Link replace to="/join/"><Text align="center" >没有账号？</Text></Link>
           </Box>
         </form>
       </Box>

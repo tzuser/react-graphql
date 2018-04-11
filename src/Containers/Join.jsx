@@ -105,7 +105,7 @@ class Join extends Component{
             />
           </Box>
           <Box paddingY={2}>
-            <Link to="/login/"><Text align="center" >已有账号？</Text></Link>
+            <Link replace to="/login/"><Text align="center" >已有账号？</Text></Link>
           </Box>
         </form>
       </Box>
