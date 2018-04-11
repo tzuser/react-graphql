@@ -40,7 +40,7 @@ extend type Query{
 extend type Mutation{
   login(name:String!,password:String!):String
   join(input:userInput):User
-  update(id:ID!,input:updateUserInput):User
+  editUser(input:updateUserInput):User
 }
 `
 export const getUser=async ({name})=>{
@@ -114,7 +114,7 @@ export const resolvers={
       return userModel(input).save();
       
     },
-    async update(_,{input},ctx){
+    async editUser(_,{input},ctx){
       if(!ctx.user)throw new APIError('用户未登录！',1001);
       let id=ctx.user._id;
       let res=await userModel.update({_id:id},input)
