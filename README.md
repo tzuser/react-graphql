@@ -8,6 +8,9 @@
 ![详情](https://github.com/tzuser/react-graphql/blob/master/readmeImages/3.png)
 ![评论](https://github.com/tzuser/react-graphql/blob/master/readmeImages/4.png)
 
+### 在线预览
+* [在线预览](http://otaku.tangzuo.cc:8181)
+* [API](http://otaku.tangzuo.cc:8181/graphql)
 
 ### 启动
 ```
