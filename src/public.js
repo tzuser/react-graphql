@@ -1,5 +1,5 @@
 //192.168.1.105
-export const HOST='http://192.168.56.1:8080';
+export const HOST='http://otaku.tangzuo.cc:8181';
 export const IMG_HOST=HOST;
 export const DB_URL=`${HOST}/graphql`;
 export const imageUrl=(url)=>{

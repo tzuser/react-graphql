@@ -28,7 +28,7 @@ app.use(staticCache(path.resolve(__dirname, '../build'), {maxAge: 365 * 24 * 60 
 
 
 Loadable.preloadAll().then(() => {
-  app.listen(8080, () => {
+  app.listen(8181, () => {
     console.log('服务启动');
   });
 });
