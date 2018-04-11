@@ -35,7 +35,6 @@
     "import": "^0.0.6",
     "isomorphic-fetch": "^2.2.1",
     "jsonwebtoken": "^8.2.0",
-    "jss-preset-default": "^4.3.0",
     "koa-graphql": "^0.7.5",
     "material-ui": "^1.0.0-beta.32",
     "material-ui-icons": "^1.0.0-beta.17",
@@ -65,7 +64,6 @@
     "request-promise": "^4.2.2",
     "reselect": "^3.0.1",
     "sass-loader": "^6.0.7",
-    "sharp": "^0.20.1",
     "style-loader": "^0.19.0",
     "styled-components": "^3.2.3",
     "url-loader": "^0.6.2"

@@ -13,36 +13,25 @@ import Helmet from 'react-helmet';
 import { getBundles } from 'react-loadable/webpack'
 import stats from '../build/react-loadable.json';
 
-import { SheetsRegistry } from 'react-jss/lib/jss';
-import JssProvider from 'react-jss/lib/JssProvider';
-//import { jssPreset } from 'material-ui/styles';
-import preset from 'jss-preset-default';
-import { create } from 'jss';
-
-//import { MuiThemeProvider} from 'material-ui/styles';
-//import createGenerateClassName from 'material-ui/styles/createGenerateClassName';
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
 
 import theme from '../src/public/Theme';
 import 'isomorphic-fetch'
 
 //Apollo
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider,getDataFromTree } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-const client = new ApolloClient({
-  link: new HttpLink({uri:'http://localhost:8080/graphql'}),
-  cache: new InMemoryCache(),
-});
 
 //import initialRequestConfig from '../build/router-config.json';
 //import initalActions from 'react-ssr-request/server';
 
-const prepHTML=(data,{html,head,style,body,script,css,state})=>{
+const prepHTML=(data,{html,head,style,body,script,styleTags,state})=>{
 	data=data.replace('<html',`<html ${html}`);
 	data=data.replace('</head>',`${head}${style}</head>`);
 	data=data.replace('<body>',`<body><script>window._INIT_STATE_ = ${JSON.stringify(state)}</script>`);
-	data=data.replace('<div id="root"></div>',`<div id="root">${body}</div><style id="jss-server-side">${css}</style>`);
+	data=data.replace('<div id="root"></div>',`<div id="root">${body}</div>${styleTags}`);
 	data=data.replace('</body>',`${script}</body>`);
 	return data;
 }
@@ -50,37 +39,47 @@ const prepHTML=(data,{html,head,style,body,script,css,state})=>{
 
 
 const render=async (ctx,next)=>{
-		const filePath=path.resolve(__dirname,'../build/index.html')
-		//material处理
-		const sheetsRegistry = new SheetsRegistry();
-		const jss = create(preset());
-		//jss.options.createGenerateClassName = createGenerateClassName;
 
+		const client = new ApolloClient({
+			ssrMode: true,
+		  link: new HttpLink({uri:'http://localhost:8181/graphql'}),
+		  cache: new InMemoryCache(),
+		});
+
+		const filePath=path.resolve(__dirname,'../build/index.html')
+	
 		let htmlData=fs.readFileSync(filePath,'utf8');
 
 		const { store, history } = getCreateStore(reducers,ctx.req.url);
 
+		const sheet = new ServerStyleSheet()
+
+		
+
 		//初始请求数据
 		//await initalActions(store,ctx.req.url,initialRequestConfig)
-		let state=store.getState();
+		let state=initialState;//store.getState();
 
 		let modules=[];
-		let routeMarkup =renderToString(
+		const AppRender=(
 			<Loadable.Capture report={moduleName => modules.push(moduleName)}>
-			<ApolloProvider client={client}>
-				<Provider store={store}>
-					<ConnectedRouter history={history}>
-						<JssProvider registry={sheetsRegistry} jss={jss}>
-							<App/>
-						</JssProvider>
-					</ConnectedRouter>
-				</Provider>
-			</ApolloProvider>
+				<StyleSheetManager sheet={sheet.instance}>
+					<ApolloProvider client={client}>
+						<Provider store={store}>
+							<ConnectedRouter history={history}>
+								<App/>
+							</ConnectedRouter>
+						</Provider>
+					</ApolloProvider>
+				</StyleSheetManager>
 			</Loadable.Capture>
-			)
-		const css = sheetsRegistry.toString()
-		let bundles = getBundles(stats, modules);
+		)
+		await getDataFromTree(AppRender);
+		let routeMarkup =renderToString(AppRender);
+		const initialState = client.extract();
 
+		let bundles = getBundles(stats, modules);
+		const styleTags = sheet.getStyleTags();
 		let styles = bundles.filter(bundle => bundle.file.endsWith('.css'));
 		let scripts = bundles.filter(bundle => bundle.file.endsWith('.js'));
 
@@ -99,7 +98,7 @@ const render=async (ctx,next)=>{
 			style:styleStr,
 			body:routeMarkup,
 			script:scriptStr,
-			css:css,
+			styleTags,
 			state,
 		})
 		ctx.body=html
