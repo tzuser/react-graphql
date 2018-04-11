@@ -62,7 +62,7 @@ export const getName=(ext)=>{
   return `${+new Date()}_${parseInt(Math.random()*100000)}${ext}`
 }
 
-//获取头像 本地
+//获取头像 
 export const getThumbnail=async (photoPath,user_name)=>{
   //如果图片是远程 先下载
   if(photoPath.startsWith('http')){
