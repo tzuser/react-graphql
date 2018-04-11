@@ -115,8 +115,10 @@ export const resolvers={
       
     },
     async update(_,{input},ctx){
+      if(!ctx.user)throw new APIError('用户未登录！',1001);
+      let id=ctx.user._id;
       let res=await userModel.update({_id:id},input)
-      return getUser({id})
+      return getUser({name:ctx.user.name})
     }
   }
 };
