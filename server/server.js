@@ -24,11 +24,11 @@ router.get('/', render);
 app.use(router.routes()).use(router.allowedMethods());
 app.use(staticServer(path.resolve(__dirname, '../files')));
 app.use(staticCache(path.resolve(__dirname, '../build'), {maxAge: 365 * 24 * 60 * 60}));
-//app.use(render);
+app.use(render);
 
 
 Loadable.preloadAll().then(() => {
-  app.listen(8080, () => {
+  app.listen(8181, () => {
     console.log('服务启动');
   });
 });
