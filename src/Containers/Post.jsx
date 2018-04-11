@@ -158,7 +158,7 @@ class Post extends Component{
     }
     let {user,content,type,tags,commentNum,hotNum,likeNum,src}=post;
     let photos=post.photos || [];
-    let isSelf=selfUser.name==user.name;
+    let isSelf=(user && selfUser.name==user.name);
     return (
       <div>
         <Scroll top={true} />
