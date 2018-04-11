@@ -3,6 +3,12 @@
 * 客户端使用React + ApolloClient + GestaltUI
 * 服务端使用Koa2 + GraphQL + Mongoose
 
+![首页](https://github.com/tzuser/react-graphql/blob/master/readmeImages/1.png)
+![个人](https://github.com/tzuser/react-graphql/blob/master/readmeImages/2.png)
+![详情](https://github.com/tzuser/react-graphql/blob/master/readmeImages/3.png)
+![评论](https://github.com/tzuser/react-graphql/blob/master/readmeImages/4.png)
+![注册](https://github.com/tzuser/react-graphql/blob/master/readmeImages/5.png)
+
 
 ### 启动
 ```
@@ -10,11 +16,12 @@ cnpm install
 npm run start
 ```
 
-### 默认是连接远程服务器的，以下连接本地服务
+### 默认是连接远程服务器的，以下连接本地的服务
 1. 安装mongodb
 2. 更改 `server/db.js` 里 `let db=mongoose.connect('mongodb://web:wysj3910@127.0.0.1:27017/web')` 连接地址。
 3. 并更改 `src/public.js` 里的 HOST 常量为 `http://localhost:8181`
-4. 运行 `npm run server-dev`
+4. 运行 `npm run server`
+
 
 ### 文件目录
 ```
