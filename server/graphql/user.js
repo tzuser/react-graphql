@@ -1,6 +1,7 @@
 import {userModel} from '../db';
 import jwt from 'jsonwebtoken';
 import {getPageType,md5,blackList} from './public';
+import {getThumbnail} from './file';
 import APIError from './APIError';
 export const typeDefs=`
 type User{
@@ -117,6 +118,9 @@ export const resolvers={
     async update(_,{input},ctx){
       if(!ctx.user)throw new APIError('用户未登录！',1001);
       let id=ctx.user._id;
+      if(input.avatar){
+        input.avatar=(await getThumbnail(input.avatar)).url;
+      }
       let res=await userModel.update({_id:id},input)
       return getUser({name:ctx.user.name})
     }
