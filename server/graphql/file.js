@@ -24,9 +24,14 @@ export const resolvers={
     },    
   }
 };
-
+//创建目录
+const createDir=()=>{
+  if(!fs.existsSync('files'))fs.mkdirSync('files');
+  if(!fs.existsSync('files/thumbnail'))fs.mkdirSync('files/thumbnail');
+}
 //获取远程图片
 export const getImage=async (url,user_name)=>{
+  createDir();
   if(url.startsWith('/'))return url;//如果是本地图片
   const types={
     'image/jpeg':'.jpg',
