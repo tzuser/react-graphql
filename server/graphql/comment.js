@@ -1,5 +1,5 @@
 import {userType} from './user';
-import {commentModel,postModel} from '../db';
+import {commentModel,postModel,userModel} from '../db';
 import {getPageType,getPageData} from './public';
 import APIError from './APIError';
 export const typeDefs=`
