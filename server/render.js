@@ -58,7 +58,6 @@ const render=async (ctx,next)=>{
 
 		//初始请求数据
 		//await initalActions(store,ctx.req.url,initialRequestConfig)
-		let state=initialState;//store.getState();
 
 		let modules=[];
 		const AppRender=(
@@ -76,7 +75,8 @@ const render=async (ctx,next)=>{
 		)
 		await getDataFromTree(AppRender);
 		let routeMarkup =renderToString(AppRender);
-		const initialState = client.extract();
+		const state = client.extract();
+		//let state=initialState;//store.getState();
 
 		let bundles = getBundles(stats, modules);
 		const styleTags = sheet.getStyleTags();

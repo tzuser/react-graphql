@@ -22,6 +22,7 @@ extend type Query{
 }
 extend type Mutation{
   comment(input:CommentInput):String
+  test(input:CommentInput):String
 }
 `
 export const resolvers={
@@ -45,6 +46,17 @@ export const resolvers={
       if(!ctx.user)throw new APIError('用户未登录!',1001);
       input.user=ctx.user;
       console.log(input.reply)
+      if(!input.reply){
+        let {user}=await postModel.findOne({_id:input.post},{user:1}).exec()
+        input.reply=user;
+      }
+      input.creationDate=+new Date();
+      commentModel(input).save();
+      postModel.update({_id:input.post},{$inc:{commentNum:+1,hotNum:+1}}).exec();
+    },
+    async test(_,{input},ctx){
+      let user=await userModel.findOne({name:'tzuser'}).exec();
+      input.user=user;
       if(!input.reply){
         let {user}=await postModel.findOne({_id:input.post},{user:1}).exec()
         input.reply=user;
