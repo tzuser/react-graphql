@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import Scroll from '../Components/Scroll';
 import { Mutation } from "react-apollo";
 import {errorReply,imageUrl} from '../public';
-import HiddenFooter from '../Components/HiddenFooter';
+import hiddenFooter from '../Components/hiddenFooter';
 import PageLoading from '../Components/PageLoading';
 const ADD_COMMENT = gql`
   mutation addComment($post:ID!,$content: String!,$reply:ID) {
@@ -114,7 +114,6 @@ class Comments extends Component{
     let {replyName,replyId}=this.state
     return (
       <div>
-        <HiddenFooter />
         <Scroll bottom={true} onTop={(cTop)=>{
           if(comments.isEnd)return;
           let scrollStartH=document.body.scrollHeight
@@ -231,4 +230,4 @@ fragment userField on User{
       //pollInterval:10000
     }
   }
-})(Comments);
+})(hiddenFooter(Comments));

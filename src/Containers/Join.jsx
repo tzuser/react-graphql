@@ -9,7 +9,7 @@ import Scroll from '../Components/Scroll';
 import * as configActs from '../actions/config';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import HiddenFooter from '../Components/HiddenFooter';
+import hiddenFooter from '../Components/hiddenFooter';
 class Join extends Component{
   state={
     nick_name:"",
@@ -25,7 +25,6 @@ class Join extends Component{
 
     return (
       <Box paddingX={4} paddingY={10} >
-        <HiddenFooter />
         <form onSubmit={e => {
           this.setState({
             name_message:"",
@@ -126,4 +125,4 @@ export default graphql(gql`
       name
     }
   }
-`)(connect(mapStateToProps,mapDispatchToProps)(Join));
+`)(connect(mapStateToProps,mapDispatchToProps)(hiddenFooter(Join)));

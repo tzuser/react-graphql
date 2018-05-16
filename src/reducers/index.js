@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
 import {routerReducer} from 'react-router-redux';
-import loads from './loads';
+//import loads from './loads';
 import config from './config';
 
 //逻辑复用
@@ -14,5 +14,5 @@ const createFilteredReducer=(reducerFunction,reducerPredicate)=>{
 
 export default combineReducers({
 	config,
-	loads
+  router:routerReducer,
 })

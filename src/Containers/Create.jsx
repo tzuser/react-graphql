@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import Scroll from '../Components/Scroll';
 import * as configActs from '../actions/config';
 
-import HiddenFooter from '../Components/HiddenFooter';
+import hiddenFooter from '../Components/hiddenFooter';
 import AddPhoto from '../Components/AddPhoto';
 import {imageUrl} from '../public';
 
@@ -69,7 +69,6 @@ class Create extends Component{
         }}>
         <CreteHeader goBack={goBack}/>
         <Box paddingX={4} direction="column" display="flex" >
-          <HiddenFooter />
           <Box paddingY={2} flex="grow">
           {this.state.photos.map((item,key)=>{
             return <Image
@@ -140,4 +139,4 @@ export default graphql(gql`
       thumbnail:$thumbnail
     })
   }
-`)(Create);
+`)(hiddenFooter(Create));

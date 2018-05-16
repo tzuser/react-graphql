@@ -1,19 +1,21 @@
-//192.168.1.105
-export const HOST='http://otaku.tangzuo.cc:8181';
+//192.168.1.105 otaku.tangzuo.cc
+export const HOST='http://192.168.253.1:8181';
 export const IMG_HOST=HOST;
 export const DB_URL=`${HOST}/graphql`;
 export const imageUrl=(url)=>{
   if(url.startsWith('http'))return url;
   return `${IMG_HOST}${url}`;
 }
-
-export const errorReply=({error,push})=>{
-  if(error && error.graphQLErrors){
-    let status=error.graphQLErrors[0].status;
-    if(status==1001)push('/login');
-    return true
-  }
-  return false
+//错误响应
+export const errorReply=async ({error,push})=>{
+  return new Promise((resolve,reject)=>{
+    if(error && error.graphQLErrors){
+      let status=error.graphQLErrors[0].status;
+      if(status==1001)push('/login');
+      reject(error)
+    }
+    resolve(true);
+  })
 }
 //取消promise
 export const makeCancelable = (promise) => {

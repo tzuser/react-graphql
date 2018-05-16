@@ -3,7 +3,7 @@ import crypto from 'crypto';
 export const md5=(text)=>{
   return crypto.createHash('md5').update(text).digest('hex');
 };
-//设置字段非空
+//获取页面字段
 export const getPageType=(name)=>{
 return `
 type ${name}Page{
@@ -13,7 +13,7 @@ type ${name}Page{
   list:[${name}]
 }`
 }
-
+//获取分页数据
 export const getPageData=async ({model,find,first,after,populate,select,format,sort='_id',desc=true})=>{
   if(after)find._id={[desc?"$lt":"$gt"]:after};
   const cursor=model.find(find).sort({[sort]:desc?-1:1}).populate(populate).select(select).cursor();

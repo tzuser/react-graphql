@@ -24,9 +24,9 @@ class AddImage extends Component{
               this.setState({loading:false});
               addPhoto(data.urlToPhoto)
               onDismiss()
-            }).catch(err=>{
+            }).catch(async (err)=>{
               console.log(err)
-              if(errorReply({error:err,push}))return;
+              await errorReply({error:err,push})
               if(err.graphQLErrors && err.graphQLErrors[0]){
                 this.setState({
                   loading:false,

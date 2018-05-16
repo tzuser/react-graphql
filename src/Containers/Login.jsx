@@ -9,7 +9,7 @@ import Scroll from '../Components/Scroll';
 import * as configActs from '../actions/config';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import HiddenFooter from '../Components/HiddenFooter';
+import hiddenFooter from '../Components/hiddenFooter';
 class Login extends Component{
   state={
     name:"",
@@ -24,7 +24,6 @@ class Login extends Component{
     let {mutate,history:{goBack,push},setSelfAct}=this.props;
     return (
       <Box paddingX={4} paddingY={10} >
-        <HiddenFooter />
         <form onSubmit={e => {
               e.preventDefault();
               mutate({variables:{
@@ -96,4 +95,4 @@ export default graphql(gql`
  mutation login($name:String!,$password: String!) {
     login(name:$name,password: $password)
   }
-`)(connect(mapStateToProps,mapDispatchToProps)(Login));
+`)(connect(mapStateToProps,mapDispatchToProps)(hiddenFooter(Login)));

@@ -46,6 +46,11 @@ const LoadableCreate = Loadable({
   loading:PageLoading
 });
 
+const LoadableSettings = Loadable({
+  loader: () => import(/* webpackChunkName: 'Settings' */ './Settings'),
+  loading:PageLoading
+});
+
 
 class App extends React.Component{
   state={footer:true}
@@ -64,6 +69,7 @@ class App extends React.Component{
           <Route path="/find" component={LoadableFind}/>
           <Route path="/notice" component={LoadableNotice}/>
           <Route path='/create' component={LoadableCreate} />
+          <Route path='/settings' component={LoadableSettings} />
           <Route path='/post/:id' component={LoadablePost} />
           <Route path='/comments/:id' component={LoadableComments} />
           <Route path='/:name' component={LoadableUser} />

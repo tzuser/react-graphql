@@ -1,18 +1,19 @@
 import React,{Component} from 'react';
 import PropTypes from 'prop-types';
-class HiddenFooter extends Component{
-  componentDidMount(){
-    //console.log(this.context)
-    this.context.isFooter(false);
+export default (WrappedComponent)=>{
+  class HiddenFooter extends Component{
+    componentDidMount(){
+      this.context.isFooter(false);
+    }
+    componentWillUnmount(){
+      this.context.isFooter(true);
+    }
+    render(){
+      return <WrappedComponent {...this.props} />
+    }
   }
-  componentWillUnmount(){
-    this.context.isFooter(true);
+  HiddenFooter.contextTypes={
+    isFooter: PropTypes.func
   }
-  render(){
-    return false
-  }
+  return HiddenFooter
 }
-HiddenFooter.contextTypes={
-  isFooter: PropTypes.func
-}
-export default HiddenFooter

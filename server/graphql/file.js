@@ -43,7 +43,7 @@ export const getImage=async (url,user_name)=>{
   ext=await new Promise((resolve,reject)=>{
     request({url,method:"HEAD"}).on('response', (response)=>{
       let key=response.headers['content-type'];
-      resolve(types[key])
+      resolve(types[key] || ext)
     }).on('error', function(err) {
       reject(err)
     })
@@ -99,7 +99,7 @@ export const getVideo=async (url,user_name)=>{
   ext=await new Promise((resolve,reject)=>{
     request({url,method:"HEAD"}).on('response', (response)=>{
       let key=response.headers['content-type'];
-      resolve(types[key])
+      resolve(types[key] || ext)
     }).on('error', function(err) {
       reject(err)
     })

@@ -51,7 +51,9 @@ const SelfHeader=({user})=>(
       </Link>
     </Box>
     <Box marginRight={-3}>
-      <IconButton accessibilityLabel="设置" icon="cog" />
+      <Link to="/settings/">
+        <IconButton accessibilityLabel="设置" icon="cog" />
+      </Link>
     </Box>
   </HeaderContainer>
 )
