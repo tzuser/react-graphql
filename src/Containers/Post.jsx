@@ -92,10 +92,10 @@ const OtherHeader=({post,goBack,push})=>{
           </Box>
           <Box>
 
-          <GrayButton>
+          {/*<GrayButton>
             <Icon accessibilityLabel="分享" icon="share" onClick={()=>goBack()} />
             分享
-          </GrayButton>
+          </GrayButton>*/}
           <LikeButton postID={post.id} push={push} initLike={post.isLike} />
           </Box>
         </HeaderContainer>)
@@ -107,10 +107,10 @@ const SelfHeader=({post,goBack,push})=>{
           </Box>
           <Box>
 
-          <GrayButton>
+          {/*<GrayButton>
             <Icon accessibilityLabel="分享" icon="share" onClick={()=>goBack()} />
             分享
-          </GrayButton>
+          </GrayButton>*/}
           
           </Box>
           <Box marginLeft={2}>

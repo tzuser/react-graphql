@@ -24,7 +24,7 @@ import {DB_URL} from './public';
 const link=createHttpLink({uri:DB_URL,credentials: 'include'});
 const client = new ApolloClient({
   link,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
 });
 
 let {store,history}=getCreateStore(reducers);//获取store
@@ -48,7 +48,7 @@ if(process.env.NODE_ENV=='development'){
 	}
 }
 //是否是服务器渲染
-const renderDOM=/*process.env.NODE_ENV=='production'?ReactDOM.hydrate:*/ReactDOM.render;
+const renderDOM=process.env.NODE_ENV=='production'?ReactDOM.hydrate:ReactDOM.render;
 const render=(AppCom=App)=>{
 	renderDOM(
 		<Provider store={store}>

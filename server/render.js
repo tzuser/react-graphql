@@ -27,10 +27,13 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 //import initialRequestConfig from '../build/router-config.json';
 //import initalActions from 'react-ssr-request/server';
 
-const prepHTML=(data,{html,head,style,body,script,styleTags,state})=>{
+const prepHTML=(data,{html,head,style,body,script,styleTags,state,apollo_state})=>{
 	data=data.replace('<html',`<html ${html}`);
 	data=data.replace('</head>',`${head}${style}</head>`);
-	data=data.replace('<body>',`<body><script>window._INIT_STATE_ = ${JSON.stringify(state)}</script>`);
+	data=data.replace('<body>',`<body><script>
+		window._INIT_STATE_ = ${JSON.stringify(state)};
+		window.__APOLLO_STATE__ = ${JSON.stringify(apollo_state)};
+		</script>`);
 	data=data.replace('<div id="root"></div>',`<div id="root">${body}</div>${styleTags}`);
 	data=data.replace('</body>',`${script}</body>`);
 	return data;
@@ -75,7 +78,9 @@ const render=async (ctx,next)=>{
 		)
 		await getDataFromTree(AppRender);
 		let routeMarkup =renderToString(AppRender);
-		const state = client.extract();
+		const apollo_state = client.extract();
+		const initialState = store.getState();
+		//console.log(store.getState())
 		//let state=initialState;//store.getState();
 
 		let bundles = getBundles(stats, modules);
@@ -99,7 +104,8 @@ const render=async (ctx,next)=>{
 			body:routeMarkup,
 			script:scriptStr,
 			styleTags,
-			state,
+			state:initialState,
+			apollo_state,
 		})
 		ctx.body=html
 }
