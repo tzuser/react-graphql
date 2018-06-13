@@ -3,7 +3,6 @@
 * 客户端使用React + ApolloClient + GestaltUI
 * 服务端使用Koa2 + GraphQL + Mongoose
 
-![首页](https://github.com/tzuser/react-graphql/blob/master/readmeImages/1.png)
 ![个人](https://github.com/tzuser/react-graphql/blob/master/readmeImages/2.png)
 ![详情](https://github.com/tzuser/react-graphql/blob/master/readmeImages/3.png)
 ![评论](https://github.com/tzuser/react-graphql/blob/master/readmeImages/4.png)
