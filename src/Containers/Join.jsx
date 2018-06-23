@@ -9,7 +9,7 @@ import Scroll from '../Components/Scroll';
 import * as configActs from '../actions/config';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import hiddenFooter from '../Components/hiddenFooter';
+import hiddenFooter from '../Components/HiddenFooter';
 class Join extends Component{
   state={
     nick_name:"",

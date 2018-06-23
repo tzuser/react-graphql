@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import Scroll from '../Components/Scroll';
 import * as configActs from '../actions/config';
 
-import hiddenFooter from '../Components/hiddenFooter';
+import hiddenFooter from '../Components/HiddenFooter';
 import AddPhoto from '../Components/AddPhoto';
 import {imageUrl} from '../public';
 

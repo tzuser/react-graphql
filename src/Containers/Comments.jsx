@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import Scroll from '../Components/Scroll';
 import { Mutation } from "react-apollo";
 import {errorReply,imageUrl} from '../public';
-import hiddenFooter from '../Components/hiddenFooter';
+import hiddenFooter from '../Components/HiddenFooter';
 import PageLoading from '../Components/PageLoading';
 const ADD_COMMENT = gql`
   mutation addComment($post:ID!,$content: String!,$reply:ID) {

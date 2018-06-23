@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 //import PageLoading from '../Components/PageLoading';
-import hiddenFooter from '../Components/hiddenFooter';
+import hiddenFooter from '../Components/HiddenFooter';
 import {Box,Text} from 'gestalt';
 class Settings extends Component{
   render(){
