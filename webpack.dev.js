@@ -7,7 +7,7 @@ const extractCSS = new ExtractTextPlugin('stylesheets/[name]-one.css');
 
 //获取本机ip
 function getIPAdress(){  
-  return '192.168.56.1'
+  //return '192.168.56.1'
     var interfaces = require('os').networkInterfaces();  
     for(var devName in interfaces){  
           var iface = interfaces[devName];  
