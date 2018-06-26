@@ -135,10 +135,19 @@ const Video=({src})=>{
      <source src={src}  />
   </video>
 }
-const Photo=({photos})=>{
+const Photo=({photos,thumbnail})=>{
   return <Card onClick={(e)=>(console.log('点击'))}>
               <Mask shape="rounded">
-                {photos.map((item,key)=>(
+                {photos.length==0 && <ItemImg >
+                     <Image
+                     alt=""
+                     naturalHeight={thumbnail.height}
+                     naturalWidth={thumbnail.width}
+                     src={imageUrl(thumbnail.url)}
+                     />
+                   </ItemImg>}
+
+                {photos.length>0 && photos.map((item,key)=>(
                    <ItemImg key={key}>
                      <Image
                      alt=""
@@ -156,7 +165,7 @@ class Post extends Component{
     if(loading ){
       return <PageLoading />
     }
-    let {user,content,type,tags,commentNum,hotNum,likeNum,src}=post;
+    let {user,content,type,tags,commentNum,hotNum,likeNum,src,thumbnail}=post;
     let photos=post.photos || [];
     let isSelf=(selfUser && selfUser.name==user.name);
     return (
@@ -166,7 +175,7 @@ class Post extends Component{
         <Box justifyContent="center"  display="flex" alignItems="start">
           <Box paddingX={4} flex="grow" maxWidth={800}>
             {type=='video' && <Video src={src}/>}
-            {type=='photo' && <Photo photos={photos}/>}
+            {type=='photo' && <Photo photos={photos} thumbnail={thumbnail}/>}
             
             <UserNode user={user} content={content} userClick={(e,data)=>push(`/${data.name}/`)}/>
             <Box direction="row" display="flex" wrap={true} >
@@ -206,6 +215,9 @@ export default graphql(gql`
 query($id:ID!){
   post(id:$id){
     id
+    thumbnail{
+      ...photoField
+    },
     content
     type
     tags
@@ -238,7 +250,7 @@ fragment photoField on Photo{
       variables:{
         id:props.match.params.id
       },
-      fetchPolicy: "network-only"
+      //fetchPolicy: "network-only"
     }
   }
 })(

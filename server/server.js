@@ -22,7 +22,7 @@ app.use(graphql.routes()).use(graphql.allowedMethods());
 const router = new Router();
 router.get('/', render);
 app.use(router.routes()).use(router.allowedMethods());
-app.use(staticServer(path.resolve(__dirname, '../files')));
+app.use(staticServer(path.resolve(__dirname, '../files'), {maxAge: 365 * 24 * 60 * 60}));
 app.use(staticCache(path.resolve(__dirname, '../build'), {maxAge: 365 * 24 * 60 * 60}));
 app.use(render);
 

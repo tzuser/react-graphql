@@ -147,6 +147,7 @@ class PostList extends React.Component{
   }
   render(){
     let { list=[],loadItems,store,minCols=1 }=this.props;
+    //console.log(store)
     return (
         <Masonry
           comp={this.renderItem.bind(this)}
@@ -154,10 +155,8 @@ class PostList extends React.Component{
           loadItems={loadItems}
           scrollContainer={()=>window}
           minCols={minCols}
-          measurementStore={ store }
           virtualize
           flexible
-          serverRender
         />
     );
   }

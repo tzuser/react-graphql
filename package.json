@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env RUN_ENV=dev NODE_ENV=development webpack-dev-server --config ./webpack.dev.js",
+    "start": "cross-env RUN_ENV=dev NODE_ENV=development webpack-dev-server --config ./webpack.dev.js --hot",
     "build": "cross-env RUN_ENV=build NODE_ENV=production webpack --config ./webpack.build.js --optimize-minimize",
     "analyzer-build": "cross-env RUN_ENV=build NODE_ENV=production webpack --profile --json > stats.json --config ./webpack.build.js --optimize-minimize",
     "analyzer": "webpack-bundle-analyzer stats.json",
@@ -97,6 +97,7 @@
     "offline-plugin": "^4.8.5",
     "react-helmet": "^5.2.0",
     "redux-devtools-extension": "^2.13.2",
+    "sharp": "^0.20.4",
     "uglifyjs-webpack-plugin": "^1.1.8",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"

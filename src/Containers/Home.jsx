@@ -7,10 +7,10 @@ import PostList from '../Components/PostList';
 
 class Home extends React.Component{
   loadItems(data){
-    let { data: { posts, refetch ,fetchMore} }=this.props
+    let { data: { posts, refetch ,fetchMore,loading} }=this.props
     if(!posts)return;
     let {first,after,totalCount,isEnd}=posts
-    if(!isEnd){
+    if(!isEnd && !loading){
         this.props.data.fetchMore({
           variables:{after,first},
           updateQuery: (previousResult, { fetchMoreResult }) => {
