@@ -32,12 +32,7 @@ class MoreLikes extends React.Component{
           list={moreLikes?moreLikes.list:[]}
           minCols={2}
           loadItems={this.loadItems.bind(this)}
-          itemClick={(e,item)=>{
-            push(`/post/${item.id}`)
-          }}
-          userClick={(e,item)=>{
-            push(`/user/${item.user.id}`)
-          }}/>
+          />
         </Box>
         <Spinner show={loading} accessibilityLabel="Example spinner" />
         {moreLikes && moreLikes.isEnd && <Box paddingY={2}><Text align="center" color="gray">到底了~</Text></Box>}
@@ -64,9 +59,10 @@ export default withRouter(graphql(gql`
          ...photo
        }
        user{
-         nick_name
-         avatar
-         id
+        name
+        nick_name
+        avatar
+        id
        }
       }
     }

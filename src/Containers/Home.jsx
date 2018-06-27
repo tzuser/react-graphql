@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { Box,Spinner,Text } from 'gestalt';
 import Header from '../Components/Header';
 import PostList from '../Components/PostList';
-
+import {withRouter} from 'react-router-dom';
 class Home extends React.Component{
   loadItems(data){
     let { data: { posts, refetch ,fetchMore,loading} }=this.props
@@ -42,7 +42,7 @@ class Home extends React.Component{
 }
 
 
-export default graphql(gql`
+export default withRouter(graphql(gql`
   query($first:Int!,$after:ID){
     posts(first:$first,after:$after) {
       first
@@ -79,4 +79,4 @@ export default graphql(gql`
         first:20
       }
   }},
-})(Home);
+})(Home));
