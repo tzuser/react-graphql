@@ -15,7 +15,6 @@ import stats from '../build/react-loadable.json';
 
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
 
-import theme from '../src/public/Theme';
 import 'isomorphic-fetch'
 
 //Apollo
@@ -26,6 +25,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 
 //import initialRequestConfig from '../build/router-config.json';
 //import initalActions from 'react-ssr-request/server';
+
+import loadablePlugin from './loadablePlugin'
 
 const prepHTML=(data,{html,head,style,body,script,styleTags,state,apollo_state})=>{
 	data=data.replace('<html',`<html ${html}`);
@@ -84,6 +85,9 @@ const render=async (ctx,next)=>{
 		//let state=initialState;//store.getState();
 
 		let bundles = getBundles(stats, modules);
+		//loadable webpack4临时解决方案
+		bundles=loadablePlugin(bundles,stats,modules);
+		
 		const styleTags = sheet.getStyleTags();
 		let styles = bundles.filter(bundle => bundle.file.endsWith('.css'));
 		let scripts = bundles.filter(bundle => bundle.file.endsWith('.js'));

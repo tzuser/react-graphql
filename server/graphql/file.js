@@ -6,7 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import sizeOf from 'image-size';
 //import gm from 'gm';
-import sharp from 'sharp';
+//import sharp from 'sharp';
 export const typeDefs=`
 extend type Mutation{
   urlToPhoto(url:String!):Photo
@@ -79,12 +79,13 @@ export const getThumbnail=async (photoPath,user_name)=>{
   let filePath=path.resolve(dirPath,`./${fileName}`);
   photoPath=path.resolve(__dirname,`../../files/${photoPath}`);
   if(!fs.existsSync(dirPath))fs.mkdirSync(dirPath);
-  let size=await new Promise((resolve,reject)=>{
+  /*let size=await new Promise((resolve,reject)=>{
     sharp(photoPath).resize(400).jpeg({quality:70}).toFile(filePath, (err, info) =>{
       err && reject(err);
       resolve(info);
     });
-  })
+  })*/
+  let size=sizeOf(photoPath)
   return {...size,url:`/thumbnail/${user_name}/${fileName}`};
 }
 
