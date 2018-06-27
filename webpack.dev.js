@@ -60,13 +60,18 @@ const config={
     port: 5200,
     historyApiFallback:true,
     
-    proxy: {//代理配置
-     '/graphql': {
+    proxy:[{
+       context: ['/graphql'],
        target: 'http://localhost:8181',
        changeOrigin: true,
        secure: false
-     }
     },
+    {
+       context: ['**/*.jpg','**/*.png','**/*.gif','**/*.mp4'],
+       target: 'http://localhost:8181',
+       changeOrigin: true,
+       secure: false
+    }],
     watchOptions: {//监听配置变化
       aggregateTimeout: 300,
       poll: 1000
