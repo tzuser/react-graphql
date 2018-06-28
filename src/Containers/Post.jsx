@@ -34,7 +34,7 @@ margin-bottom:2px;
   margin-bottom:0;
 }`
 
-const Tag=styled.a`
+const Tag=styled(Link)`
 padding:5px 10px;
 color:#999;
 font-size:13px;
@@ -194,7 +194,7 @@ class Post extends Component{
         </Box>
         <hr />
         <Box direction="row" display="flex" wrap={true} >
-        {tags.map((item,key)=><Tag key={key} padding={2}>#{item}</Tag>)}
+        {tags.map((item,key)=><Tag to={`/search/${item}`} key={key} padding={2}>#{item}</Tag>)}
         </Box>
         <Box paddingX={4} marginTop={2}>
         <Text bold>相似</Text>

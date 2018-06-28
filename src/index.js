@@ -21,6 +21,7 @@ import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 //192.168.1.105
 import {DB_URL} from './public';
+//import './Module/PWA.js'
 const link=createHttpLink({uri:DB_URL,credentials: 'include'});
 const client = new ApolloClient({
   link,

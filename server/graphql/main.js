@@ -6,6 +6,7 @@ import * as post from './post';
 import * as user from './user';
 import * as comment from './comment';
 import * as file from './file';
+import * as search from './search';
 
 
 const typeDefs=[`
@@ -38,6 +39,7 @@ addSchema(post);
 addSchema(user);
 addSchema(comment);
 addSchema(file);
+addSchema(search);
 
 const mySchema = makeExecutableSchema({typeDefs,resolvers})
 

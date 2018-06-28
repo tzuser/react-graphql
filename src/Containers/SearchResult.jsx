@@ -2,14 +2,14 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Box,Spinner,Text } from 'gestalt';
-import Header from 'com_/Header';
+import SearchHeader from 'com_/SearchHeader';
 import PostList from 'com_/PostList';
 import {withRouter} from 'react-router-dom';
-//import RestoredScroll from 'com_/RestoredScroll';
 @withRouter
 @graphql(gql`
-  query($first:Int!,$after:ID){
-    posts(first:$first,after:$after) {
+  query($keyword:String!,$first:Int!,$after:ID){
+    search(keyword:$keyword,first:$first,after:$after) {
+      keyword
       first
       after
       isEnd
@@ -39,23 +39,25 @@ import {withRouter} from 'react-router-dom';
   }
 `,{
   options:(props)=>{
+    let {match:{params:{keyword}}}=props
       return {
       variables:{
-        first:20
+        first:20,
+        keyword:keyword
       }
   }},
 })
-class Home extends React.Component{
+class SearchResult extends React.Component{
   loadItems(data){
-    let { data: { posts, refetch ,fetchMore,loading} }=this.props
-    if(!posts)return;
-    let {first,after,totalCount,isEnd}=posts
+    let { data: { search, refetch ,fetchMore,loading} }=this.props
+    if(!search)return;
+    let {first,after,totalCount,isEnd}=search
     if(!isEnd && !loading){
         this.props.data.fetchMore({
           variables:{after,first},
           updateQuery: (previousResult, { fetchMoreResult }) => {
-            if(previousResult.posts.list){
-              fetchMoreResult.posts.list=previousResult.posts.list.concat(fetchMoreResult.posts.list)
+            if(previousResult.search.list){
+              fetchMoreResult.search.list=previousResult.search.list.concat(fetchMoreResult.search.list)
             }
             return fetchMoreResult;
           }
@@ -64,20 +66,21 @@ class Home extends React.Component{
   }
  
   render(){
-    let { data: { posts, refetch ,fetchMore,loading},history:{push} }=this.props;
+    let { data: { search, refetch ,fetchMore,loading},history:{push},match:{params:{keyword}} }=this.props;
+
     return (
       <div>
-        <Header/>
+          <SearchHeader keyword={keyword}/>
           <PostList 
-          list={posts?posts.list:[]}
+          list={search?search.list:[]}
           loadItems={this.loadItems.bind(this)}
           />
         <Spinner show={loading} accessibilityLabel="Example spinner" />
-        {posts && posts.isEnd && <Box paddingY={2}><Text align="center" color="gray">到底了~</Text></Box>}
+        {search && search.isEnd && <Box paddingY={2}><Text align="center" color="gray">到底了~</Text></Box>}
      </div>
     );
   }
 }
 
 
-export default Home;
+export default SearchResult;

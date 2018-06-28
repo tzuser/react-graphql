@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 import {Box,Icon,SearchField,IconButton,Button,Text} from 'gestalt';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
+
 const HeaderBox=styled.div`
   background-color:white;
   top:0;
@@ -37,25 +39,34 @@ const SearchButton=styled(Link)`
     padding-right: 11px;
   }
 `
-
-class Header extends Component{
+@withRouter
+class SearchHeader extends Component{
   state={value:''}
   render(){
+    let {keyword,history:{goBack,push}}=this.props;
     return (
       <div style={{height:64}}>
         <HeaderBox  position="fixed" shape="rounded" paddingX={4} paddingY={3} display="flex" direction="row" alignItems="center">
-            <SearchButton to="/search_keyword/">
-              <Box >
+            <SearchButton to={`/search_keyword/${keyword}`}>
+              <Box flex="grow" paddingX={2}  >
+                <Text bold color="darkGray">{keyword}</Text>
+              </Box>
+              <Box onTouchEnd={(e)=>{
+                if (e.cancelable && !e.defaultPrevented) {
+                  push(`/search_keyword`);
+                  e.preventDefault();
+                  }}
+                } >
                 <Icon 
-                icon="search"
+                icon="clear"
                 size={20}
                 accessibilityLabel="Pinterest"
                 />
               </Box>
-              <Box flex="grow" paddingX={2}  >
-                <Text bold color="gray">搜索</Text>
-              </Box>
             </SearchButton>
+            <Box  marginLeft={1}  >
+              <Button onClick={goBack}  text="取消" size="sm" color="white" />
+            </Box>
         </HeaderBox>
       </div>
     );
@@ -63,4 +74,4 @@ class Header extends Component{
 }
 
 
-export default Header;
+export default SearchHeader;

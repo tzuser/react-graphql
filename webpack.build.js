@@ -108,6 +108,7 @@ const config={
           {from:path.join(__dirname,'./static'),to:'static'}
         ]),
     new InlineManifestWebpackPlugin(),
+    
     new ReactLoadablePlugin({
             filename: './build/react-loadable.json',
       }),
