@@ -56,7 +56,7 @@ module.exports={
         'process.env.RUN_ENV':JSON.stringify(process.env.RUN_ENV)
     }),
     new HTMLWebpackPlugin({
-      title:'固生堂',
+      title:'OTAKU',
       inject: true,
       filename: 'index.html',
       template: path.join(__dirname,'./index.ejs')
