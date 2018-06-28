@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
-//记录子组件滚动条位置及恢复
-class RestoredScroll extends Component{
+//组件滚动条位置及恢复
+class Scroll extends Component{
   constructor(props){
     super(props)
     this.isSpace=false;
@@ -47,4 +47,4 @@ class RestoredScroll extends Component{
   }
 }
 
-export default RestoredScroll
+export default Scroll

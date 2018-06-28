@@ -5,7 +5,9 @@ import PageLoading from '../Components/PageLoading';
 import Footer from '../Components/Footer';
 import PropTypes from 'prop-types';
 import 'gestalt/dist/gestalt.css';
-
+import * as ConfigAct from 'act_/config';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 const LoadablePost = Loadable({
   loader: () => import(/* webpackChunkName: 'Post' */ './Post'),
   loading:PageLoading
@@ -51,8 +53,24 @@ const LoadableSettings = Loadable({
   loading:PageLoading
 });
 
+const mapStateToProps=(state)=>({
 
+})
+const mapDispatchToPorps=(dispatch)=>bindActionCreators({
+  setWindowWidthAct:ConfigAct.setWindowWidth
+},dispatch)
+@withRouter
+@connect(mapStateToProps,mapDispatchToPorps)
 class App extends React.Component{
+  static childContextTypes={isFooter: PropTypes.func}
+  constructor(props){
+    super(props)
+    //获取window宽度
+    if(typeof window!='undefined'){
+      console.log(document.documentElement.clientWidth,document.body.clientWidth,document.body.offsetWidth )
+      this.props.setWindowWidthAct(document.body.clientWidth );
+    }
+  }
   state={footer:true}
   getChildContext() {
      return {
@@ -79,8 +97,4 @@ class App extends React.Component{
 			)
 	}
 };
-App.childContextTypes = {
-  isFooter: PropTypes.func
-};
-
-export default withRouter(App);
+export default App;

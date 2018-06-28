@@ -3,6 +3,8 @@ import { Avatar,Box,Masonry,Spinner,Text,Image,Mask,Icon } from 'gestalt';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import {imageUrl} from '../public';
+import {connect} from 'react-redux';
+//import {bindActionCreators} from 'redux';
 const ItemImg=styled(Link)`
 margin-bottom:2px;
 &:last-child{
@@ -15,6 +17,7 @@ const Card=styled.div`
   padding:8px;
   transform: scale(1,1);
   user-select: none;
+  box-sizing: border-box;
   &:active{
     transform: scale(0.99,0.99);
     background:rgb(239, 239, 239);
@@ -33,6 +36,7 @@ const PlayIcon=styled.div`
 
   }
 `
+
 /* {photos.map((item,key)=>(
    <ItemImg key={key}>
      <Image
@@ -43,6 +47,7 @@ const PlayIcon=styled.div`
      />
    </ItemImg>)
  )}*/
+
 const ThumbnailNode=({thumbnail,itemTo})=>(
    <Mask shape="rounded">
      <ItemImg  to={itemTo}>
@@ -114,6 +119,11 @@ const getArticle=({userTo,itemTo,user,thumbnail,content})=>{
     <UserNode user={user} userTo={userTo}/>
   </div>
 }
+
+const mapStateToProps=(state)=>({
+  width:state.config.width
+})
+@connect(mapStateToProps)
 class PostList extends React.Component{
   renderItem({data,itemIdx,addRelatedItems}){
     let {id,content,type,user,photos,thumbnail}=data;
@@ -146,18 +156,32 @@ class PostList extends React.Component{
     )
   }
   render(){
-    let { list=[],loadItems,store,minCols=1 }=this.props;
-    //console.log(store)
+    let { list=[],loadItems,store,minCols=1,width }=this.props;
+    let newMinCols=minCols;
+    if(width>640)newMinCols=2;
+    if(width>860)newMinCols=3;
+    if(width>1080)newMinCols=4;
+    if(width>1400)newMinCols=6;
+    //newMinCols=newMinCols*minCols;
+    let listWidth=width-16
+    let columnWidth=listWidth/newMinCols;
+
+    
+
     return (
+      <div style={{width:listWidth,margin:'0 auto'}}>
         <Masonry
           comp={this.renderItem.bind(this)}
           items={list}
           loadItems={loadItems}
           scrollContainer={()=>window}
-          minCols={minCols}
-          virtualize
-          flexible
+          minCols={newMinCols}
+          virtualize={true}
+          flexible={false}
+          columnWidth={columnWidth}
+          gutterWidth={0}
         />
+      </div>
     );
   }
 }
