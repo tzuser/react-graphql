@@ -20,25 +20,6 @@ const HeaderBox=styled.div`
 
 `
 
-const SearchButton=styled(Link)`
-  transition: transform 0.2s ease-out;
-  background-color: #efefef;
-  border-radius: 8px;
-  height: 40px;
-  box-sizing: border-box;
-  padding-left: 12px;
-  padding-right: 12px;
-  flex-direction: row;
-  display: flex;
-  text-decoration: none;
-  flex: 1 1 auto;
-  align-items: center;
-  &:active{
-    border:1px solid #bbb;
-    padding-left: 11px;
-    padding-right: 11px;
-  }
-`
 @withRouter
 class SearchHeader extends Component{
   state={value:''}
@@ -46,26 +27,18 @@ class SearchHeader extends Component{
     let {keyword,history:{goBack,push}}=this.props;
     return (
       <div style={{height:64}}>
-        <HeaderBox  position="fixed" shape="rounded" paddingX={4} paddingY={3} display="flex" direction="row" alignItems="center">
-            <SearchButton to={`/search_keyword/${keyword}`}>
-              <Box flex="grow" paddingX={2}  >
-                <Text bold color="darkGray">{keyword}</Text>
-              </Box>
-              <Box onTouchEnd={(e)=>{
-                if (e.cancelable && !e.defaultPrevented) {
-                  push(`/search_keyword`);
-                  e.preventDefault();
-                  }}
-                } >
-                <Icon 
-                icon="clear"
-                size={20}
-                accessibilityLabel="Pinterest"
-                />
-              </Box>
-            </SearchButton>
-            <Box  marginLeft={1}  >
-              <Button onClick={goBack}  text="取消" size="sm" color="white" />
+        <HeaderBox >
+            <Box flex="grow"  >
+              <SearchField 
+
+              id="searchField" 
+              accessibilityLabel="search" 
+              placeholder="搜索"
+              onChange={({ value }) => this.setState({ value })}
+              value={this.state.value} />
+            </Box>
+            <Box  marginLeft={1} flex="none" >
+              <Button onClick={goBack} text="取消" size="sm" color="white" />
             </Box>
         </HeaderBox>
       </div>

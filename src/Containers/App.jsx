@@ -85,7 +85,6 @@ class App extends React.Component{
       this.resizeFun=()=>{
         instanceFillteringJitter().then(()=>{
           if(this.props.width!=document.body.clientWidth){
-            alert('ccc')
             this.props.setWindowWidthAct(document.body.clientWidth);
           }
         }).catch(err=>{})

@@ -126,7 +126,6 @@ export const resolvers={
       let str=`${post.tags.join(" ")} ${post.content}`;
       //分词
       let participle=nodejieba.extract(str,6);
-      console.log(nodejieba.extract('强奸学生妹，做爱嫩逼',6));
       let keywords=participle.map(item=>item.word);
 
       let tagsRegex=keywords.join('|')

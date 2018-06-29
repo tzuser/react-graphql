@@ -16,6 +16,7 @@ z-index: 1;
 background-color: rgba(255, 255, 255, 0.9);
 box-sizing: border-box;
 text-align: center;
+    overflow: hidden;
 `
 const IconLink=styled(Link)`
   margin:auto;

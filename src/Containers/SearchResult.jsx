@@ -2,7 +2,7 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Box,Spinner,Text } from 'gestalt';
-import SearchHeader from 'com_/SearchHeader';
+import SearchResultHeader from 'com_/SearchResultHeader';
 import PostList from 'com_/PostList';
 import {withRouter} from 'react-router-dom';
 @withRouter
@@ -70,7 +70,7 @@ class SearchResult extends React.Component{
 
     return (
       <div>
-          <SearchHeader keyword={keyword}/>
+          <SearchResultHeader keyword={keyword}/>
           <PostList 
           list={search?search.list:[]}
           loadItems={this.loadItems.bind(this)}
