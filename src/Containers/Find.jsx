@@ -11,9 +11,9 @@ class Find extends Component{
       <ListLink text="Gifs"/>
       <ListLink text="视频"/>
       <ListTitle text="全部分类"/>
-      <ListLink text="萝莉"/>
-      <ListLink text="美少女"/>
-      <ListLink to="/post/5ab9bdf9868bd156d0c69bce/" text="福利姬"/>
+      <ListLink text="a"/>
+      <ListLink text="b"/>
+      <ListLink text="c"/>
     </Box>
     </div>
   }

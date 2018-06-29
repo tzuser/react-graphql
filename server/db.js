@@ -55,7 +55,14 @@ const likeSchema=new Schema({
   post:{type:Schema.Types.ObjectId,ref:'Post'},//帖子
 })
 
+//搜索
+const keywordSchema=new Schema({
+  name:{type:String,index:true},//搜索关键字
+  count:Number//搜索次数
+})
+
 export const userModel=mongoose.model('User',userSchema)
 export const postModel=mongoose.model('Post',postSchema)
 export const likeModel=mongoose.model('Like',likeSchema)
 export const commentModel=mongoose.model('Comment',commentSchema)
+export const keywordModel=mongoose.model('Keyword',keywordSchema)

@@ -8,10 +8,10 @@ import {withRouter} from 'react-router-dom'
 class UserLikes extends React.Component{
 
   loadItems(data){
-    let { data: { likes, refetch ,fetchMore} }=this.props
+    let { data: { likes, refetch ,fetchMore,loading} }=this.props
     if(!likes)return;
     let {first,after,totalCount,isEnd}=likes;
-    if(!isEnd){
+    if(!isEnd && !loading){
         this.props.data.fetchMore({
           variables:{after,first},
           fetchPolicy: "network-only",

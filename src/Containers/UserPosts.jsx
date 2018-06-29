@@ -7,10 +7,10 @@ import {withRouter} from 'react-router-dom'
 
 class UserPosts extends React.Component{
   loadItems(data){
-    let { data: { posts, refetch ,fetchMore} }=this.props
+    let { data: { posts, refetch ,fetchMore,loading} }=this.props
     if(!posts)return;
     let {first,after,totalCount,isEnd}=posts
-    if(!isEnd){
+    if(!isEnd && !loading){
         this.props.data.fetchMore({
           variables:{after,first},
           fetchPolicy: "network-only",

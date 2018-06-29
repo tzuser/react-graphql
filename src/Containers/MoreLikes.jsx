@@ -7,10 +7,10 @@ import {withRouter} from 'react-router-dom';
 
 class MoreLikes extends React.Component{
   loadItems(data){
-    let { data: { moreLikes, refetch ,fetchMore} }=this.props
+    let { data: { moreLikes, refetch ,fetchMore,loading} }=this.props
     if(!moreLikes)return;
     let {first,after,totalCount,isEnd}=moreLikes
-    if(!isEnd){
+    if(!isEnd && !loading){
         this.props.data.fetchMore({
           variables:{after,first},
           updateQuery: (previousResult, { fetchMoreResult }) => {
@@ -76,7 +76,7 @@ export default withRouter(graphql(gql`
   options:(props)=>{
       return {
       variables:{
-        first:6,
+        first:20,
         id:props.id
       }
   }},

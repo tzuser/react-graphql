@@ -67,7 +67,7 @@ const LoadableSearchResult = Loadable({
 });
 
 const mapStateToProps=(state)=>({
-
+  width:state.config.width
 })
 const mapDispatchToPorps=(dispatch)=>bindActionCreators({
   setWindowWidthAct:ConfigAct.setWindowWidth
@@ -84,7 +84,10 @@ class App extends React.Component{
     if(typeof window!='undefined'){
       this.resizeFun=()=>{
         instanceFillteringJitter().then(()=>{
-          this.props.setWindowWidthAct(document.body.clientWidth);
+          if(this.props.width!=document.body.clientWidth){
+            alert('ccc')
+            this.props.setWindowWidthAct(document.body.clientWidth);
+          }
         }).catch(err=>{})
       }
       window.addEventListener('resize',this.resizeFun);

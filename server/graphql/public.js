@@ -13,12 +13,10 @@ type ${name}Page{
   list:[${name}]
 }`
 }
-//获取分页数据
-export const getPageData=async ({model,find,first,after,populate,select,format,sort='_id',desc=true})=>{
-  if(after)find._id={[desc?"$lt":"$gt"]:after};
-  const cursor=model.find(find).sort({[sort]:desc?-1:1}).populate(populate).select(select).cursor();
+//通过游标获取列表
+export const getListFromCursor=async (cursor,first)=>{
   let list=[];
-  let doc=null;
+  let doc;
   while(doc = await cursor.next()) {
       doc.id=doc._id;
       list.push(doc)
@@ -26,6 +24,20 @@ export const getPageData=async ({model,find,first,after,populate,select,format,s
         break;
       }
   }
+  return list;
+}
+
+//获取分页数据
+export const getPageData=async ({model,find,first,after,populate,select,format,sort='_id',desc=true})=>{
+  if(after){
+    if(find._id){
+      find._id={...find._id,[desc?"$lt":"$gt"]:after};
+    }else{
+      find._id={[desc?"$lt":"$gt"]:after};
+    }
+  }
+  const cursor=model.find(find).sort({[sort]:desc?-1:1}).populate(populate).select(select).cursor();
+  let list=await getListFromCursor(cursor,first);
   return listToPage({list,first,format});
 }
 

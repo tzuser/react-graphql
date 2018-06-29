@@ -2,6 +2,8 @@ import {postModel,likeModel,userModel} from '../db';
 import APIError from './APIError';
 import {getPageType,getPageData,listToPage} from "./public";
 import {getThumbnail} from './file'
+import nodejieba from "nodejieba";
+
 export const typeDefs=`
 type Photo{
   url:String
@@ -69,6 +71,16 @@ extend type Mutation{
 }
 
 `
+//获取运行时间
+const getRunTime=()=>{
+  let startTime=+new Date();
+  return (msg='执行时间')=>{
+    let currentTime=+new Date();
+    let time=currentTime-startTime;
+    console.log(`${msg} ${time}`)
+  }
+}
+
 export const resolvers={
   Query:{
     async post(_,{id},ctx){
@@ -107,15 +119,34 @@ export const resolvers={
         format:(item)=>item.post,
       })
     },
-    async moreLikes(_,{first}){
-        let list=await postModel.aggregate([{$sample:{size:20}}]);
-        list=list.map(async (item)=>{
-          let user=await userModel.findById(item.user).exec();
-          item.user=user;
-          item.id=item._id;
-          return item;
-        })
-        return listToPage({list,first:21})
+    async moreLikes(_,{id,first,after}){
+      //获取原post
+      //let timeLog=getRunTime();
+      let post=await postModel.findById(id,{content:1,tags:1}).exec();
+      let str=`${post.tags.join(" ")} ${post.content}`;
+      //分词
+      let participle=nodejieba.extract(str,6);
+      console.log(nodejieba.extract('强奸学生妹，做爱嫩逼',6));
+      let keywords=participle.map(item=>item.word);
+
+      let tagsRegex=keywords.join('|')
+
+      let find={
+        _id:{$ne:post._id},
+        $or:[
+          {tags:{$regex:tagsRegex}},
+          {content:{$regex:tagsRegex}},
+        ]
+      }
+
+      let page=await getPageData({
+        model:postModel,
+        find,
+        after,
+        first,
+        populate:'user'
+      })
+      return page
     }
   },
   Mutation:{

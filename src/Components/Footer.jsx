@@ -61,7 +61,14 @@ class IconColumn extends Component{
       )
   }
 }
+const mapStateToProps=(state)=>({
+  selfUser:state.config.selfUser
+})
+const mapDispatchToProps=(dispatch)=>bindActionCreators({
 
+},dispatch)
+@withRouter
+@connect(mapStateToProps,mapDispatchToProps)
 class Footer extends Component{
   state={active:null}
   render(){
@@ -119,10 +126,5 @@ class Footer extends Component{
   }
 }
 
-const mapStateToProps=(state)=>({
-  selfUser:state.config.selfUser
-})
-const mapDispatchToProps=(dispatch)=>bindActionCreators({
 
-},dispatch)
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Footer))
+export default Footer

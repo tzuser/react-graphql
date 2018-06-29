@@ -1,6 +1,6 @@
 import {postModel,likeModel,userModel} from '../db';
 import APIError from './APIError';
-import {listToPage} from './public';
+import {getPageType,getPageData,listToPage} from "./public";
 export const typeDefs=`
 type SearchPage{
   keyword:String!
@@ -16,18 +16,7 @@ extend type Query{
 
 `
 
-const getFirstList=async (cursor,first)=>{
-  let list=[];
-  let doc;
-  while(doc = await cursor.next()) {
-      doc.id=doc._id;
-      list.push(doc)
-      if(list.length>=first){
-        break;
-      }
-  }
-  return list;
-}
+
 export const resolvers={
   Query:{
     async search(_,{keyword,first,after,desc,sort,user}){
@@ -39,13 +28,20 @@ export const resolvers={
       if(user)find.user=user;
       if(after)find._id={"$gt":after};
 
-      let cursor=postModel.find(find).populate('user').cursor()
-      let list=await getFirstList(cursor,first);
-      let page=await listToPage({list,first});
+      let page=await await getPageData({
+        model:postModel,
+        find,
+        first,
+        after,
+        desc,
+        sort,
+        user,
+        populate:'user'
+      });
       return {...page,keyword};
     },
     async searchKeyword(_,{keyword}){
-      return ["美女","萝莉"]
+      return ["测试","数据"]
     }
   },
 }
