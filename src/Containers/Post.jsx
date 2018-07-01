@@ -85,47 +85,53 @@ const UserNode=({user,content,userClick})=>(
   </Box>
 )
 
-const OtherHeader=({post,goBack,push})=>{
+const OtherHeader=({isAdmin,post,goBack,push})=>{
+
   return (<HeaderContainer transparent={false}>
           <Box marginLeft={-3} flex="grow">
           <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={()=>goBack()} />
           </Box>
+          {isAdmin && <Box >
+            <DeleteButton post={post} goBack={goBack} push={push}/>
+          </Box>}
           <Box>
-
           {/*<GrayButton>
             <Icon accessibilityLabel="分享" icon="share" onClick={()=>goBack()} />
             分享
           </GrayButton>*/}
-          <LikeButton postID={post.id} push={push} initLike={post.isLike} />
+            <LikeButton postID={post.id} push={push} initLike={post.isLike} />
           </Box>
+          
         </HeaderContainer>)
 }
+
+const DeleteButton=({post,goBack,push})=>(
+  <Mutation mutation={DEL}>
+  {(mutate)=>(            
+    <Button text="删除" size="sm" onClick={()=>{
+      mutate({variables:{post:post.id}}).then(data=>{
+        goBack()
+      }).catch(error=>{
+        errorReply({error,push})
+      });
+    }}/>
+  )}
+  </Mutation>
+)
+
 const SelfHeader=({post,goBack,push})=>{
   return (<HeaderContainer transparent={false}>
           <Box marginLeft={-3} flex="grow">
           <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={()=>goBack()} />
           </Box>
           <Box>
-
           {/*<GrayButton>
             <Icon accessibilityLabel="分享" icon="share" onClick={()=>goBack()} />
             分享
           </GrayButton>*/}
-          
           </Box>
           <Box marginLeft={2}>
-            <Mutation mutation={DEL}>
-            {(mutate)=>(            
-              <Button text="删除" size="sm" onClick={()=>{
-                mutate({variables:{post:post.id}}).then(data=>{
-                  goBack()
-                }).catch(error=>{
-                  errorReply({error,push})
-                });
-              }}/>
-            )}
-            </Mutation>
-            
+            <DeleteButton post={post} goBack={goBack} push={push}/>
           </Box>
         </HeaderContainer>)
 }
@@ -168,10 +174,11 @@ class Post extends Component{
     let {user,content,type,tags,commentNum,hotNum,likeNum,src,thumbnail}=post;
     let photos=post.photos || [];
     let isSelf=(selfUser && selfUser.name==user.name);
+    let isAdmin=selfUser && selfUser.roles.includes('admin');
     return (
       <div>
         <Scroll top={true} />
-        {isSelf?<SelfHeader post={post} goBack={goBack} />:<OtherHeader post={post} goBack={goBack} push={push}/>}
+        {isSelf?<SelfHeader post={post} goBack={goBack} />:<OtherHeader isAdmin={isAdmin} post={post} goBack={goBack} push={push}/>}
         <Box justifyContent="center"  display="flex" alignItems="start">
           <Box paddingX={4} flex="grow" maxWidth={800}>
             {type=='video' && <Video src={src}/>}

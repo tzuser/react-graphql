@@ -38,8 +38,13 @@ extend type Query{
   users(pageNo:Int!,pageSize:Int!):UserPage
 }
 
+type Login{
+  user:User
+  token:String
+}
+
 extend type Mutation{
-  login(name:String!,password:String!):String
+  login(name:String!,password:String!):Login
   join(input:userInput):User
   editUser(input:updateUserInput):User
 }
@@ -74,7 +79,7 @@ export const resolvers={
         if(user){
           var token = jwt.sign({ name: user._doc.name }, 'wysj3910',{expiresIn:'7 days'});
           ctx.cookies.set('token',token)
-          return token
+          return {token,user}
         }else{
           throw new APIError("账号或密码错误",1004)
         }

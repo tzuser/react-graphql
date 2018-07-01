@@ -1,9 +1,9 @@
-import {postModel,likeModel,userModel} from '../db';
+import {postModel,likeModel,userModel,keywordModel} from '../db';
 import APIError from './APIError';
 import {getPageType,getPageData,listToPage} from "./public";
 import {getThumbnail} from './file'
 import nodejieba from "nodejieba";
-
+import {resolvers as search} from "./search";
 export const typeDefs=`
 type Photo{
   url:String
@@ -95,7 +95,7 @@ export const resolvers={
     },
     async posts(_,{first,after,desc,sort,user}){
       let find=user?{user:user}:{};
-      return await getPageData({
+      let page=await getPageData({
         model:postModel,
         find,
         after,
@@ -104,9 +104,16 @@ export const resolvers={
         sort,
         populate:'user'
       })
+      //临时添加keyword
+      /*for(let item of page.list){
+        for(let tag of item.tags){
+          await search.Mutation.addKeyword(_,{input:{keyword:tag}})
+        }
+      }*/
+      return page
     },
+    //喜欢的帖子
     async likes(_,{first,after,desc,sort,user}){
-      //likeModel.find({"$lt":after})
       let find={user};
       return await getPageData({
         model:likeModel,
@@ -119,6 +126,7 @@ export const resolvers={
         format:(item)=>item.post,
       })
     },
+    //more like this
     async moreLikes(_,{id,first,after}){
       //获取原post
       //let timeLog=getRunTime();
@@ -127,7 +135,9 @@ export const resolvers={
       //分词
       let participle=nodejieba.extract(str,6);
       let keywords=participle.map(item=>item.word);
-
+      if(keywords.length==0){
+        return {first,list:[],isEnd:true}
+      }
       let tagsRegex=keywords.join('|')
 
       let find={
@@ -183,8 +193,8 @@ export const resolvers={
         return
       }
       let doc=await postModel.findById(post).exec();
-      console.log(doc.user+''!=ctx.user._id+'')
-      if(doc.user+''!=ctx.user._id+''){
+      let isAdmin=ctx.user.roles.includes('admin');
+      if(!isAdmin && doc.user+''!=ctx.user._id+''){
         throw new APIError('用户无权限!',1011);
         return
       }

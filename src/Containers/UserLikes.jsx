@@ -33,6 +33,7 @@ class UserLikes extends React.Component{
         list={likes?likes.list:[]}
         minCols={minCols}
         loadItems={this.loadItems.bind(this)}
+        virtualize={false}
         />
         <Spinner show={loading} accessibilityLabel="Example spinner" />
         {likes && likes.isEnd && <Box paddingY={2}><Text align="center" color="gray">到底了~</Text></Box>}

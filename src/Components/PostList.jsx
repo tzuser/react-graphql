@@ -156,7 +156,7 @@ class PostList extends React.Component{
     )
   }
   render(){
-    let { list=[],loadItems,store,minCols=1,width }=this.props;
+    let { list=[],loadItems,store,minCols=1,width,virtualize=true }=this.props;
     let newMinCols=minCols;
     if(width>640)newMinCols=2;
     if(width>860)newMinCols=3;
@@ -176,7 +176,7 @@ class PostList extends React.Component{
           loadItems={loadItems}
           scrollContainer={()=>window}
           minCols={newMinCols}
-          virtualize={true}
+          virtualize={virtualize}
           flexible={false}
           columnWidth={columnWidth}
           gutterWidth={0}

@@ -91,12 +91,15 @@ const render=async (ctx,next)=>{
 		const styleTags = sheet.getStyleTags();
 		let styles = bundles.filter(bundle => bundle.file.endsWith('.css'));
 		let scripts = bundles.filter(bundle => bundle.file.endsWith('.js'));
-
-		let styleStr=styles.map(style => {
+		//let cssStr='';
+		//console.log(styles,'aaaaaaaaaaaaa')
+		let styleTagStr=styles.map(style => {
+								//cssStr=fs.readFileSync(path.join('../build',`/dist/${style.file}`),'utf8');
+								//console.log(cssStr);
 			        	return `<link href="/dist/${style.file}" rel="stylesheet"/>`
 			      	}).join('\n')
 
-		let scriptStr=scripts.map(bundle => {
+		let scriptTagStr=scripts.map(bundle => {
 			        	return `<script src="/${bundle.file}"></script>`
 			      	}).join('\n')
 
@@ -104,9 +107,9 @@ const render=async (ctx,next)=>{
 		const html=prepHTML(htmlData,{
 			html:helmet.htmlAttributes.toString(),
 			head:helmet.title.toString()+helmet.meta.toString()+helmet.link.toString(),
-			style:styleStr,
+			style:styleTagStr,
 			body:routeMarkup,
-			script:scriptStr,
+			script:scriptTagStr,
 			styleTags,
 			state:initialState,
 			apollo_state,

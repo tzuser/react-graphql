@@ -1,6 +1,7 @@
-import {postModel,likeModel,userModel} from '../db';
+import {postModel,likeModel,userModel,keywordModel} from '../db';
 import APIError from './APIError';
 import {getPageType,getPageData,listToPage} from "./public";
+//import pinyinlite from 'pinyinlite';
 export const typeDefs=`
 type SearchPage{
   keyword:String!
@@ -9,9 +10,21 @@ type SearchPage{
   isEnd:Boolean
   list:[Post]
 }
+type keyword{
+  name:String!
+  count:Int
+}
 extend type Query{
   search(keyword:String!,first:Int!,after:ID,user:ID):SearchPage
-  searchKeyword(keyword:String!):[String]
+  searchKeyword(keyword:String):[keyword]
+}
+
+input KeywordInput{
+  keyword:String
+}
+
+extend type Mutation{
+  addKeyword(input:KeywordInput):Boolean!
 }
 
 `
@@ -40,10 +53,30 @@ export const resolvers={
       });
       return {...page,keyword};
     },
+
     async searchKeyword(_,{keyword}){
-      return ["测试","数据"]
+      if(!keyword)return [];
+      let list = await keywordModel.find({
+        name:{$regex:`^${keyword}`}
+      },{name:1}).limit(10)
+      return list
     }
   },
-}
-
+  
+  Mutation:{
+    async addKeyword(_,{input:{keyword}}){
+      /*
+      var reg=/^[\u4e00-\u9fa5]{0,}$/;
+      if(reg.test(keyword)){//中文
+        
+      }*/
+      let exist=await keywordModel.findOne({name:keyword}).exec();
+      if(exist)return false;
+      await keywordModel({
+        name:keyword
+      }).save();
+      return true
+    },
+  }
+};
 

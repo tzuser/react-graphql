@@ -1,9 +1,9 @@
 export const SET_SELF='SET_SELF';
 export const SET_WINDOW_WIDTH='SET_WINDOW_WIDTH';
 
-export const setSelf=(user)=>({
+export const setSelf=({user,token})=>({
   type:SET_SELF,
-  selfUser:user
+  selfUser:{...user,token}
 });
 
 //设置窗口宽度

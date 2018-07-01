@@ -29,8 +29,8 @@ class Login extends Component{
               mutate({variables:{
                 name:this.state.name,
                 password:this.state.password
-              }}).then(data=>{
-                setSelfAct({name:this.state.name,token:data.data.login});
+              }}).then(({data:{login:{token,user}}})=>{
+                setSelfAct({token,user});
                 goBack()
               }).catch(err=>{
                 console.log(err)
@@ -93,6 +93,18 @@ const mapDispatchToProps=(dispatch)=>bindActionCreators({
 
 export default graphql(gql`
  mutation login($name:String!,$password: String!) {
-    login(name:$name,password: $password)
+    login(name:$name,password: $password){
+      user{
+        ...userField
+      }
+      token
+    }
   }
+fragment userField on User{
+  id
+  name
+  avatar
+  nick_name
+  roles
+}
 `)(connect(mapStateToProps,mapDispatchToProps)(hiddenFooter(Login)));

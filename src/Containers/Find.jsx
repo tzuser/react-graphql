@@ -7,13 +7,11 @@ class Find extends Component{
     return <div>
     <Header/>
     <Box paddingX={4}>
-      <ListLink text="流行"/>
-      <ListLink text="Gifs"/>
-      <ListLink text="视频"/>
+      <ListLink to={`/search/流行`} text="流行"/>
+      <ListLink to={`/search/Gifs`} text="Gifs"/>
+      <ListLink to={`/search/视频`} text="视频"/>
       <ListTitle text="全部分类"/>
-      <ListLink text="a"/>
-      <ListLink text="b"/>
-      <ListLink text="c"/>
+      <ListLink to={`/search/a`} text="a"/>
     </Box>
     </div>
   }

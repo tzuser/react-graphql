@@ -8,7 +8,7 @@ export const getPageType=(name)=>{
 return `
 type ${name}Page{
   first:Int!
-  after:ID!
+  after:ID
   isEnd:Boolean
   list:[${name}]
 }`

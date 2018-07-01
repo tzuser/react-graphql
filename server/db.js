@@ -58,6 +58,7 @@ const likeSchema=new Schema({
 //搜索
 const keywordSchema=new Schema({
   name:{type:String,index:true},//搜索关键字
+  pinyin:{type:String,index:true},
   count:Number//搜索次数
 })
 
