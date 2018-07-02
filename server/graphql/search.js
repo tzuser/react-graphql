@@ -17,14 +17,11 @@ type keyword{
 extend type Query{
   search(keyword:String!,first:Int!,after:ID,user:ID):SearchPage
   searchKeyword(keyword:String):[keyword]
-}
-
-input KeywordInput{
-  keyword:String
+  updateKeyword:Boolean!
 }
 
 extend type Mutation{
-  addKeyword(input:KeywordInput):Boolean!
+  addKeyword(keyword:String!):Boolean!
 }
 
 `
@@ -40,7 +37,6 @@ export const resolvers={
       ]};
       if(user)find.user=user;
       if(after)find._id={"$gt":after};
-
       let page=await await getPageData({
         model:postModel,
         find,
@@ -60,11 +56,21 @@ export const resolvers={
         name:{$regex:`^${keyword}`}
       },{name:1}).limit(10)
       return list
+    },
+    async updateKeyword(_,{}){
+      let cursor=await postModel.find(null,{tags:1}).cursor()
+      let post;
+      while(post=await cursor.next()){
+        for(let tag of post.tags){
+          await resolvers.Mutation.addKeyword(_,{keyword:tag});
+        }
+      }
+      return true;
     }
   },
   
   Mutation:{
-    async addKeyword(_,{input:{keyword}}){
+    async addKeyword(_,{keyword}){
       /*
       var reg=/^[\u4e00-\u9fa5]{0,}$/;
       if(reg.test(keyword)){//中文

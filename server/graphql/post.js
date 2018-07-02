@@ -107,7 +107,7 @@ export const resolvers={
       //临时添加keyword
       /*for(let item of page.list){
         for(let tag of item.tags){
-          await search.Mutation.addKeyword(_,{input:{keyword:tag}})
+          await search.Mutation.addKeyword(_,{keyword:tag})
         }
       }*/
       return page
