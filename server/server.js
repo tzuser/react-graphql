@@ -10,12 +10,14 @@ const {setUser} = require('./graphql/user.js')
 const bodyParser = require('koa-bodyparser');
 const cors = require('koa2-cors');
 const gzip = require('koa-gzip');
-
+//解决视频播放
+const range = require('koa-range');
 const app = new Koa()
 app.keys=['abcdefg123'];//签名
 app.use(gzip());
 app.use(bodyParser());//解析Json或者form
-app.use(cors({credentials:false}));//跨域
+app.use(range);
+//app.use(cors({credentials:false}));//跨域
 app.use(setUser);//设置用户
 //接口
 app.use(graphql.routes()).use(graphql.allowedMethods());
@@ -26,6 +28,8 @@ app.use(router.routes()).use(router.allowedMethods());
 app.use(staticServer(path.resolve(__dirname, '../files')));
 app.use(staticCache(path.resolve(__dirname, '../build'), {maxAge: 365 * 24 * 60 * 60}));
 app.use(render);
+
+
 
 //获取局域网ip 方便手机测试
 function getIPAdress(){

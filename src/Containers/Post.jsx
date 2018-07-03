@@ -138,7 +138,7 @@ const SelfHeader=({post,goBack,push})=>{
 
 const Video=({src})=>{
   return <video controls="controls" width="100%" autoPlay="autoplay">
-     <source src={src}  />
+     <source src={src}  type="video/mp4"/>
   </video>
 }
 const Photo=({photos,thumbnail})=>{
