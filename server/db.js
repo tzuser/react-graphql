@@ -59,7 +59,7 @@ const likeSchema=new Schema({
 const keywordSchema=new Schema({
   name:{type:String,index:true},//搜索关键字
   pinyin:{type:String,index:true},
-  count:Number//搜索次数
+  count:{ type: Number, default: 1 }//搜索次数
 })
 
 export const userModel=mongoose.model('User',userSchema)

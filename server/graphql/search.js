@@ -21,7 +21,7 @@ extend type Query{
 }
 
 extend type Mutation{
-  addKeyword(keyword:String!):Boolean!
+  addKeyword(keyword:String!,increase:Boolean):Boolean!
 }
 
 `
@@ -30,6 +30,7 @@ extend type Mutation{
 export const resolvers={
   Query:{
     async search(_,{keyword,first,after,desc,sort,user}){
+      await resolvers.Mutation.addKeyword(_,{keyword:keyword,increase:true});
       //查询条件
       let find={$or:[
         {tags:keyword},
@@ -54,7 +55,7 @@ export const resolvers={
       if(!keyword)return [];
       let list = await keywordModel.find({
         name:{$regex:`^${keyword}`}
-      },{name:1}).limit(10)
+      },{name:1,count:1}).sort({count:-1}).limit(10)
       return list
     },
     async updateKeyword(_,{}){
@@ -70,16 +71,19 @@ export const resolvers={
   },
   
   Mutation:{
-    async addKeyword(_,{keyword}){
-      /*
-      var reg=/^[\u4e00-\u9fa5]{0,}$/;
-      if(reg.test(keyword)){//中文
-        
-      }*/
-      let exist=await keywordModel.findOne({name:keyword}).exec();
-      if(exist)return false;
+    async addKeyword(_,{keyword,increase=false}){
+      let keywordItem=await keywordModel.findOne({name:keyword}).exec();
+      console.log(keywordItem)
+      if(keywordItem){
+        if(increase){
+          console.log('更新')
+          await keywordModel.update({_id:keywordItem._id},{$inc:{count:1}})
+        }
+        return false;
+      }
       await keywordModel({
-        name:keyword
+        name:keyword,
+        count:1,
       }).save();
       return true
     },
