@@ -1,5 +1,5 @@
 //192.168.1.105 otaku.tangzuo.cc
-export const HOST='http://otaku.tangzuo.cc';
+export const HOST='';//'http://otaku.tangzuo.cc';
 export const IMG_HOST=HOST;
 export const DB_URL=`${HOST}/graphql`;
 export const imageUrl=(url)=>{
