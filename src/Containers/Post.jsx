@@ -59,31 +59,31 @@ const UserNode=({user,content,userClick})=>(
   </Box>
 )
 
-const OtherHeader=({isAdmin,post,goBack,push})=>{
+const OtherHeader=({isAdmin,postID,goBack,push})=>{
 
   return (<HeaderContainer transparent={false}>
           <Box marginLeft={-3} flex="grow">
           <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={()=>goBack()} />
           </Box>
           {isAdmin && <Box >
-            <DeleteButton post={post} goBack={goBack} push={push}/>
+            <DeleteButton postID={postID} goBack={goBack} push={push}/>
           </Box>}
           <Box>
           {/*<GrayButton>
             <Icon accessibilityLabel="分享" icon="share" onClick={()=>goBack()} />
             分享
           </GrayButton>*/}
-            <LikePostButton postID={post.id} push={push} initLike={false} />
+            <LikePostButton postID={postID} push={push} initLike={false} />
           </Box>
           
         </HeaderContainer>)
 }
 
-const DeleteButton=({post,goBack,push})=>(
+const DeleteButton=({postID,goBack,push})=>(
   <Mutation mutation={DEL}>
   {(mutate)=>(            
     <Button text="删除" size="sm" onClick={()=>{
-      mutate({variables:{post:post.id}}).then(data=>{
+      mutate({variables:{post:postID}}).then(data=>{
         goBack()
       }).catch(error=>{
         errorReply({error,push})
@@ -93,7 +93,7 @@ const DeleteButton=({post,goBack,push})=>(
   </Mutation>
 )
 
-const SelfHeader=({post,goBack,push})=>{
+const SelfHeader=({postID,goBack,push})=>{
   return (<HeaderContainer transparent={false}>
           <Box marginLeft={-3} flex="grow">
           <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={()=>goBack()} />
@@ -105,7 +105,7 @@ const SelfHeader=({post,goBack,push})=>{
           </GrayButton>*/}
           </Box>
           <Box marginLeft={2}>
-            <DeleteButton post={post} goBack={goBack} push={push}/>
+            <DeleteButton postID={postID} goBack={goBack} push={push}/>
           </Box>
         </HeaderContainer>)
 }
@@ -139,25 +139,18 @@ const Photo=({photos,thumbnail})=>{
               </Mask>
             </Card>
 }
-class Post extends Component{
-  render(){
-    let { data: {error, post, refetch ,fetchMore,loading},history:{goBack,push},match:{params:{id}},selfUser}=this.props;
-    if(loading ){
+const Content=({post,loading,postID,push})=>{
+  if(loading ){
       return <PageLoading />
-    }
-    let {user,content,type,tags,commentNum,hotNum,likeNum,src,thumbnail}=post;
-    let photos=post.photos || [];
-    let isSelf=(selfUser && selfUser.name==user.name);
-    let isAdmin=selfUser && selfUser.roles.includes('admin');
-    return (
-      <div>
-        <Scroll top={true} />
-        {isSelf?<SelfHeader post={post} goBack={goBack} />:<OtherHeader isAdmin={isAdmin} post={post} goBack={goBack} push={push}/>}
+  }
+  let {user,content,type,tags,commentNum,hotNum,likeNum,src,thumbnail}=post;
+  let photos=post.photos || [];
+  return (
+    <div>
         <Box justifyContent="center"  display="flex" alignItems="start">
           <Box paddingX={4} flex="grow" maxWidth={800}>
             {type=='video' && <Video src={src}/>}
             {type=='photo' && <Photo photos={photos} thumbnail={thumbnail}/>}
-            
             <UserNode user={user} content={content} userClick={(e,data)=>push(`/${data.name}/`)}/>
             <Box direction="row" display="flex" wrap={true} >
               <Box>
@@ -167,9 +160,8 @@ class Post extends Component{
                 <Text color="gray" size="xs">喜欢 {likeNum}</Text>
               </Box>
             </Box>
-          
             <Box paddingY={2}>
-              <Link to={`/comments/${id}/`}><Button text={`添加评论(${commentNum})`} /></Link>
+              <Link to={`/comments/${postID}/`}><Button text={`添加评论(${commentNum})`} /></Link>
             </Box>
           </Box>
         </Box>
@@ -177,6 +169,27 @@ class Post extends Component{
         <Box direction="row" display="flex" wrap={true} >
         {tags.map((item,key)=><Tag to={`/search/${item}`} key={key} padding={2}>#{item}</Tag>)}
         </Box>
+      </div>
+        )
+}
+class Post extends Component{
+  render(){
+    let { data: {error, post, refetch ,fetchMore,loading},history:{goBack,push},match:{params:{id}},selfUser}=this.props;
+    /*if(loading ){
+      return <PageLoading />
+    }*/
+    let isSelf=false;
+    let isAdmin=false;
+
+    if(!loading && post){
+      selfUser && selfUser.name==post.user.name;
+      selfUser && selfUser.roles.includes('admin');
+    }
+    return (
+      <div>
+        <Scroll top={true} />
+        {isSelf?<SelfHeader postID={id} goBack={goBack} />:<OtherHeader isAdmin={isAdmin} postID={id} goBack={goBack} push={push}/>}
+        <Content post={post} loading={loading} postID={id} push={push}/>
         <Box paddingX={4} marginTop={2}>
         <Text bold>相似</Text>
         </Box>

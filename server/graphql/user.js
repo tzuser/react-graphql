@@ -78,7 +78,6 @@ export const resolvers={
         let user=await userModel.findOne({name,password}).exec();//查找用户是否存在
         if(user){
           var token = jwt.sign({ name: user._doc.name }, 'wysj3910',{expiresIn:'7 days'});
-          console.log(ctx.cookies)
           ctx.cookies.set('token',token)
           return {token,user}
         }else{

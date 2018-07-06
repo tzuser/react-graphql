@@ -46,10 +46,10 @@ const UserHeader=({goBack})=>(
   </HeaderContainer>
 )
 
-const SelfHeader=({user})=>(
+const SelfHeader=({userName})=>(
   <HeaderContainer>
     <Box flex="grow">
-    <Text >{user.name}</Text>
+    <Text >{userName}</Text>
     </Box>
     <Box >
       <Link to="/create/">
@@ -63,6 +63,19 @@ const SelfHeader=({user})=>(
     </Box>
   </HeaderContainer>
 )
+const UserCard=({user,loading})=>{
+  if(loading){
+    return <PageLoading />
+  }
+  return (
+    <Box direction="row" display="flex">
+      <Box flex="grow">
+      <Heading size="xs">{user.nick_name}</Heading>
+      </Box>
+      <Box marginLeft={1} column={4} flex="none"><Avatar  name="Long" src={imageUrl(user.avatar)} /></Box>
+    </Box>
+    )
+}
 
 class User extends Component{
   state={tabIndex:0}
@@ -73,12 +86,12 @@ class User extends Component{
   }
 
   render(){
-    let { data: { error,user, refetch ,fetchMore,loading},history:{goBack,push},location:{pathname},match,selfUser}=this.props;
-    const isSlef=selfUser && selfUser.name==match.params.name;
-    if(loading || !user){
-      return <PageLoading />
-    }
-    const name=match.params.name || user.name;
+    let { data: { error,user, refetch ,fetchMore,loading},history:{goBack,push},
+    location:{pathname},
+    match:{params:{name:userName}},
+    selfUser}=this.props;
+    const isSlef=selfUser && selfUser.name==userName;
+    const name=userName || user.name;
     //tabs
     let tabsData=[
             /*{
@@ -98,13 +111,8 @@ class User extends Component{
     return (
       <div>
         <Box paddingX={4}>
-          {isSlef?<SelfHeader user={user}/>:<UserHeader user={user} goBack={goBack}/>}
-          <Box direction="row" display="flex">
-            <Box flex="grow">
-            <Heading size="xs">{user.nick_name}</Heading>
-            </Box>
-            <Box column={4}><Avatar  name="Long" src={imageUrl(user.avatar)} /></Box>
-          </Box>
+          {isSlef?<SelfHeader userName={userName}/>:<UserHeader goBack={goBack}/>}
+          <UserCard loading={loading} user={user}/>
           <Box direction="row" display="flex" marginTop={3}>
             <Column span={5}>
               <FolloCountButton to="#">
@@ -136,8 +144,8 @@ class User extends Component{
           </Box>
         </Box>
         <Box marginTop={3} paddingX={2}>
-          {tabsIndex==0 && <LoadableUserPosts user={user.id} minCols={2}/>}
-          {tabsIndex==1 && <LoadableUserLikes user={user.id} minCols={2}/>}
+          {tabsIndex==0 && <LoadableUserPosts userName={userName} minCols={2}/>}
+          {tabsIndex==1 && <LoadableUserLikes userName={userName} minCols={2}/>}
         </Box>
      </div>
     );

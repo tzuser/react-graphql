@@ -46,10 +46,13 @@ const mySchema = makeExecutableSchema({typeDefs,resolvers})
 
 //路由处理
 const router = new Router();
-router.all('/graphql', graphqlKoa({
+router.all('/graphql', async (ctx, next) =>{
+  await graphqlKoa({
     schema: mySchema,
     formatError,
-}))
+    context:ctx
+  })(ctx)
+})
 router.get('/graphiql', graphqlKoa({
     endpointURL: '/graphql',
 }))

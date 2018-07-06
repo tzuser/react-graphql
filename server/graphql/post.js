@@ -34,8 +34,8 @@ ${getPageType('Post')}
 extend type Query{
   post(id:ID!):Post
   isLike(id:ID!):Boolean
-  posts(first:Int!,after:ID,desc:Boolean,user:ID):PostPage
-  likes(first:Int!,after:ID,desc:Boolean,user:ID!):PostPage
+  posts(first:Int!,after:ID,desc:Boolean,userName:String):PostPage
+  likes(first:Int!,after:ID,desc:Boolean,userName:String!):PostPage
   moreLikes(id:ID!,first:Int!,after:ID,desc:Boolean):PostPage
 }
 
@@ -96,8 +96,9 @@ export const resolvers={
       }
       return isLike
     },
-    async posts(_,{first,after,desc,sort,user}){
-      let find=user?{user:user}:{};
+    async posts(_,{first,after,desc,sort,userName}){
+      let userID=await getUserIDFormName(userName);
+      let find=userID?{user:userID}:{};
       let page=await getPageData({
         model:postModel,
         find,
@@ -107,17 +108,12 @@ export const resolvers={
         sort,
         populate:'user'
       })
-      //临时添加keyword
-      /*for(let item of page.list){
-        for(let tag of item.tags){
-          await search.Mutation.addKeyword(_,{keyword:tag})
-        }
-      }*/
       return page
     },
     //喜欢的帖子
-    async likes(_,{first,after,desc,sort,user}){
-      let find={user};
+    async likes(_,{first,after,desc,sort,userName}){
+      let userID=await getUserIDFormName(userName);
+      let find={user:userID};
       return await getPageData({
         model:likeModel,
         find,
@@ -224,3 +220,10 @@ export const resolvers={
 }
 
 
+
+const getUserIDFormName=async (name)=>{
+  if(!name)return null;
+  let user=await userModel.findOne({name}).exec()
+  if(!user)return null;
+  return user._id
+}

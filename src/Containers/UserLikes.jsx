@@ -45,8 +45,8 @@ class UserLikes extends React.Component{
 
 
 export default withRouter(graphql(gql`
-  query($first:Int!,$after:ID,$user:ID!){
-    likes(first:$first,after:$after,user:$user) {
+  query likes($first:Int!,$after:ID,$userName:String!){
+    likes(first:$first,after:$after,userName:$userName) {
       first
       after
       isEnd
@@ -79,7 +79,7 @@ export default withRouter(graphql(gql`
       return {
       variables:{
         first:20,
-        user:props.user
+        userName:props.userName
       },
       fetchPolicy: "network-only"
   }},
