@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import {Box,Spinner,Text,IconButton,Mask,Image,Avatar,Button,Heading,Column} from 'gestalt';
@@ -14,7 +14,8 @@ import {Route} from 'react-router-dom';
 import * as configActs from '../actions/config';
 import UserPosts from './UserPosts';
 import Loadable from 'react-loadable';
-const FolloButton=styled(Link)`
+import FollowUserButton from 'com_/FollowUserButton';
+const FolloCountButton=styled(Link)`
   display:block;
   padding:1px 4px;
   border-radius:6px;
@@ -22,7 +23,6 @@ const FolloButton=styled(Link)`
   &:active{
     background-color:#efefef;
   }
-
 `
 const LoadableUserPosts = Loadable({
   loader: () => import(/* webpackChunkName: 'UserPosts' */ './UserPosts'),
@@ -33,13 +33,19 @@ const LoadableUserLikes = Loadable({
   loading:PageLoading
 });
 
+
+
 const UserHeader=({goBack})=>(
   <HeaderContainer>
-    <Box marginLeft={-3}>
+    <Box marginLeft={-3} flex="grow">
     <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={goBack} />
+    </Box>
+    <Box>
+      <FollowUserButton />
     </Box>
   </HeaderContainer>
 )
+
 const SelfHeader=({user})=>(
   <HeaderContainer>
     <Box flex="grow">
@@ -58,7 +64,7 @@ const SelfHeader=({user})=>(
   </HeaderContainer>
 )
 
-class User extends React.Component{
+class User extends Component{
   state={tabIndex:0}
   componentWillReceiveProps(nextProps){
     if(nextProps.data && nextProps.data.error){
@@ -101,16 +107,16 @@ class User extends React.Component{
           </Box>
           <Box direction="row" display="flex" marginTop={3}>
             <Column span={5}>
-              <FolloButton to="#">
+              <FolloCountButton to="#">
                 <Text bold size="sm">0</Text>
                 <Text bold size="sm" color="gray">我关注的</Text>
-              </FolloButton>
+              </FolloCountButton>
             </Column>
             <Column span={5}>
-              <FolloButton to="#">
+              <FolloCountButton to="#">
                 <Text bold size="sm">0</Text>
                 <Text bold size="sm" color="gray">关注我的</Text>
-              </FolloButton>
+              </FolloCountButton>
             </Column>
            
             {/* <Column span={6}>

@@ -27,13 +27,13 @@ type Post{
   commentNum:Int!
   user:User
   tags:[String!]
-  isLike:Boolean
 }
 
 ${getPageType('Post')}
 
 extend type Query{
   post(id:ID!):Post
+  isLike(id:ID!):Boolean
   posts(first:Int!,after:ID,desc:Boolean,user:ID):PostPage
   likes(first:Int!,after:ID,desc:Boolean,user:ID!):PostPage
   moreLikes(id:ID!,first:Int!,after:ID,desc:Boolean):PostPage
@@ -87,11 +87,14 @@ export const resolvers={
       let {_doc:post}=await postModel.findById(id).populate('user').exec();
       postModel.update({_id:id},{$inc:{readNum:+1}}).exec();//添加阅读量
       if(!post)throw new APIError('获取文章失败!',1);
+      return {...post,id:post._id}
+    },
+    async isLike(_,{id},ctx){
       let isLike=false;
       if(ctx.user){
-        isLike=await likeModel.findOne({post:post._id,user:ctx.user}).count().exec()>0;
+        isLike=await likeModel.findOne({post:id,user:ctx.user}).count().exec()>0;
       }
-      return {...post,id:post._id,isLike}
+      return isLike
     },
     async posts(_,{first,after,desc,sort,user}){
       let find=user?{user:user}:{};

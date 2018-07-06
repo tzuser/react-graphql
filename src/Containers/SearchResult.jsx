@@ -5,7 +5,21 @@ import { Box,Spinner,Text } from 'gestalt';
 import SearchResultHeader from 'com_/SearchResultHeader';
 import PostList from 'com_/PostList';
 import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as searchAct from 'act_/search';
+
+
+
+const mapStateToProps=(state)=>({
+
+})
+const mapDispatchToProps=(dispatch)=>bindActionCreators({
+  addHistoryAct:searchAct.addHistory
+},dispatch)
+
 @withRouter
+@connect(mapStateToProps,mapDispatchToProps)
 @graphql(gql`
   query($keyword:String!,$first:Int!,$after:ID){
     search(keyword:$keyword,first:$first,after:$after) {
@@ -64,10 +78,15 @@ class SearchResult extends React.Component{
         })
     }
   }
+
+  componentDidMount(){
+    let {match:{params:{keyword}},addHistoryAct}=this.props;
+    //存储搜索记录
+    addHistoryAct(keyword)
+  }
  
   render(){
     let { data: { search, refetch ,fetchMore,loading},history:{push},match:{params:{keyword}} }=this.props;
-
     return (
       <div>
           <SearchResultHeader keyword={keyword}/>

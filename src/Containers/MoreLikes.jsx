@@ -43,7 +43,7 @@ class MoreLikes extends React.Component{
 
 
 export default withRouter(graphql(gql`
-  query($id:ID!,$first:Int!,$after:ID){
+  query moreLikes($id:ID!,$first:Int!,$after:ID){
     moreLikes(id:$id,first:$first,after:$after) {
       first
       after

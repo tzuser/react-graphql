@@ -50,28 +50,32 @@ class SearchHeader extends PureComponent{
     let {match:{params:{keyword}}}=props
     this.state={value:keyword?`${keyword}`:''}
   }
+  onClear(){
+    this.setState({value:''});
+    this.props.onChange('');
+  }
+  onChange(event){
+    this.setState({ value: event.target.value })
+    this.props.onChange(event.target.value);
+  }
+  //提交搜索
+  onSubmit(event){
+    event.preventDefault();
+    this.props.history.push(`/search/${this.state.value}`)
+  }
   render(){
     let {history:{goBack,push},onChange}=this.props;
     return (
       <HeaderContainer>
-        <SearchContainer onSubmit={e => {
-          e.preventDefault();
-          push(`/search/${this.state.value}`)
-        }}>
+        <SearchContainer onSubmit={this.onSubmit.bind(this)}>
           <SearchInput 
           autoFocus
           autoCapitalize="none" 
           type="search"   
-          onChange={(event) => {
-            this.setState({ value: event.target.value })
-            onChange(event.target.value);
-          }}
+          onChange={this.onChange.bind(this)}
           value={this.state.value}
           />
-          {this.state.value && <Box onTouchEnd={()=>{
-            this.setState({value:''});
-            onChange('');
-          }} >
+          {this.state.value && <Box onTouchEnd={this.onClear.bind(this)} >
             <Icon 
             icon="clear"
             size={20}

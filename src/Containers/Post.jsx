@@ -12,9 +12,8 @@ import gql from 'graphql-tag';
 import {errorReply,imageUrl} from '../public';
 import {Link} from 'react-router-dom';
 import {connect } from 'react-redux';
-const LIKE=gql`mutation like($post:ID!,$isLike:Boolean!){
-    like(post:$post,isLike:$isLike)
-}`
+import LikePostButton from 'com_/post/LikePostButton';
+
 const DEL=gql`mutation delPost($post:ID!){
     delPost(post:$post)
 }`
@@ -39,31 +38,6 @@ padding:5px 10px;
 color:#999;
 font-size:13px;
 `
-class LikeButton extends Component{
-  state={isLike:null}
-  render(){
-    let {postID,initLike,push,onLike}=this.props;
-    let isLike=this.state.isLike===null?initLike:this.state.isLike;
-    let Btn=isLike?RedButton:GrayButton
-    return (
-      <Mutation mutation={LIKE}>
-      {(like)=>(
-        <Btn onClick={()=>{
-          like({variables:{post:postID,isLike:!isLike}}).then(data=>{
-            if(onLike)onLike(!isLike);
-            this.setState({isLike:!isLike});
-          }).catch(error=>{
-            errorReply({error,push})
-          });
-        }}>
-          <Icon size={14} accessibilityLabel="喜欢" icon="heart"  />
-          喜欢
-        </Btn>
-      )}
-      </Mutation>
-      )
-  }
-}
 
 const UserNode=({user,content,userClick})=>(
   <Box direction="row" marginTop={2} display="flex" alignItems="start" paddingY={2}>
@@ -99,7 +73,7 @@ const OtherHeader=({isAdmin,post,goBack,push})=>{
             <Icon accessibilityLabel="分享" icon="share" onClick={()=>goBack()} />
             分享
           </GrayButton>*/}
-            <LikeButton postID={post.id} push={push} initLike={post.isLike} />
+            <LikePostButton postID={post.id} push={push} initLike={false} />
           </Box>
           
         </HeaderContainer>)
@@ -232,7 +206,6 @@ query($id:ID!){
     readNum
     likeNum
     hotNum
-    isLike
     src
     photos{
       ...photoField

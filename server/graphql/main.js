@@ -1,5 +1,5 @@
 import Router  from 'koa-router';
-import graphqlHTTP from 'koa-graphql';
+//import graphqlHTTP from 'koa-graphql';
 import formatError from './formatError';
 import {makeExecutableSchema} from 'graphql-tools';
 import * as post from './post';
@@ -8,6 +8,7 @@ import * as comment from './comment';
 import * as file from './file';
 import * as search from './search';
 
+import { graphqlKoa } from 'apollo-server-koa';
 
 const typeDefs=[`
   type Query {
@@ -45,10 +46,10 @@ const mySchema = makeExecutableSchema({typeDefs,resolvers})
 
 //路由处理
 const router = new Router();
-router.all('/graphql', graphqlHTTP({
-    schema: mySchema,
-    graphiql: true,
-    formatError,
-    
+router.all('/graphql', graphqlKoa({
+    schema: mySchema
+}))
+router.get('/graphiql', graphqlKoa({
+    endpointURL: '/graphql',
 }))
 export default router

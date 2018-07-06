@@ -17,6 +17,7 @@
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.11",
     "apollo-client": "^2.2.8",
+    "apollo-link-batch-http": "^1.2.2",
     "apollo-link-http": "^1.5.3",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.5",
@@ -76,7 +77,6 @@
     "jsonwebtoken": "^8.2.2",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
-    "koa-graphql": "^0.7.5",
     "koa-gzip": "^0.1.0",
     "koa-range": "^0.3.0",
     "koa-router": "^7.4.0",

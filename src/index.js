@@ -19,10 +19,21 @@ import { BrowserRouter } from 'react-router-dom'
 import reducers from './reducers/index';
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/lib/integration/react'
+import { BatchHttpLink } from "apollo-link-batch-http"
 //192.168.1.105
 import {DB_URL} from './public';
 //import './Module/PWA.js'
-const link=createHttpLink({uri:DB_URL,credentials: 'include'});
+/*const link=createHttpLink({
+	uri:DB_URL,
+	credentials: 'include',
+})*/
+
+
+const link=new BatchHttpLink({
+	uri:DB_URL,
+	credentials: 'include',
+	batchInterval:10,
+});
 const client = new ApolloClient({
   link,
   cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
