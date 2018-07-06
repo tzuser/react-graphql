@@ -3,8 +3,8 @@
 * 服务端使用Koa2 + GraphQL + Mongoose
 
 ### 在线预览
-* [在线预览](http://otaku.tangzuo.cc:8181)
-* [API](http://otaku.tangzuo.cc:8181/graphql)
+* [在线预览](http://otaku.tangzuo.cc)
+* [API](http://otaku.tangzuo.cc/graphiql)
 
 
 ![个人](https://github.com/tzuser/react-graphql/blob/master/readmeImages/2.png)
