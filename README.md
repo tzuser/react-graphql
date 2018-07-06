@@ -4,8 +4,6 @@
 
 ### 在线预览
 * [在线预览](http://otaku.tangzuo.cc)
-* [API](http://otaku.tangzuo.cc/graphiql)
-
 
 ![个人](https://github.com/tzuser/react-graphql/blob/master/readmeImages/2.png)
 ![详情](https://github.com/tzuser/react-graphql/blob/master/readmeImages/3.png)
@@ -22,7 +20,8 @@ npm run start
 1. 安装mongodb
 2. 更改 `server/db.js` 里 `let db=mongoose.connect('mongodb://web:wysj3910@127.0.0.1:27017/web')` 连接地址。
 3. 并更改 `src/public.js` 里的 HOST 常量为 `http://localhost:8181`
-4. 运行 `npm run server`
+4. 运行 `npm run build`
+5. 运行 `npm run server`
 
 
 ### 文件目录
