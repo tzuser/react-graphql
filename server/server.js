@@ -15,7 +15,7 @@ const range = require('koa-range');
 const app = new Koa()
 app.keys=['abcdefg123'];//签名
 app.use(gzip());
-app.use(bodyParser());//解析Json或者form
+app.use(bodyParser());//解析Json或者form 
 app.use(range);
 app.use(cors({credentials:false}));//跨域
 app.use(setUser);//设置用户
