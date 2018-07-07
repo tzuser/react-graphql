@@ -4,6 +4,7 @@
 
 ### 在线预览
 * [在线预览](http://otaku.tangzuo.cc)
+* [API](http://otaku.tangzuo.cc/graphiql)
 
 ![个人](https://github.com/tzuser/react-graphql/blob/master/readmeImages/2.png)
 ![详情](https://github.com/tzuser/react-graphql/blob/master/readmeImages/3.png)
