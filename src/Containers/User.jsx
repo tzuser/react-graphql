@@ -63,10 +63,7 @@ const SelfHeader=({userName})=>(
     </Box>
   </HeaderContainer>
 )
-const UserCard=({user,loading})=>{
-  if(loading){
-    return <PageLoading />
-  }
+const UserCard=({user})=>{
   return (
     <Box direction="row" display="flex">
       <Box flex="grow">
@@ -90,6 +87,9 @@ class User extends Component{
     location:{pathname},
     match:{params:{name:userName}},
     selfUser}=this.props;
+    if(loading){
+      return <PageLoading />
+    }
     const isSlef=selfUser && selfUser.name==userName;
     const name=userName || user.name;
     //tabs
@@ -112,7 +112,7 @@ class User extends Component{
       <div>
         <Box paddingX={4}>
           {isSlef?<SelfHeader userName={userName}/>:<UserHeader goBack={goBack}/>}
-          <UserCard loading={loading} user={user}/>
+          <UserCard user={user}/>
           <Box direction="row" display="flex" marginTop={3}>
             <Column span={5}>
               <FolloCountButton to="#">

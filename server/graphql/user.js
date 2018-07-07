@@ -114,7 +114,7 @@ export const resolvers={
         throw new APIError('昵称已存在！',1002);
         return
       }
-      input.avatar='/static/default.jpg';
+      input.avatar='/default.jpg';
       input.password=md5(input.password);//加密密码
       input.roles=['default'];//默认用户
       return userModel(input).save();

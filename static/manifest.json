@@ -1,8 +1,8 @@
 {
-    "name": "青风藤", 
+    "name": "OTAKU", 
     "icons": [
         {
-            "src": "/static/logo.png", 
+            "src": "/logo.png", 
             "sizes": "180x180", 
             "type": "image/png"
         }

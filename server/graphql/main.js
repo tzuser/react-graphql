@@ -8,7 +8,7 @@ import * as comment from './comment';
 import * as file from './file';
 import * as search from './search';
 
-import { graphqlKoa } from 'apollo-server-koa';
+import { graphqlKoa,graphiqlKoa } from 'apollo-server-koa';
 
 const typeDefs=[`
   type Query {
@@ -53,7 +53,7 @@ router.all('/graphql', async (ctx, next) =>{
     context:ctx
   })(ctx)
 })
-router.get('/graphiql', graphqlKoa({
-    endpointURL: '/graphql',
-}))
+router.get('/graphiql', async (ctx, next) =>{
+  graphiqlKoa({ endpointURL: '/graphql' })(ctx)
+});
 export default router

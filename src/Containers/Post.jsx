@@ -139,10 +139,7 @@ const Photo=({photos,thumbnail})=>{
               </Mask>
             </Card>
 }
-const Content=({post,loading,postID,push})=>{
-  if(loading ){
-      return <PageLoading />
-  }
+const Content=({post,postID,push})=>{
   let {user,content,type,tags,commentNum,hotNum,likeNum,src,thumbnail}=post;
   let photos=post.photos || [];
   return (
@@ -175,21 +172,21 @@ const Content=({post,loading,postID,push})=>{
 class Post extends Component{
   render(){
     let { data: {error, post, refetch ,fetchMore,loading},history:{goBack,push},match:{params:{id}},selfUser}=this.props;
-    /*if(loading ){
+    if(loading ){
       return <PageLoading />
-    }*/
+    }
     let isSelf=false;
     let isAdmin=false;
 
     if(!loading && post){
-      selfUser && selfUser.name==post.user.name;
-      selfUser && selfUser.roles.includes('admin');
+      isSelf=selfUser && selfUser.name==post.user.name;
+      isAdmin=selfUser && selfUser.roles.includes('admin');
     }
     return (
       <div>
         <Scroll top={true} />
         {isSelf?<SelfHeader postID={id} goBack={goBack} />:<OtherHeader isAdmin={isAdmin} postID={id} goBack={goBack} push={push}/>}
-        <Content post={post} loading={loading} postID={id} push={push}/>
+        <Content post={post} postID={id} push={push}/>
         <Box paddingX={4} marginTop={2}>
         <Text bold>相似</Text>
         </Box>

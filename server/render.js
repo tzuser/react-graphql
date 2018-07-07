@@ -43,7 +43,6 @@ const prepHTML=(data,{html,head,style,body,script,styleTags,state,apollo_state})
 
 
 const render=async (ctx,next)=>{
-
 		const client = new ApolloClient({
 			ssrMode: true,
 		  link: new HttpLink({uri:'http://localhost:8181/graphql'}),

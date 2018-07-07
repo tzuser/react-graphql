@@ -73,10 +73,8 @@ export const resolvers={
   Mutation:{
     async addKeyword(_,{keyword,increase=false}){
       let keywordItem=await keywordModel.findOne({name:keyword}).exec();
-      console.log(keywordItem)
       if(keywordItem){
         if(increase){
-          console.log('更新')
           await keywordModel.update({_id:keywordItem._id},{$inc:{count:1}})
         }
         return false;
