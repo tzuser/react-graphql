@@ -64,6 +64,7 @@ const SelfHeader=({userName})=>(
   </HeaderContainer>
 )
 const UserCard=({user})=>{
+  if(!user)return null;
   return (
     <Box direction="row" display="flex">
       <Box flex="grow">
