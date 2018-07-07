@@ -1,4 +1,4 @@
 //http://otaku.tangzuo.cc
-export const HOST='';
-export const IMG_URL='';
-export const DB_URL=`/graphql`;
+export const HOST='otaku.tangzuo.cc';
+export const IMG_URL='http://otaku.tangzuo.cc';
+export const DB_URL=`http://otaku.tangzuo.cc/graphql`;
