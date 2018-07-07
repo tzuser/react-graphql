@@ -6,7 +6,7 @@ import Tabs from '../Components/Tabs';
 import HeaderContainer from '../Components/HeaderContainer';
 import PageLoading from '../Components/PageLoading';
 import styled from 'styled-components';
-import {errorReply,imageUrl} from '../public';
+import {errorReply,imageUrl} from 'tools_';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';

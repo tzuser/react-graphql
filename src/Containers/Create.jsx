@@ -9,7 +9,7 @@ import * as configActs from '../actions/config';
 
 import hiddenFooter from '../Components/HiddenFooter';
 import AddPhoto from '../Components/AddPhoto';
-import {imageUrl} from '../public';
+import {imageUrl} from 'tools_';
 
 const CreteHeader=({goBack})=>(
   <HeaderContainer>

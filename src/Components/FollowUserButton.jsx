@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {GrayButton,RedButton} from 'com_/IconButton.jsx';
 import { graphql,Mutation } from 'react-apollo';
 import {Button} from 'gestalt';
-import {errorReply} from '../public';
+import {errorReply} from 'tools_';
 import gql from 'graphql-tag';
 
 const FOLLOW=gql`mutation follow($userID:ID!,$isFollow:Boolean!){

@@ -2,7 +2,7 @@ import React from 'react';
 import { Avatar,Box,Masonry,Spinner,Text,Image,Mask,Icon } from 'gestalt';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
-import {imageUrl} from '../public';
+import {imageUrl} from 'tools_';
 import {connect} from 'react-redux';
 //import {bindActionCreators} from 'redux';
 const ItemImg=styled(Link)`

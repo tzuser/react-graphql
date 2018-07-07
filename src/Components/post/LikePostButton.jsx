@@ -3,7 +3,7 @@ import {GrayButton,RedButton} from 'com_/IconButton.jsx';
 import { graphql,Mutation,Query } from 'react-apollo';
 import {Button,Icon} from 'gestalt';
 import gql from 'graphql-tag';
-import {errorReply} from '@/public';
+import {errorReply} from 'tools_';
 
 const LIKE=gql`mutation like($post:ID!,$isLike:Boolean!){
     like(post:$post,isLike:$isLike)

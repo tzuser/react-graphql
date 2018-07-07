@@ -9,7 +9,7 @@ import MoreLikes from './MoreLikes';
 import {GrayButton,RedButton} from '../Components/IconButton.jsx';
 import { Mutation } from "react-apollo";
 import gql from 'graphql-tag';
-import {errorReply,imageUrl} from '../public';
+import {errorReply,imageUrl} from 'tools_';
 import {Link} from 'react-router-dom';
 import {connect } from 'react-redux';
 import LikePostButton from 'com_/post/LikePostButton';

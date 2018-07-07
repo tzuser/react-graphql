@@ -21,7 +21,7 @@ import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import { BatchHttpLink } from "apollo-link-batch-http"
 //192.168.1.105
-import {DB_URL} from './public';
+import {DB_URL} from 'public_/host.js';
 //import './Module/PWA.js'
 /*const link=createHttpLink({
 	uri:DB_URL,
