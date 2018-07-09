@@ -31,7 +31,7 @@ import {DB_URL} from 'public_/host.js';
 
 const link=new BatchHttpLink({
 	uri:DB_URL,
-	credentials: false,
+	credentials: 'include',
 	batchInterval:10,
 });
 const client = new ApolloClient({
