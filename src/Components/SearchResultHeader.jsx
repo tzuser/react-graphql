@@ -30,7 +30,7 @@ const SearchButton=styled(Link)`
   
   &:active{
     border:1px solid #bbb;
-    padding-left: 11px;
+    padding-left: 3px;
     padding-right: 11px;
   }
 `

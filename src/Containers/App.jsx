@@ -66,6 +66,16 @@ const LoadableSearchResult = Loadable({
   loading:PageLoading
 });
 
+const LoadableFollowing = Loadable({
+  loader: () => import(/* webpackChunkName: 'Following' */ './Following'),
+  loading:PageLoading
+});
+
+const LoadableFollowers = Loadable({
+  loader: () => import(/* webpackChunkName: 'Followers' */ './Followers'),
+  loading:PageLoading
+});
+
 const mapStateToProps=(state)=>({
   width:state.config.width
 })
@@ -124,6 +134,8 @@ class App extends React.Component{
 
           <Route path='/post/:id' component={LoadablePost} />
           <Route path='/comments/:id' component={LoadableComments} />
+          <Route path='/:name/following' component={LoadableFollowing} />
+          <Route path='/:name/followers' component={LoadableFollowers} />
           <Route path='/:name' component={LoadableUser} />
         </Switch>
         <Footer show={this.state.footer}/>

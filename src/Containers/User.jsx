@@ -5,7 +5,7 @@ import {Box,Spinner,Text,IconButton,Mask,Image,Avatar,Button,Heading,Column} fro
 import Tabs from '../Components/Tabs';
 import HeaderContainer from '../Components/HeaderContainer';
 import PageLoading from '../Components/PageLoading';
-import styled from 'styled-components';
+
 import {errorReply,imageUrl} from 'tools_';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -15,15 +15,8 @@ import * as configActs from '../actions/config';
 import UserPosts from './UserPosts';
 import Loadable from 'react-loadable';
 import FollowUserButton from 'com_/FollowUserButton';
-const FolloCountButton=styled(Link)`
-  display:block;
-  padding:1px 4px;
-  border-radius:6px;
-  text-decoration: none;
-  &:active{
-    background-color:#efefef;
-  }
-`
+import FollowCountButton from 'com_/FollowCountButton';
+
 const LoadableUserPosts = Loadable({
   loader: () => import(/* webpackChunkName: 'UserPosts' */ './UserPosts'),
   loading:PageLoading
@@ -116,16 +109,16 @@ class User extends Component{
           <UserCard user={user}/>
           <Box direction="row" display="flex" marginTop={3}>
             <Column span={5}>
-              <FolloCountButton to="#">
+              <FollowCountButton to={`/${name}/following`}>
                 <Text bold size="sm">0</Text>
                 <Text bold size="sm" color="gray">我关注的</Text>
-              </FolloCountButton>
+              </FollowCountButton>
             </Column>
             <Column span={5}>
-              <FolloCountButton to="#">
+              <FollowCountButton to={`/${name}/followers`}>
                 <Text bold size="sm">0</Text>
                 <Text bold size="sm" color="gray">关注我的</Text>
-              </FolloCountButton>
+              </FollowCountButton>
             </Column>
            
             {/* <Column span={6}>
