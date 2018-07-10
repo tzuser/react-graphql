@@ -22,7 +22,7 @@ import { PersistGate } from 'redux-persist/lib/integration/react'
 import { BatchHttpLink } from "apollo-link-batch-http"
 import {DB_URL} from 'public_/host.js';
 //import './Module/PWA.js'
-
+import './pwa.js';
 const link=new BatchHttpLink({
 	uri:DB_URL,
 	credentials: 'include',

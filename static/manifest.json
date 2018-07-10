@@ -1,5 +1,6 @@
 {
     "name": "OTAKU", 
+    "short_name":"OTAKU",
     "icons": [
         {
             "src": "/logo.png", 

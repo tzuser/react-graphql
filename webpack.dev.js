@@ -6,7 +6,7 @@ const configBase = require('./webpack.base.js');
 const merge=require('webpack-merge');
 //获取本机ip
 function getIPAdress(){  
-  //return '192.168.56.1'
+  return '127.0.0.1'
     var interfaces = require('os').networkInterfaces();  
     for(var devName in interfaces){  
           var iface = interfaces[devName];  
@@ -53,7 +53,7 @@ const config={
   mode:'development',
   devServer: {
     host: getIPAdress(),//localhost
-    contentBase: path.join(__dirname,'./build'),
+    contentBase: path.join(__dirname,'./static'),
     inline:true,
     hot:true,
     open : true,

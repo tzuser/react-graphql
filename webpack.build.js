@@ -3,7 +3,7 @@ const merge=require('webpack-merge');
 
 const path=require('path');
 const webpack=require('webpack');
-
+//const OfflinePlugin = require('offline-plugin');
 //const autoprefixer = require('autoprefixer');
 //按需加载
 const {ReactLoadablePlugin}=require('react-loadable/webpack');
@@ -108,7 +108,7 @@ const config={
           {from:path.join(__dirname,'./static'),to:'./'}
         ]),
     new InlineManifestWebpackPlugin(),
-    
+    //new OfflinePlugin(),
     new ReactLoadablePlugin({
             filename: './build/react-loadable.json',
       }),
