@@ -10,4 +10,11 @@ const FollowCountButton=styled(Link)`
     background-color:#efefef;
   }
 `
+
+export const FollowCountShow=styled.div`
+  display:block;
+  padding:1px 4px;
+  border-radius:6px;
+  text-decoration: none;
+`
 export default FollowCountButton

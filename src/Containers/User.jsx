@@ -108,18 +108,19 @@ class User extends Component{
           {isSlef?<SelfHeader userName={userName}/>:<UserHeader goBack={goBack}/>}
           <UserCard user={user}/>
           <Box direction="row" display="flex" marginTop={3}>
+          <Column span={5}>
+            <FollowCountButton to={`/${name}/followers`}>
+              <Text bold size="sm">0</Text>
+              <Text bold size="sm" color="gray">粉丝</Text>
+            </FollowCountButton>
+          </Column>
             <Column span={5}>
               <FollowCountButton to={`/${name}/following`}>
                 <Text bold size="sm">0</Text>
-                <Text bold size="sm" color="gray">我关注的</Text>
+                <Text bold size="sm" color="gray">关注</Text>
               </FollowCountButton>
             </Column>
-            <Column span={5}>
-              <FollowCountButton to={`/${name}/followers`}>
-                <Text bold size="sm">0</Text>
-                <Text bold size="sm" color="gray">关注我的</Text>
-              </FollowCountButton>
-            </Column>
+            
            
             {/* <Column span={6}>
              <FolloButton to="#">
