@@ -1,4 +1,4 @@
-let cacheStorageKey='pwa-v1.6';
+let cacheStorageKey='pwa-v1.8';
 
 this.addEventListener('install',(event)=>{
 	console.log('install')
@@ -25,10 +25,20 @@ this.addEventListener('fetch',(event)=>{
 			if(response)return response;
 			let request = event.request.clone();
 			return fetch(request).then((httpRes)=>{
-				console.log('aaaaaaaa',httpRes)
-				if(!httpRes || httpRes.status !==200 || event.request.method=='POST'  /*&& httpRes.status !==304 */){
+				console.log('aaaaaaaa',httpRes,event.request)
+
+				if(
+					!httpRes || 
+					httpRes.status !==200 ||
+					event.request.method=='POST' || //不存post请求
+					event.request.destination!='script' //只存脚本文件
+
+				){
 					return httpRes;
 				}
+
+			
+
 				console.log( event.request.method,'////////////////////')
 				let responseClone=httpRes.clone();
 				caches.open(cacheStorageKey).then((cache)=>{

@@ -23,6 +23,7 @@ export const getCreateStore=(reducers,path = '/')=>{
 	switch(process.env.RUN_ENV){
 		case 'dev':
 		case 'build':
+		case 'origin':
 			initialState=window._INIT_STATE_;
 			//数据持久化
 			const persistedReducer = persistReducer(persistConfig, reducers)

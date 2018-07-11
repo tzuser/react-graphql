@@ -1,4 +1,5 @@
-import {IMG_URL} from 'public_/host'
+import host from 'public_/host'
+let {IMG_URL}=host;
 //过滤抖动
 export const filteringJitter=(space=200)=>{
     let timer,previousReject;
@@ -20,6 +21,7 @@ export const filteringJitter=(space=200)=>{
 
 export const imageUrl=(url)=>{
   if(url.startsWith('http'))return url;
+  console.log(IMG_URL)
   return `${IMG_URL}${url}`;
 }
 //错误响应
