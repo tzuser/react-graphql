@@ -1,0 +1,23 @@
+#import "./photoField.gql"
+#import "./userField.gql"
+
+query Post($id:ID!){
+  post(id:$id){
+    id
+    thumbnail{
+      ...PhotoField
+    },
+    content
+    type
+    tags
+    commentNum
+    readNum
+    likeNum
+    hotNum
+    src
+    photos{
+      ...PhotoField
+    }
+    user{...UserField}
+  }
+}

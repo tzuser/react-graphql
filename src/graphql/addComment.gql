@@ -1,0 +1,3 @@
+mutation addComment($post:ID!,$content: String!,$reply:ID) {
+  comment(input:{post:$post,content: $content,reply:$reply})
+}

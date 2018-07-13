@@ -1,0 +1,26 @@
+#import "./photoField.gql"
+
+query Likes($first:Int!,$after:ID,$userName:String!){
+  likes(first:$first,after:$after,userName:$userName) {
+    first
+    after
+    isEnd
+    list{
+     id
+     content
+     type
+     thumbnail{
+       ...PhotoField
+     }
+     photos{
+       ...PhotoField
+     }
+     user{
+      name
+       nick_name
+       avatar
+       id
+     }
+    }
+  }
+}

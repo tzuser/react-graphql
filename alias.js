@@ -7,5 +7,6 @@ const alias={
     'con_':path.resolve(__dirname,'./src/Containers'),
     'tools_':path.resolve(__dirname,'./src/public/tools.js'),
     'public_':path.resolve(__dirname,'./src/public'),
+    'gql_':path.resolve(__dirname,'./src/graphql'),
 }
 module.exports=alias

@@ -13,10 +13,7 @@ import {errorReply,imageUrl} from 'tools_';
 import {Link} from 'react-router-dom';
 import {connect } from 'react-redux';
 import LikePostButton from 'com_/post/LikePostButton';
-
-const DEL=gql`mutation delPost($post:ID!){
-    delPost(post:$post)
-}`
+import DEL_POST from 'gql_/delPost.gql'
 
 const Card=styled.div`
   transition: all 0.1s;
@@ -80,7 +77,7 @@ const OtherHeader=({isAdmin,postID,goBack,push})=>{
 }
 
 const DeleteButton=({postID,goBack,push})=>(
-  <Mutation mutation={DEL}>
+  <Mutation mutation={DEL_POST}>
   {(mutate)=>(            
     <Button text="删除" size="sm" onClick={()=>{
       mutate({variables:{post:postID}}).then(data=>{
@@ -203,7 +200,7 @@ const mapStateToProps=(state)=>({
 
 
 export default graphql(gql`
-query($id:ID!){
+query Post($id:ID!){
   post(id:$id){
     id
     thumbnail{

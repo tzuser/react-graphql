@@ -1,0 +1,24 @@
+#import "./photoField.gql"
+#import "./userField.gql"
+query Search($keyword:String!,$first:Int!,$after:ID){
+  search(keyword:$keyword,first:$first,after:$after) {
+    keyword
+    first
+    after
+    isEnd
+    list{
+     id
+     content
+     type
+     thumbnail{
+       ...PhotoField
+     }
+     photos{
+       ...PhotoField
+     }
+     user{
+      ...UserField
+     }
+    }
+  }
+}

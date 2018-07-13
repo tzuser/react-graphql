@@ -9,11 +9,8 @@ import { Mutation } from "react-apollo";
 import {errorReply,imageUrl} from 'tools_';
 import hiddenFooter from '../Components/HiddenFooter';
 import PageLoading from '../Components/PageLoading';
-const ADD_COMMENT = gql`
-  mutation addComment($post:ID!,$content: String!,$reply:ID) {
-    comment(input:{post:$post,content: $content,reply:$reply})
-  }
-`;
+import commentsQuery from 'gql_/comments.gql';
+import ADD_COMMENT from 'gql_/addComment.gql';
 
 
 const CommentInput=styled.div`
@@ -200,27 +197,7 @@ class Comments extends Component{
 }
 
 
-export default graphql(gql`
-query ($id:ID!,$first:Int!,$after:ID,$desc:Boolean) {
-  comments(postId: $id, after: $after, first: $first , desc:$desc) {
-    first
-    after
-    isEnd
-    list {
-      id
-      user {...userField}
-      reply{...userField}
-      content
-    }
-  }
-}
-fragment userField on User{
-  id
-  name
-  avatar
-  nick_name
-}
-`,
+export default graphql(commentsQuery,
 {options:(props)=>{
     return {
       variables:{

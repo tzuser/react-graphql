@@ -23,7 +23,7 @@ import { BatchHttpLink } from "apollo-link-batch-http"
 import host from 'public_/host.js';
 let {DB_URL}=host;
 //import './Module/PWA.js'
-import './pwa.js';
+//import './pwa.js';
 const link=new BatchHttpLink({
 	uri:DB_URL,
 	credentials: 'include',

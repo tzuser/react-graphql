@@ -1,0 +1,5 @@
+fragment PhotoField on Photo{
+  url
+  width
+  height
+}

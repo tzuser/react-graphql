@@ -1,5 +1,5 @@
-import mongoose,{Schema} from 'mongoose';
-let db=mongoose.connect('mongodb://web:wysj3910@127.0.0.1:27017/web')
+import mongoose,{Schema} from 'mongoose';//127.0.0.1
+let db=mongoose.connect('mongodb://web:wysj3910@192.168.1.107:27017/web')
 //用户
 const userSchema=new Schema({
   name:{type:String,index:true},

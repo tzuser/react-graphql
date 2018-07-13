@@ -17,6 +17,11 @@ module.exports={
   module:{
     rules:[
       {
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader'
+      },
+      {
         test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/,/\.svg$/,/\.eot$/,/\.ttf$/,/\.woff$/],
         loader: 'url-loader',
         options: {

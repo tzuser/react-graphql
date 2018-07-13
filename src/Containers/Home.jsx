@@ -6,38 +6,9 @@ import Header from 'com_/Header';
 import PostList from 'com_/PostList';
 import {withRouter} from 'react-router-dom';
 //import RestoredScroll from 'com_/RestoredScroll';
+import homePostsQuery from 'gql_/homePosts.gql'
 @withRouter
-@graphql(gql`
-  query($first:Int!,$after:ID){
-    posts(first:$first,after:$after) {
-      first
-      after
-      isEnd
-      list{
-       id
-       content
-       type
-       thumbnail{
-         ...photo
-       }
-       photos{
-         ...photo
-       }
-       user{
-        name
-         nick_name
-         avatar
-         id
-       }
-      }
-    }
-  }
-  fragment photo on Photo{
-    url
-    width
-    height
-  }
-`,{
+@graphql(homePostsQuery,{
   options:(props)=>{
       return {
       variables:{

@@ -1,0 +1,23 @@
+#import "./photoField.gql"
+#import "./userField.gql"
+query UserPosts($first:Int!,$after:ID,$userName:String!){
+  posts(first:$first,after:$after,userName:$userName) {
+    first
+    after
+    isEnd
+    list{
+     id
+     content
+     type
+     thumbnail{
+       ...PhotoField
+     }
+     photos{
+       ...PhotoField
+     }
+     user{
+      ...UserField
+     }
+    }
+  }
+}

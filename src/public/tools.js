@@ -21,7 +21,6 @@ export const filteringJitter=(space=200)=>{
 
 export const imageUrl=(url)=>{
   if(url.startsWith('http'))return url;
-  console.log(IMG_URL)
   return `${IMG_URL}${url}`;
 }
 //错误响应

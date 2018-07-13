@@ -103,6 +103,9 @@ class App extends React.Component{
       this.props.setWindowWidthAct(document.body.clientWidth);
     }
   }
+  componentDidCatch(data){
+    console.log(data)
+  }
   componentWillUnmount(){
     //移除浏览器缩放事件
     if(typeof window!='undefined'){

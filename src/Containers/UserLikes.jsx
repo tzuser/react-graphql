@@ -4,9 +4,8 @@ import gql from 'graphql-tag';
 import { Spinner,Text,Box } from 'gestalt';
 import PostList from '../Components/PostList';
 import {withRouter} from 'react-router-dom'
-
+import likesQuery from 'gql_/likes.gql';
 class UserLikes extends React.Component{
-
   loadItems(data){
     let { data: { likes, refetch ,fetchMore,loading} }=this.props
     if(!likes)return;
@@ -14,7 +13,7 @@ class UserLikes extends React.Component{
     if(!isEnd && !loading){
         this.props.data.fetchMore({
           variables:{after,first},
-          fetchPolicy: "network-only",
+          //fetchPolicy: "network-only",
           updateQuery: (previousResult, { fetchMoreResult }) => {
             if(previousResult.likes.list){
               fetchMoreResult.likes.list=previousResult.likes.list.concat(fetchMoreResult.likes.list)
@@ -44,43 +43,13 @@ class UserLikes extends React.Component{
 }
 
 
-export default withRouter(graphql(gql`
-  query likes($first:Int!,$after:ID,$userName:String!){
-    likes(first:$first,after:$after,userName:$userName) {
-      first
-      after
-      isEnd
-      list{
-       id
-       content
-       type
-       thumbnail{
-         ...photo
-       }
-       photos{
-         ...photo
-       }
-       user{
-        name
-         nick_name
-         avatar
-         id
-       }
-      }
-    }
-  }
-  fragment photo on Photo{
-    url
-    width
-    height
-  }
-`,{
+export default withRouter(graphql(likesQuery,{
   options:(props)=>{
       return {
       variables:{
         first:20,
         userName:props.userName
       },
-      fetchPolicy: "network-only"
+      //fetchPolicy: "network-only"
   }},
 })(UserLikes));

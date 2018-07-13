@@ -16,7 +16,7 @@ import UserPosts from './UserPosts';
 import Loadable from 'react-loadable';
 import FollowUserButton from 'com_/FollowUserButton';
 import FollowCountButton from 'com_/FollowCountButton';
-
+import userQuery from 'gql_/user.gql';
 const LoadableUserPosts = Loadable({
   loader: () => import(/* webpackChunkName: 'UserPosts' */ './UserPosts'),
   loading:PageLoading
@@ -154,16 +154,7 @@ const mapDispatchToProps=(dispatch)=>bindActionCreators({
 
 },dispatch)
 
-export default graphql(gql`
-  query($name:String){
-    user(name:$name){
-      id
-      name
-      nick_name
-      avatar
-    }
-  }
-`,{
+export default graphql(userQuery,{
   options:(props)=>{
       return {
       variables:{

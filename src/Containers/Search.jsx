@@ -9,7 +9,7 @@ import {withRouter} from 'react-router-dom';
 import {ListLink,ListTitle} from 'com_/ListButton';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-
+import searchKeywordQuery from 'gql_/searchKeyword.gql';
 
 
 const mapStateToProps=(state)=>({
@@ -21,14 +21,7 @@ const mapDispatchToProps=(dispatch)=>bindActionCreators({
 
 @withRouter
 @connect(mapStateToProps,mapDispatchToProps)
-@graphql(gql`
-  query($keyword:String){
-    searchKeyword(keyword:$keyword){
-      name
-      count
-    }
-  }
-`,{
+@graphql(searchKeywordQuery,{
   options:(props)=>{
     let {match:{params:{keyword}}}=props
       return {

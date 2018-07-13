@@ -8,7 +8,7 @@ import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as searchAct from 'act_/search';
-
+import searchQuery from 'gql_/search.gql';
 
 
 const mapStateToProps=(state)=>({
@@ -20,38 +20,7 @@ const mapDispatchToProps=(dispatch)=>bindActionCreators({
 
 @withRouter
 @connect(mapStateToProps,mapDispatchToProps)
-@graphql(gql`
-  query($keyword:String!,$first:Int!,$after:ID){
-    search(keyword:$keyword,first:$first,after:$after) {
-      keyword
-      first
-      after
-      isEnd
-      list{
-       id
-       content
-       type
-       thumbnail{
-         ...photo
-       }
-       photos{
-         ...photo
-       }
-       user{
-        name
-         nick_name
-         avatar
-         id
-       }
-      }
-    }
-  }
-  fragment photo on Photo{
-    url
-    width
-    height
-  }
-`,{
+@graphql(searchQuery,{
   options:(props)=>{
     let {match:{params:{keyword}}}=props
       return {

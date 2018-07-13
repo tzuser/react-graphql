@@ -1,0 +1,8 @@
+ query($name:String){
+    user(name:$name){
+      id
+      name
+      nick_name
+      avatar
+    }
+  }

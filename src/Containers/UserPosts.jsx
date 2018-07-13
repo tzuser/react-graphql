@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { Spinner,Text,Box } from 'gestalt';
 import PostList from '../Components/PostList';
 import {withRouter} from 'react-router-dom'
-
+import userPostsQuery from 'gql_/userPosts.gql';
 class UserPosts extends React.Component{
   loadItems(data){
     let { data: { posts, refetch ,fetchMore,loading} }=this.props
@@ -13,7 +13,6 @@ class UserPosts extends React.Component{
     if(!isEnd && !loading){
         this.props.data.fetchMore({
           variables:{after,first},
-          fetchPolicy: "network-only",
           updateQuery: (previousResult, { fetchMoreResult }) => {
             if(previousResult.posts.list){
               fetchMoreResult.posts.list=previousResult.posts.list.concat(fetchMoreResult.posts.list)
@@ -41,43 +40,12 @@ class UserPosts extends React.Component{
 }
 
 
-export default withRouter(graphql(gql`
-  query posts($first:Int!,$after:ID,$userName:String!){
-    posts(first:$first,after:$after,userName:$userName) {
-      first
-      after
-      isEnd
-      list{
-       id
-       content
-       type
-       thumbnail{
-         ...photo
-       }
-       photos{
-         ...photo
-       }
-       user{
-        name
-         nick_name
-         avatar
-         id
-       }
-      }
-    }
-  }
-  fragment photo on Photo{
-    url
-    width
-    height
-  }
-`,{
+export default withRouter(graphql(userPostsQuery,{
   options:(props)=>{
       return {
       variables:{
         first:20,
         userName:props.userName
       },
-      fetchPolicy: "network-only"
   }},
 })(UserPosts));

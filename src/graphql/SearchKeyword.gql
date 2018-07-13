@@ -1,0 +1,6 @@
+query SearchKeyword($keyword:String){
+    searchKeyword(keyword:$keyword){
+      name
+      count
+    }
+  }

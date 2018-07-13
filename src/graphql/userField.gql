@@ -1,0 +1,6 @@
+fragment UserField on User{
+  id
+  name
+  avatar
+  nick_name
+}

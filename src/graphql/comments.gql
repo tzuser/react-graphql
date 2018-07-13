@@ -1,0 +1,14 @@
+#import "./userField.gql"
+query Comments($id:ID!,$first:Int!,$after:ID,$desc:Boolean) {
+  comments(postId: $id, after: $after, first: $first , desc:$desc) {
+    first
+    after
+    isEnd
+    list {
+      id
+      user {...UserField}
+      reply{...UserField}
+      content
+    }
+  }
+}
