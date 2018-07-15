@@ -1,6 +1,6 @@
 import {userType} from './user';
 import {commentModel,postModel,userModel} from '../db';
-import {getPageType,getPageData} from './public';
+import {getPageType,getPageData,exactLogin} from './public';
 import APIError from './APIError';
 export const typeDefs=`
 type Comment{
@@ -43,9 +43,8 @@ export const resolvers={
   Mutation:{
     async comment(_,{input},ctx){
       if(!input.content.trim())throw new APIError('内容不能为空!',1002);
-      if(!ctx.user)throw new APIError('用户未登录!',1001);
+      exactLogin(ctx.user);
       input.user=ctx.user;
-      console.log(input.reply)
       if(!input.reply){
         let {user}=await postModel.findOne({_id:input.post},{user:1}).exec()
         input.reply=user;

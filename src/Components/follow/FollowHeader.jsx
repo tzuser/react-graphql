@@ -1,8 +1,8 @@
 import React,{Component} from 'react'
 import {Box,IconButton,Heading,Avatar,Text} from 'gestalt';
-import {FollowCountShow} from 'com_/FollowCountButton';
+import {FollowCountShow} from 'com_/follow/FollowCountButton';
 import {withRouter} from 'react-router-dom';
-import {imageUrl} from 'tools_';
+import {imageUrl} from '_tools';
 import HeaderContainer from 'com_/HeaderContainer';
 import styled from 'styled-components';
 const FollowCount = styled.div`
@@ -43,7 +43,9 @@ class FollowHeader extends Component{
 		  	</Box>
 		    <Box direction="row" display="flex">
 		      <Box flex="grow"></Box>
-		      <Box marginLeft={1} column={2} flex="none"><Avatar  name="Long" src={imageUrl(user.avatar)} /></Box>
+		      <Box marginLeft={1} column={3} flex="none">
+		      	<Avatar  name="Long" src={imageUrl(user.avatar)} />
+		      </Box>
 		    </Box>
 		    </div>
 		)

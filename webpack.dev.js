@@ -6,7 +6,7 @@ const configBase = require('./webpack.base.js');
 const merge=require('webpack-merge');
 //获取本机ip
 function getIPAdress(){  
-  return '127.0.0.1'
+  //return '0.0.0.0'
     var interfaces = require('os').networkInterfaces();  
     for(var devName in interfaces){  
           var iface = interfaces[devName];  

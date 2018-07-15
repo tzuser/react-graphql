@@ -9,12 +9,13 @@ import MoreLikes from './MoreLikes';
 import {GrayButton,RedButton} from '../Components/IconButton.jsx';
 import { Mutation } from "react-apollo";
 import gql from 'graphql-tag';
-import {errorReply,imageUrl} from 'tools_';
+import {imageUrl,vidoeUrl} from '_tools';
+import {errorReply} from '_public';
 import {Link} from 'react-router-dom';
 import {connect } from 'react-redux';
 import LikePostButton from 'com_/post/LikePostButton';
-import DEL_POST from 'gql_/delPost.gql'
-
+import DEL_POST from 'gql_/delPost.gql';
+import postQuery from 'gql_/post.gql';
 const Card=styled.div`
   transition: all 0.1s;
   border-radius:10px;
@@ -57,7 +58,6 @@ const UserNode=({user,content,userClick})=>(
 )
 
 const OtherHeader=({isAdmin,postID,goBack,push})=>{
-
   return (<HeaderContainer transparent={false}>
           <Box marginLeft={-3} flex="grow">
           <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={()=>goBack()} />
@@ -109,7 +109,7 @@ const SelfHeader=({postID,goBack,push})=>{
 
 const Video=({src})=>{
   return <video controls="controls" width="100%" autoPlay="autoplay">
-     <source src={src}  type="video/mp4"/>
+     <source src={vidoeUrl(src)}  type="video/mp4"/>
   </video>
 }
 const Photo=({photos,thumbnail})=>{
@@ -169,8 +169,11 @@ const Content=({post,postID,push})=>{
 class Post extends Component{
   render(){
     let { data: {error, post, refetch ,fetchMore,loading},history:{goBack,push},match:{params:{id}},selfUser}=this.props;
-    if(loading ){
+    /*if(loading ){
       return <PageLoading />
+    }*/
+    if(error){
+      return (<div>文章没找到或已被删除!</div>)
     }
     let isSelf=false;
     let isAdmin=false;
@@ -181,13 +184,17 @@ class Post extends Component{
     }
     return (
       <div>
-        <Scroll top={true} />
         {isSelf?<SelfHeader postID={id} goBack={goBack} />:<OtherHeader isAdmin={isAdmin} postID={id} goBack={goBack} push={push}/>}
-        <Content post={post} postID={id} push={push}/>
-        <Box paddingX={4} marginTop={2}>
-        <Text bold>相似</Text>
-        </Box>
-        <MoreLikes id={id}/>
+        {loading && <PageLoading />}
+        {!loading && 
+          <div>
+            <Content post={post} postID={id} push={push}/>
+            <Box paddingX={4} marginTop={2}>
+              <Text bold>相似</Text>
+            </Box>
+            <MoreLikes id={id}/>
+          </div>
+        }
      </div>
     );
   }
@@ -199,39 +206,7 @@ const mapStateToProps=(state)=>({
 })
 
 
-export default graphql(gql`
-query Post($id:ID!){
-  post(id:$id){
-    id
-    thumbnail{
-      ...photoField
-    },
-    content
-    type
-    tags
-    commentNum
-    readNum
-    likeNum
-    hotNum
-    src
-    photos{
-      ...photoField
-    }
-    user{...userField}
-  }
-}
-fragment userField on User{
-  id
-  name
-  avatar
-  nick_name
-}
-fragment photoField on Photo{
-  url
-  width
-  height
-}
-`,
+export default graphql(postQuery,
 {options:(props)=>{
     return {
       variables:{

@@ -6,7 +6,8 @@ import Tabs from '../Components/Tabs';
 import HeaderContainer from '../Components/HeaderContainer';
 import PageLoading from '../Components/PageLoading';
 
-import {errorReply,imageUrl} from 'tools_';
+import {imageUrl} from '_tools';
+import {errorReply} from '_public';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -14,8 +15,8 @@ import {Route} from 'react-router-dom';
 import * as configActs from '../actions/config';
 import UserPosts from './UserPosts';
 import Loadable from 'react-loadable';
-import FollowUserButton from 'com_/FollowUserButton';
-import FollowCountButton from 'com_/FollowCountButton';
+import FollowUserButton from 'com_/follow/FollowUserButton';
+import FollowCountButton from 'com_/follow/FollowCountButton';
 import userQuery from 'gql_/user.gql';
 const LoadableUserPosts = Loadable({
   loader: () => import(/* webpackChunkName: 'UserPosts' */ './UserPosts'),
@@ -28,13 +29,13 @@ const LoadableUserLikes = Loadable({
 
 
 
-const UserHeader=({goBack})=>(
+const UserHeader=({userName,goBack})=>(
   <HeaderContainer>
     <Box marginLeft={-3} flex="grow">
-    <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={goBack} />
+    <IconButton  accessibilityLabel="返回" icon="arrow-back" onClick={goBack} />
     </Box>
     <Box>
-      <FollowUserButton />
+      <FollowUserButton userName={userName} />
     </Box>
   </HeaderContainer>
 )
@@ -81,11 +82,10 @@ class User extends Component{
     location:{pathname},
     match:{params:{name:userName}},
     selfUser}=this.props;
-    if(loading){
+    /*if(loading){
       return <PageLoading />
-    }
+    }*/
     const isSlef=selfUser && selfUser.name==userName;
-    const name=userName || user.name;
     //tabs
     let tabsData=[
             /*{
@@ -93,55 +93,58 @@ class User extends Component{
             },*/
             {
               text: "帖子",
-              href: `/${name}/post`
+              href: `/${userName}/post`
             },
             {
               text: "喜欢",
-              href: `/${name}/like`
+              href: `/${userName}/like`
             }
            ];
     let tabsIndex=tabsData.findIndex(item=>pathname.startsWith(item.href));
     tabsIndex=tabsIndex<0?0:tabsIndex;
     return (
       <div>
-        <Box paddingX={4}>
-          {isSlef?<SelfHeader userName={userName}/>:<UserHeader goBack={goBack}/>}
-          <UserCard user={user}/>
-          <Box direction="row" display="flex" marginTop={3}>
-          <Column span={5}>
-            <FollowCountButton to={`/${name}/followers`}>
-              <Text bold size="sm">0</Text>
-              <Text bold size="sm" color="gray">粉丝</Text>
-            </FollowCountButton>
-          </Column>
+        {isSlef?<SelfHeader userName={userName}/>:<UserHeader userName={userName} goBack={goBack}/>}
+        {loading && <PageLoading />}
+        {!loading && 
+          <div>
+            <Box paddingX={4}>
+            <UserCard user={user}/>
+            <Box direction="row" display="flex" marginTop={3}>
             <Column span={5}>
-              <FollowCountButton to={`/${name}/following`}>
+              <FollowCountButton to={`/${userName}/followers`}>
                 <Text bold size="sm">0</Text>
-                <Text bold size="sm" color="gray">关注</Text>
+                <Text bold size="sm" color="gray">粉丝</Text>
               </FollowCountButton>
             </Column>
-            
-           
-            {/* <Column span={6}>
-             <FolloButton to="#">
-                 <Text bold size="sm" align="right" truncate={true} overflow="breakWord">
-                  https://www.pinterest.com/alivaezbarzani/boards
-                 </Text>
-              </FolloButton>
-            </Column>*/}
+              <Column span={5}>
+                <FollowCountButton to={`/${userName}/following`}>
+                  <Text bold size="sm">0</Text>
+                  <Text bold size="sm" color="gray">关注</Text>
+                </FollowCountButton>
+              </Column>
+              {/* <Column span={6}>
+               <FolloButton to="#">
+                   <Text bold size="sm" align="right" truncate={true} overflow="breakWord">
+                    https://www.pinterest.com/alivaezbarzani/boards
+                   </Text>
+                </FolloButton>
+              </Column>*/}
+            </Box>
+            <Box marginTop={4}>
+            <Tabs
+               tabs={tabsData}
+               activeTabIndex={tabsIndex}
+               onChange={(e)=>{}}
+            />
+            </Box>
           </Box>
-          <Box marginTop={4}>
-          <Tabs
-             tabs={tabsData}
-             activeTabIndex={tabsIndex}
-             onChange={(e)=>{}}
-          />
+          <Box marginTop={3} paddingX={2}>
+            {tabsIndex==0 && <LoadableUserPosts userName={userName} minCols={2}/>}
+            {tabsIndex==1 && <LoadableUserLikes userName={userName} minCols={2}/>}
           </Box>
-        </Box>
-        <Box marginTop={3} paddingX={2}>
-          {tabsIndex==0 && <LoadableUserPosts userName={userName} minCols={2}/>}
-          {tabsIndex==1 && <LoadableUserLikes userName={userName} minCols={2}/>}
-        </Box>
+        </div>
+      }
      </div>
     );
   }

@@ -1,4 +1,6 @@
 import crypto from 'crypto';
+import {userModel} from '../db';
+import APIError from './APIError';
 
 export const md5=(text)=>{
   return crypto.createHash('md5').update(text).digest('hex');
@@ -10,7 +12,7 @@ type ${name}Page{
   first:Int!
   after:ID
   isEnd:Boolean
-  list:[${name}]
+  list:[${name}!]
 }`
 }
 //通过游标获取列表
@@ -43,9 +45,25 @@ export const getPageData=async ({model,find,first,after,populate,select,format,s
 
 export const listToPage=async ({list,first,format})=>{
   let last_id=list.length>0?(await list[list.length-1])._id:'';
-  let isEnd=list.length!=first;
   if(format)list=list.map(format)
+  list=list.filter(item=>!!item);
+  let isEnd=list.length!=first;
   return {first,after:last_id,list,isEnd}
+}
+
+//通过用户名获取用户ID
+export const getUserIDFormName=async (name)=>{
+  if(!name)throw new APIError('用户名为空!',1);
+  let user=await userModel.findOne({name}).exec()
+  if(!user)throw new APIError('未找到用户!',1);;
+  return user._id
+}
+
+//需要用户登录
+export const exactLogin=(user)=>{
+  if(!user){
+    throw new APIError('用户未登录!',1001);
+  }
 }
 
 //保留关键词

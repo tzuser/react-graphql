@@ -62,8 +62,15 @@ const keywordSchema=new Schema({
   count:{ type: Number, default: 1 }//搜索次数
 })
 
-export const userModel=mongoose.model('User',userSchema)
-export const postModel=mongoose.model('Post',postSchema)
-export const likeModel=mongoose.model('Like',likeSchema)
-export const commentModel=mongoose.model('Comment',commentSchema)
-export const keywordModel=mongoose.model('Keyword',keywordSchema)
+//关注
+const followSchema=new Schema({
+  user:{type:Schema.Types.ObjectId,ref:'User'},//用户
+  follow:{type:Schema.Types.ObjectId,ref:'User'},//关注用户
+})
+
+export const userModel    = mongoose.model('User',userSchema)
+export const postModel    = mongoose.model('Post',postSchema)
+export const likeModel    = mongoose.model('Like',likeSchema)
+export const commentModel = mongoose.model('Comment',commentSchema)
+export const keywordModel = mongoose.model('Keyword',keywordSchema)
+export const followModel  = mongoose.model('Follow',followSchema)

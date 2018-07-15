@@ -5,37 +5,25 @@ import { Spinner,Text,Box } from 'gestalt';
 import PostList from '../Components/PostList';
 import {withRouter} from 'react-router-dom'
 import likesQuery from 'gql_/likes.gql';
-class UserLikes extends React.Component{
-  loadItems(data){
-    let { data: { likes, refetch ,fetchMore,loading} }=this.props
-    if(!likes)return;
-    let {first,after,totalCount,isEnd}=likes;
-    if(!isEnd && !loading){
-        this.props.data.fetchMore({
-          variables:{after,first},
-          //fetchPolicy: "network-only",
-          updateQuery: (previousResult, { fetchMoreResult }) => {
-            if(previousResult.likes.list){
-              fetchMoreResult.likes.list=previousResult.likes.list.concat(fetchMoreResult.likes.list)
-            }
-            return fetchMoreResult;
-          }
-        })
-    }
-  }
- 
+import {loadItems} from '_public';
+import PageLoading from 'com_/PageLoading';
+import InTheEnd from 'com_/InTheEnd';
+class UserLikes extends React.Component{ 
   render(){
     let { data: { likes, refetch ,fetchMore,loading},minCols,history:{push} }=this.props;
+    if(loading ){
+      return <PageLoading />
+    }
+    console.log(likes)
     return (
       <div>
         <PostList 
         list={likes?likes.list:[]}
         minCols={minCols}
-        loadItems={this.loadItems.bind(this)}
-        virtualize={false}
+        loadItems={(data)=>loadItems({props:this.props,queryName:'likes'})}
         />
         <Spinner show={loading} accessibilityLabel="Example spinner" />
-        {likes && likes.isEnd && <Box paddingY={2}><Text align="center" color="gray">到底了~</Text></Box>}
+        {likes && likes.isEnd && <InTheEnd />}
      </div>
     );
   }

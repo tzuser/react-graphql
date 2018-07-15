@@ -1,6 +1,6 @@
 import {postModel,likeModel} from '../db';
 import APIError from './APIError';
-import {getPageType,getPageData} from "./public";
+import {getPageType,getPageData,exactLogin} from "./public";
 import request from 'request';
 import fs from 'fs';
 import path from 'path';
@@ -16,10 +16,7 @@ extend type Mutation{
 export const resolvers={
   Mutation:{
     async urlToPhoto(_,{url},ctx){
-      if(!ctx.user){
-        throw new APIError('用户未登录!',1001);
-        return ;
-      }
+      exactLogin(ctx.user);
       return getImage(url,ctx.user.name);
     },    
   }

@@ -1,9 +1,9 @@
 import React,{Component} from 'react';
-import {GrayButton,RedButton} from 'com_/IconButton.jsx';
+import {GrayButton,RedButton,DisabledButton} from 'com_/IconButton.jsx';
 import { graphql,Mutation,Query } from 'react-apollo';
 import {Button,Icon} from 'gestalt';
 import gql from 'graphql-tag';
-import {errorReply} from 'tools_';
+import {errorReply} from '_public';
 import likesQuery from 'gql_/likes.gql';
 import {connect} from 'react-redux';
 const LIKE=gql`mutation like($post:ID!,$isLike:Boolean!){
@@ -15,7 +15,7 @@ const mapStateToProps=(state)=>({
 })
 @connect(mapStateToProps)
 @graphql(gql`
-  query isLike($id:ID!){
+  query IsLike($id:ID!){
     isLike(id:$id)
   }
 `,
@@ -29,27 +29,36 @@ const mapStateToProps=(state)=>({
   }
 })
 class LikeButton extends Component{
+  state={addLoading:false}
   render(){
-    let {postID,push,data:{isLike,refetch},selfUser}=this.props;
-    console.log(this.props)
+    let {postID,push,data:{isLike,refetch,loading},selfUser}=this.props;
     let Btn=isLike?GrayButton:RedButton
+    if(loading || this.state.addLoading)Btn=DisabledButton;
+    console.log(selfUser)
     return (
       <Mutation mutation={LIKE}>
       {(like)=>(
-        <Btn onClick={()=>{
+        <Btn
+        onClick={()=>{
+          this.setState({addLoading:true});
           like({variables:{post:postID,isLike:!isLike},
             refetchQueries:[
             {
               query:likesQuery, 
               variables:{
                 first:20,
-                userName:selfUser.name
+                userName:selfUser && selfUser.name
               }
             }
             ]
           }).then(data=>{
-            refetch()
+            refetch().then(err=>{
+              this.setState({addLoading:false});
+            }).catch(err=>{
+              this.setState({addLoading:false});
+            });
           }).catch(error=>{
+            this.setState({addLoading:false});
             errorReply({error,push})
           });
         }}>

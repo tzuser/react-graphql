@@ -1,0 +1,3 @@
+mutation follow($name:String!,$isFollow:Boolean!){
+    follow(name:$name,isFollow:$isFollow)
+}

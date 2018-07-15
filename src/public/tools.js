@@ -1,5 +1,6 @@
+//工具不牵扯逻辑及项目
 import host from 'public_/host'
-let {IMG_URL}=host;
+let {STATIC_URL}=host;
 //过滤抖动
 export const filteringJitter=(space=200)=>{
     let timer,previousReject;
@@ -21,19 +22,15 @@ export const filteringJitter=(space=200)=>{
 
 export const imageUrl=(url)=>{
   if(url.startsWith('http'))return url;
-  return `${IMG_URL}${url}`;
+  return `${STATIC_URL}${url}`;
 }
-//错误响应
-export const errorReply=async ({error,push})=>{
-  return new Promise((resolve,reject)=>{
-    if(error && error.graphQLErrors){
-      let status=error.graphQLErrors[0].status;
-      if(status==1001)push('/login');
-      reject(error)
-    }
-    resolve(true);
-  })
+
+export const vidoeUrl=(url)=>{
+  if(url.startsWith('http'))return url;
+  return `${STATIC_URL}${url}`;
 }
+
+
 //取消promise
 export const makeCancelable = (promise) => {
   let hasCanceled_ = false;
@@ -51,3 +48,19 @@ export const makeCancelable = (promise) => {
     },
   };
 };
+
+//计算列数
+export const countColumn=({minCols,defaultWidth})=>{
+  let newMinCols=minCols;
+  if(defaultWidth>640)newMinCols=2;
+  if(defaultWidth>860)newMinCols=3;
+  if(defaultWidth>1080)newMinCols=4;
+  if(defaultWidth>1400)newMinCols=6;
+  let listWidth=defaultWidth-16
+  let columnWidth=listWidth/newMinCols;
+  return {
+    column:newMinCols,
+    width:columnWidth,
+    listWidth
+  }
+}

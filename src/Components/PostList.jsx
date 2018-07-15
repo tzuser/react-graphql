@@ -2,7 +2,7 @@ import React from 'react';
 import { Avatar,Box,Masonry,Spinner,Text,Image,Mask,Icon } from 'gestalt';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
-import {imageUrl} from 'tools_';
+import {imageUrl,countColumn} from '_tools';
 import {connect} from 'react-redux';
 //import {bindActionCreators} from 'redux';
 const ItemImg=styled(Link)`
@@ -157,28 +157,18 @@ class PostList extends React.Component{
   }
   render(){
     let { list=[],loadItems,store,minCols=1,width,virtualize=true }=this.props;
-    let newMinCols=minCols;
-    if(width>640)newMinCols=2;
-    if(width>860)newMinCols=3;
-    if(width>1080)newMinCols=4;
-    if(width>1400)newMinCols=6;
-    //newMinCols=newMinCols*minCols;
-    let listWidth=width-16
-    let columnWidth=listWidth/newMinCols;
-
-    
-
+    let column=countColumn({minCols,defaultWidth:width})
     return (
-      <div style={{width:listWidth,margin:'0 auto'}}>
+      <div style={{width:column.listWidth,margin:'0 auto'}}>
         <Masonry
           comp={this.renderItem.bind(this)}
           items={list}
           loadItems={loadItems}
           scrollContainer={()=>window}
-          minCols={newMinCols}
+          minCols={column.column}
           virtualize={virtualize}
           flexible={false}
-          columnWidth={columnWidth}
+          columnWidth={column.width}
           gutterWidth={0}
         />
       </div>

@@ -37,3 +37,11 @@ export const GrayButton=IconButtonBase.extend`
   & svg{
     color:#555;
   }`
+export const DisabledButton=IconButtonBase.extend`
+  background-color: #efefef;
+  color:#b5b5b5;
+  cursor: default;
+  pointer-events: none;
+  & svg{
+    color:#b5b5b5;
+  }`

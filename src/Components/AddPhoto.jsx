@@ -2,7 +2,8 @@ import React,{Component} from 'react';
 import {Heading,Modal,Box,Text,Button,TextField,Spinner } from 'gestalt';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import {errorReply,makeCancelable} from 'tools_'
+import {makeCancelable} from '_tools';
+import {errorReply} from '_public';
 import {withRouter} from 'react-router-dom';
 class AddImage extends Component{
   state={url:"",errorMessage:"",loading:false}

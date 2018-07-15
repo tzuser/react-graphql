@@ -8,7 +8,7 @@ import 'gestalt/dist/gestalt.css';
 import * as ConfigAct from 'act_/config';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {filteringJitter} from 'tools_';
+import {filteringJitter} from '_tools';
 
 //去抖动
 const instanceFillteringJitter=filteringJitter();

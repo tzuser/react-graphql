@@ -1,0 +1,12 @@
+#import "./userField.gql"
+
+query Followers($name:String!,$first:Int!,$after:ID){
+  followers(name:$name,first:$first,after:$after){
+    first
+    after
+    isEnd
+    list{
+      ...UserField
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import {postModel,likeModel,userModel,keywordModel} from '../db';
 import APIError from './APIError';
-import {getPageType,getPageData,listToPage} from "./public";
+import {getPageType,getPageData,listToPage,getUserIDFormName,exactLogin} from "./public";
 import {getThumbnail} from './file'
 import nodejieba from "nodejieba";
 import {resolvers as search} from "./search";
@@ -84,9 +84,12 @@ const getRunTime=()=>{
 export const resolvers={
   Query:{
     async post(_,{id},ctx){
-      let {_doc:post}=await postModel.findById(id).populate('user').exec();
+      let res=await postModel.findById(id).populate('user').exec();
+      if(!res){
+        throw new APIError('获取文章失败!',1015);
+      }
+      let {_doc:post}=res;
       postModel.update({_id:id},{$inc:{readNum:+1}}).exec();//添加阅读量
-      if(!post)throw new APIError('获取文章失败!',1);
       return {...post,id:post._id}
     },
     async isLike(_,{id},ctx){
@@ -97,8 +100,13 @@ export const resolvers={
       return isLike
     },
     async posts(_,{first,after,desc,sort,userName}){
-      let userID=await getUserIDFormName(userName);
-      let find=userID?{user:userID}:{};
+      let find;
+      try{
+        let userID=await getUserIDFormName(userName);
+        find={user:userID};
+      }catch(err){
+        find={}
+      }
       let page=await getPageData({
         model:postModel,
         find,
@@ -114,7 +122,7 @@ export const resolvers={
     async likes(_,{first,after,desc,sort,userName}){
       let userID=await getUserIDFormName(userName);
       let find={user:userID};
-      return await getPageData({
+      let page=await getPageData({
         model:likeModel,
         find,
         after:after,
@@ -122,8 +130,14 @@ export const resolvers={
         desc,
         sort,
         populate:{path:"post",populate:{path:"user"}},
-        format:(item)=>item.post,
+        format:(item)=>{
+          if(item.post)return item.post;
+          //错误处理 补删除
+          console.log(item._id,'帖子已被删除')
+          likeModel.remove({_id:item._id}).exec();
+        },
       })
+      return page
     },
     //more like this
     async moreLikes(_,{id,first,after}){
@@ -159,10 +173,7 @@ export const resolvers={
   },
   Mutation:{
     async addPost(_,{input},ctx){
-      if(!ctx.user){
-        throw new APIError('用户未登录!',1001);
-        return
-      }
+      exactLogin(ctx.user);
       input.creationDate=new Date().valueOf();
       input.updateDate=input.creationDate;
       input.readNum=0;
@@ -175,43 +186,37 @@ export const resolvers={
       return post.id
     },
     async editPost(_,{id,input},ctx){
-      if(!ctx.user){
-        throw new APIError('用户未登录!',1001);
-        return
-      }
+      exactLogin(ctx.user);
       input.updateDate=+new Date();
       let res=await postModel.update({_id:id},{$set:input}).exec();
-      if(!res.ok){
-        throw new APIError('修改失败!',1);
-      }
+      if(!res.ok)throw new APIError('修改失败!',1);
       return '修改成功'
     },
     async delPost(_,{post},ctx){
-      if(!ctx.user){
-        throw new APIError('用户未登录!',1001);
-        return
-      }
+      exactLogin(ctx.user);
       let doc=await postModel.findById(post).exec();
       let isAdmin=ctx.user.roles.includes('admin');
       if(!isAdmin && doc.user+''!=ctx.user._id+''){
-        throw new APIError('用户无权限!',1011);
+        throw new APIError('用户无权限!',1005);
         return
       }
       await postModel.remove({_id:post}).exec();
+
+      //删除喜欢
+      await likeModel.remove({post:post}).exec();
+      //通知喜欢的用户
+      console.log(`你喜欢的帖子[${doc.content}]已被删除`)
       return "删除成功";
     },
     async like(_,{post,isLike},ctx){
-      if(!ctx.user){
-        throw new APIError('用户未登录!',1001);
-        return
-      }
+      exactLogin(ctx.user);
+      let find={post,user:ctx.user};
       if(isLike){
-        let like=await likeModel.findOne({post,user:ctx.user}).exec();
-        console.log(like)
-        likeModel({post,user:ctx.user}).save();
+        if(await likeModel.findOne(find).count().exec()>0)return '你已喜欢'
+        await likeModel(find).save();
         return '喜欢成功'
       }else{
-        await likeModel.remove({post,user:ctx.user}).exec();
+        await likeModel.remove(find).exec();
         return '删除成功'
       }
     }
@@ -221,9 +226,3 @@ export const resolvers={
 
 
 
-const getUserIDFormName=async (name)=>{
-  if(!name)return null;
-  let user=await userModel.findOne({name}).exec()
-  if(!user)return null;
-  return user._id
-}

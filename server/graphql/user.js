@@ -1,6 +1,6 @@
 import {userModel} from '../db';
 import jwt from 'jsonwebtoken';
-import {getPageType,md5,blackList} from './public';
+import {getPageType,md5,blackList,exactLogin} from './public';
 import {getThumbnail} from './file';
 import APIError from './APIError';
 export const typeDefs=`
@@ -58,11 +58,11 @@ export const resolvers={
   Query:{
     user(_,{name},ctx){
       if(name)return getUser({name});
-      if(!ctx.user)throw new APIError('用户未登录！',1001);
+      exactLogin(ctx.user);
       return ctx.user
     },
     self(_,{},ctx){
-      if(!ctx.user)throw new APIError('用户未登录！',1001);
+      exactLogin(ctx.user);
       return ctx.user
     },
     async users(_,{pageNo,pageSize}){
@@ -121,7 +121,7 @@ export const resolvers={
       
     },
     async editUser(_,{input},ctx){
-      if(!ctx.user)throw new APIError('用户未登录！',1001);
+      exactLogin(ctx.user);
       let id=ctx.user._id;
       let user_name=ctx.user.name;
       if(input.avatar){
