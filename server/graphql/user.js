@@ -10,6 +10,8 @@ type User{
   nick_name:String!
   age:Int
   sex:Int
+  followersCount:Int
+  followingCount:Int
   avatar:String
   roles:[String]
 }

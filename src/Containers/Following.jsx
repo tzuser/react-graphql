@@ -22,11 +22,12 @@ import FollowingList from 'com_/follow/FollowingList';
 class Following extends Component{
 	render(){
 		let {data:{user,loading},match:{params:{name}}}=this.props;
+    console.log(user)
 		if(loading) return <PageLoading />;
 		return (
     <div>
       <Box paddingX={4}>
-  		  <FollowHeader user={user} followCount={0} title="关注"/>
+  		  <FollowHeader user={user}  followCount={user.followingCount} title="关注"/>
   		</Box>
       <Box marginTop={2}>
         <FollowingList userName={name}/>

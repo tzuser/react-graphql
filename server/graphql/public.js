@@ -53,12 +53,16 @@ export const listToPage=async ({list,first,format})=>{
 
 //通过用户名获取用户ID
 export const getUserIDFormName=async (name)=>{
+  let user = await getUserFormName(name);
+  return user._id
+}
+//通过用户名获取用户ID
+export const getUserFormName=async (name)=>{
   if(!name)throw new APIError('用户名为空!',1);
   let user=await userModel.findOne({name}).exec()
   if(!user)throw new APIError('未找到用户!',1);;
-  return user._id
+  return user
 }
-
 //需要用户登录
 export const exactLogin=(user)=>{
   if(!user){

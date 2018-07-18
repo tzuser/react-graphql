@@ -14,7 +14,6 @@ class UserLikes extends React.Component{
     if(loading ){
       return <PageLoading />
     }
-    console.log(likes)
     return (
       <div>
         <PostList 

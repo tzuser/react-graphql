@@ -9,6 +9,8 @@ const userSchema=new Schema({
   creationDate:Date,
   sex:Number,
   avatar:String,
+  followingCount:{ type: Number, default: 0 },
+  followersCount:{ type: Number, default: 0 },
   //posts:[{ type: Schema.Types.ObjectId, ref: 'Post' }],
   roles:[String],
 })

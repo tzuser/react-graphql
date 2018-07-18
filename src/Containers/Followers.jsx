@@ -26,7 +26,7 @@ class Following extends Component{
     return (
     <div>
       <Box paddingX={4}>
-        <FollowHeader user={user} followCount={0} title="粉丝"/>
+        <FollowHeader user={user} followCount={user.followersCount} title="粉丝"/>
       </Box>
       <Box marginTop={2}>
         <FollowersList userName={name}/>

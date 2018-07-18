@@ -24,6 +24,7 @@ const mapStateToProps=(state)=>({
       variables:{
         id:props.postID
       },
+      errorPolicy:"ignore",
       //fetchPolicy: "network-only"
     }
   }

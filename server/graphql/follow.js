@@ -1,5 +1,5 @@
 import {followModel,userModel} from '../db'
-import {getPageType,getUserIDFormName,getPageData,exactLogin} from "./public";
+import {getPageType,getUserIDFormName,getUserFormName,getPageData,exactLogin} from "./public";
 import APIError from './APIError';
 export const typeDefs=`
   extend type Query{
@@ -55,17 +55,29 @@ export const resolvers={
     async follow(_,{name,isFollow},{user}){
       exactLogin(user);
       if(user.name==name)throw new APIError('不能关注自己!',1);
-      let followUserID=await getUserIDFormName(name);
+      let followUser=await getUserFormName(name);
       let find={
           user:user,
-          follow:followUserID
+          follow:followUser
         };
       if(isFollow){
         if(await followModel.findOne(find).count().exec()>0)return '你已关注'
-        await followModel(find).save()
+        await followModel(find).save();
+        followUser.followersCount++;
+        await followUser.save();
+        user.followingCount++;
+        await user.save()
         return '关注成功'
       }else{
         await followModel.remove(find).exec();
+        if(followUser.followersCount>0){
+          followUser.followersCount--;
+          await followUser.save();
+        }
+        if(user.followingCount>0){
+          user.followingCount--;
+          await user.save();
+        }
         return '删除成功'
       }
     },

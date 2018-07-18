@@ -82,7 +82,7 @@ class User extends Component{
     location:{pathname},
     match:{params:{name:userName}},
     selfUser}=this.props;
-    /*if(loading){
+  /*  if(loading){
       return <PageLoading />
     }*/
     const isSlef=selfUser && selfUser.name==userName;
@@ -113,13 +113,13 @@ class User extends Component{
             <Box direction="row" display="flex" marginTop={3}>
             <Column span={5}>
               <FollowCountButton to={`/${userName}/followers`}>
-                <Text bold size="sm">0</Text>
+                <Text bold size="sm">{user.followersCount}</Text>
                 <Text bold size="sm" color="gray">粉丝</Text>
               </FollowCountButton>
             </Column>
               <Column span={5}>
                 <FollowCountButton to={`/${userName}/following`}>
-                  <Text bold size="sm">0</Text>
+                  <Text bold size="sm">{user.followingCount}</Text>
                   <Text bold size="sm" color="gray">关注</Text>
                 </FollowCountButton>
               </Column>
