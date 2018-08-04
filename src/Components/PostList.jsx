@@ -81,7 +81,7 @@ const getPhoto=({userTo,itemTo,user,thumbnail,content,id})=>(
     <ThumbnailNode  thumbnail={thumbnail} itemTo={itemTo} />
     <Link to={itemTo}>
       <Box>
-        <Text overflow="normal" leading="tall" size="xs">{content}</Text>
+        <Text overflow="normal" leading="tall" size="xs" overflow="breakWord">{content}</Text>
       </Box>
     </Link>
     <UserNode user={user} userTo={userTo} />
@@ -97,7 +97,7 @@ const getVideo=({userTo,itemTo,user,thumbnail,content,id})=>(
     </PlayIcon>
     <Link to={itemTo}>
       <Box>
-        <Text overflow="normal" leading="tall" size="xs">{content}</Text>
+        <Text overflow="normal" leading="tall" size="xs" overflow="breakWord">{content}</Text>
       </Box>
     </Link>
     <UserNode user={user} userTo={userTo} />
