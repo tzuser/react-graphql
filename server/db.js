@@ -39,6 +39,8 @@ const postSchema=new Schema({
   likeNum:Number,//喜欢人数
   hotNum:Number,//热度
   commentNum:Number,//评论量
+  rootUser:{type:Schema.Types.ObjectId,ref:'User'},//发帖人
+  fromUser:{type:Schema.Types.ObjectId,ref:'User'},//被转帖人
   comments:[{type:Schema.Types.ObjectId,ref:'Comment'}]
 })
 
