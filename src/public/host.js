@@ -1,7 +1,7 @@
 //http://otaku.tangzuo.cc
 let hosts={
 	HOST:'',
-	STATIC_URL:'http://192.168.1.107:8181',
+	STATIC_URL:'',
 	DB_URL:'/graphql',
 }
 //使用远程数据
