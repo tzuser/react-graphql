@@ -104,19 +104,13 @@ class App extends React.Component{
     }
   }
   componentDidCatch(data){
-    console.log(data)
+    
   }
   componentWillUnmount(){
     //移除浏览器缩放事件
     if(typeof window!='undefined'){
       window.removeEventListener('resize',this.resizeFun);
     }
-  }
-  state={footer:true}
-  getChildContext() {
-     return {
-      isFooter:(show)=>{this.setState({footer:show})},//隐藏或显示底部
-    };
   }
 	render(){
 		return(
@@ -141,7 +135,7 @@ class App extends React.Component{
           <Route path='/:name/followers' component={LoadableFollowers} />
           <Route path='/:name' component={LoadableUser} />
         </Switch>
-        <Footer show={this.state.footer}/>
+        <Footer/>
 			</div>
 			)
 	}

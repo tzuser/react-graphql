@@ -133,7 +133,9 @@ class Comments extends Component{
           <Box marginLeft={-3}>
           <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={()=>goBack()} />
           </Box>
-          <Text bold size="lg">评论</Text>
+          <Box flex="grow">
+            <Text bold size="lg">评论</Text>
+          </Box>
         </HeaderContainer>
 
 

@@ -22,7 +22,6 @@ import FollowingList from 'com_/follow/FollowingList';
 class Following extends Component{
 	render(){
 		let {data:{user,loading},match:{params:{name}}}=this.props;
-    console.log(user)
 		if(loading) return <PageLoading />;
 		return (
     <div>

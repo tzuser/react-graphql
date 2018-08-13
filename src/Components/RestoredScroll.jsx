@@ -4,7 +4,6 @@ class RestoredScroll extends Component{
   componentDidMount() {
 
     let positons=window[this.props.id];
-    console.log('渲染完成',positons)
     if(positons){
       //let obj=this.refs.box.firstChild;
      // window.scrollTop=positons[0];

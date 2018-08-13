@@ -35,7 +35,6 @@ class LikeButton extends Component{
     let {postID,push,data:{isLike,refetch,loading},selfUser}=this.props;
     let Btn=isLike?GrayButton:RedButton
     if(loading || this.state.addLoading)Btn=DisabledButton;
-    console.log(selfUser)
     return (
       <Mutation mutation={LIKE}>
       {(like)=>(

@@ -18,12 +18,14 @@ class Notice extends Component{
   render(){
     return <div>
     <HeaderContainer>
-      <Box flex="grow">
-        <SegmentedControl
-                items={this.state.items}
-                selectedItemIndex={this.state.itemIndex}
-                onChange={this.handleItemChange}
-              />
+      <Box flex="grow"  justifyContent="center" display="flex">
+        <Box maxWidth={420} flex="grow" >
+          <SegmentedControl
+                  items={this.state.items}
+                  selectedItemIndex={this.state.itemIndex}
+                  onChange={this.handleItemChange}
+                />
+        </Box>
       </Box>
     </HeaderContainer>
     <PageLoading />

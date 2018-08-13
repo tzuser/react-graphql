@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as configActs from '../actions/config';
 import ClassNames from 'classnames'
+
 const Foot=styled.div`
 left: 0;
 bottom: 0;
@@ -62,8 +63,11 @@ class IconColumn extends Component{
       )
   }
 }
+
 const mapStateToProps=(state)=>({
-  selfUser:state.config.selfUser
+  selfUser:state.config.selfUser,
+  isPc:state.config.isPc,
+  showFooter:state.config.showFooter,
 })
 const mapDispatchToProps=(dispatch)=>bindActionCreators({
 
@@ -74,8 +78,9 @@ class Footer extends Component{
   state={active:null}
   render(){
     let active=this.state.active;
-    let {location,show,selfUser}=this.props;
-    if(!show)return false;
+    let {location,showFooter,selfUser,isPc}=this.props;
+    if(isPc)return null;
+    if(!showFooter)return false;
     let name=selfUser && selfUser.name;
     return(
 
