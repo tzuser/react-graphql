@@ -14,6 +14,7 @@ import {errorReply} from '_public';
 import {Link} from 'react-router-dom';
 import {connect } from 'react-redux';
 import LikePostButton from 'com_/post/LikePostButton';
+import Block from 'com_/Block';
 import DEL_POST from 'gql_/delPost.gql';
 import postQuery from 'gql_/post.gql';
 const Card=styled.div`
@@ -140,30 +141,26 @@ const Content=({post,postID,push})=>{
   let {user,content,type,tags,commentNum,hotNum,likeNum,src,thumbnail}=post;
   let photos=post.photos || [];
   return (
-    <div>
-        <Box justifyContent="center"  display="flex" alignItems="start">
-          <Box paddingX={4} flex="grow" maxWidth={800}>
-            {type=='video' && <Video src={src}/>}
-            {type=='photo' && <Photo photos={photos} thumbnail={thumbnail}/>}
-            <UserNode user={user} content={content} userClick={(e,data)=>push(`/${data.name}/`)}/>
-            <Box direction="row" display="flex" wrap={true} >
-              <Box>
-                <Text color="gray" size="xs">热度 {hotNum}</Text>
-              </Box>
-              <Box marginLeft={2}>
-                <Text color="gray" size="xs">喜欢 {likeNum}</Text>
-              </Box>
-            </Box>
-            <Box paddingY={2}>
-              <Link to={`/comments/${postID}/`}><Button text={`添加评论(${commentNum})`} /></Link>
-            </Box>
+    <Block>
+        {type=='video' && <Video src={src}/>}
+        {type=='photo' && <Photo photos={photos} thumbnail={thumbnail}/>}
+        <UserNode user={user} content={content} userClick={(e,data)=>push(`/${data.name}/`)}/>
+        <Box direction="row" display="flex" wrap={true} >
+          <Box>
+            <Text color="gray" size="xs">热度 {hotNum}</Text>
           </Box>
+          <Box marginLeft={2}>
+            <Text color="gray" size="xs">喜欢 {likeNum}</Text>
+          </Box>
+        </Box>
+        <Box paddingY={2}>
+          <Link to={`/comments/${postID}/`}><Button text={`添加评论(${commentNum})`} /></Link>
         </Box>
         <hr />
         <Box direction="row" display="flex" wrap={true} >
         {tags.map((item,key)=><Tag to={`/search/${item}`} key={key} padding={2}>#{item}</Tag>)}
         </Box>
-      </div>
+      </Block>
         )
 }
 class Post extends Component{

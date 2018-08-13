@@ -9,6 +9,7 @@ import FollowHeader from 'com_/follow/FollowHeader';
 import PageLoading from 'com_/PageLoading';
 import userQuery from 'gql_/user.gql';
 import FollowersList from 'com_/follow/FollowersList';
+
 @withRouter
 @graphql(userQuery,{
   options:(props)=>{
@@ -25,9 +26,7 @@ class Following extends Component{
     if(loading) return <PageLoading />;
     return (
     <div>
-      <Box paddingX={4}>
-        <FollowHeader user={user} followCount={user.followersCount} title="粉丝"/>
-      </Box>
+      <FollowHeader user={user} followCount={user.followersCount} title="粉丝"/>
       <Box marginTop={2}>
         <FollowersList userName={name}/>
       </Box>

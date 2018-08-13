@@ -1,0 +1,3 @@
+mutation setUpdate($name:String!,$isUpdate:Boolean!){
+    setUpdate(name:$name,isUpdate:$isUpdate)
+}

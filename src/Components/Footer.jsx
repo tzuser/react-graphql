@@ -38,6 +38,7 @@ const IconLink=styled(Link)`
     }
   }
 `
+
 class IconColumn extends Component{
   componentWillMount(){
     let {location:{pathname},to,label,icon,index,active,onActive,selfName}=this.props;
@@ -64,67 +65,81 @@ class IconColumn extends Component{
   }
 }
 
+
 const mapStateToProps=(state)=>({
   selfUser:state.config.selfUser,
-  isPc:state.config.isPc,
-  showFooter:state.config.showFooter,
 })
+
 const mapDispatchToProps=(dispatch)=>bindActionCreators({
 
 },dispatch)
+
 @withRouter
 @connect(mapStateToProps,mapDispatchToProps)
-class Footer extends Component{
+export  class Tabs extends Component{
   state={active:null}
   render(){
     let active=this.state.active;
-    let {location,showFooter,selfUser,isPc}=this.props;
-    if(isPc)return null;
-    if(!showFooter)return false;
+    let {location,selfUser}=this.props;
+    
     let name=selfUser && selfUser.name;
     return(
+      <Box maxWidth="500px" display="flex" width="100%"  direction="row">
+        <IconColumn
+          location={location}
+          to="/"
+          index={0}
+          label="发现"
+          icon="compass"
+          active={active}
+          onActive={(index)=>this.setState({active:index})}/>
+        <IconColumn
+          location={location}
+          to="/find"
+          index={1}
+          label="搜索"
+          icon="search"
+          active={active}
+          onActive={(index)=>this.setState({active:index})}/>
+        <IconColumn
+          location={location}
+          to="/notice"
+          index={2}
+          label="消息"
+          icon="speech-ellipsis"
+          active={active}
+          onActive={(index)=>this.setState({active:index})}/>
+        <IconColumn
+          location={location}
+          to={name?`/${name}`:"/login/"}
+          replace={!!name}
+          selfName={name}
+          index={3}
+          label="我"
+          icon="person"
+          active={active}
+          onActive={(index)=>this.setState({active:index})}/>
+      </Box>)
+  }
+}
 
+
+@connect((state)=>({
+  isPc:state.config.isPc,
+  showFooter:state.config.showFooter,
+}))
+class Footer extends Component{
+  render(){
+    let {showFooter,isPc}=this.props;
+    if(!showFooter)return false;
+    if(isPc)return null;
+    return(
     <div style={{height:54}}>
       <Foot>
         <Box paddingX={1}  
         justifyContent="center"
         alignItems="start" display="flex" direction="row">
-            <Box maxWidth="500px" display="flex" width="100%"  direction="row">
-              <IconColumn
-                location={location}
-                to="/"
-                index={0}
-                label="发现"
-                icon="compass"
-                active={active}
-                onActive={(index)=>this.setState({active:index})}/>
-              <IconColumn
-                location={location}
-                to="/find"
-                index={1}
-                label="搜索"
-                icon="search"
-                active={active}
-                onActive={(index)=>this.setState({active:index})}/>
-              <IconColumn
-                location={location}
-                to="/notice"
-                index={2}
-                label="消息"
-                icon="speech-ellipsis"
-                active={active}
-                onActive={(index)=>this.setState({active:index})}/>
-              <IconColumn
-                location={location}
-                to={name?`/${name}`:"/login/"}
-                replace={!!name}
-                selfName={name}
-                index={3}
-                label="我"
-                icon="person"
-                active={active}
-                onActive={(index)=>this.setState({active:index})}/>
-            </Box>
+           <Tabs />
         </Box>
       </Foot>
     </div>

@@ -25,9 +25,7 @@ class Following extends Component{
 		if(loading) return <PageLoading />;
 		return (
     <div>
-      <Box paddingX={4}>
-  		  <FollowHeader user={user}  followCount={user.followingCount} title="关注"/>
-  		</Box>
+  		<FollowHeader user={user}  followCount={user.followingCount} title="关注"/>
       <Box marginTop={2}>
         <FollowingList userName={name}/>
       </Box>

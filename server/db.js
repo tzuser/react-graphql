@@ -4,7 +4,7 @@ let db=mongoose.connect('mongodb://web:wysj3910@127.0.0.1:27017/web')
 const userSchema=new Schema({
   name:{type:String,index:true},
   password:String,
-  nick_name:{type:String,index:true},
+  nick_name:{type:String,index:true},//因采用驼峰
   age:Number,
   creationDate:Date,
   sex:Number,
@@ -13,6 +13,7 @@ const userSchema=new Schema({
   followersCount:{ type: Number, default: 0 },
   //posts:[{ type: Schema.Types.ObjectId, ref: 'Post' }],
   roles:[String],
+  isUpdate:{ type: Boolean, default: false },
 })
 
 //帖子

@@ -12,7 +12,7 @@ import hiddenFooter from '../Components/HiddenFooter';
 import PageLoading from '../Components/PageLoading';
 import commentsQuery from 'gql_/comments.gql';
 import ADD_COMMENT from 'gql_/addComment.gql';
-
+import Block from 'com_/Block';
 
 const CommentInput=styled.div`
   input{
@@ -139,7 +139,7 @@ class Comments extends Component{
         </HeaderContainer>
 
 
-        <Box paddingX={4}>
+        <Block>
         <Spinner show={!comments.isEnd} accessibilityLabel="Example spinner" />
         {list.map((item,key)=><UserNode 
           key={key} 
@@ -149,7 +149,7 @@ class Comments extends Component{
           onReply={({id,nick_name})=>this.setState({replyId:id,replyName:nick_name})}
           userClick={(e,data)=>push(`/${data.name}/`)}
           />)}
-        </Box>
+        </Block>
 
         <div style={{height:64}}>
         </div>

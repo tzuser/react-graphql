@@ -16,7 +16,9 @@ import * as configActs from '../actions/config';
 import UserPosts from './UserPosts';
 import Loadable from 'react-loadable';
 import FollowUserButton from 'com_/follow/FollowUserButton';
+import UpdateUserButton from 'com_/user/UpdateUserButton';
 import FollowCountButton from 'com_/follow/FollowCountButton';
+import Block from 'com_/Block';
 import userQuery from 'gql_/user.gql';
 const LoadableUserPosts = Loadable({
   loader: () => import(/* webpackChunkName: 'UserPosts' */ './UserPosts'),
@@ -35,8 +37,12 @@ const UserHeader=({userName,goBack})=>(
     <IconButton  accessibilityLabel="返回" icon="arrow-back" onClick={goBack} />
     </Box>
     <Box>
+      <UpdateUserButton userName={userName} />
+    </Box>
+    <Box marginLeft={1} >
       <FollowUserButton userName={userName} />
     </Box>
+
   </HeaderContainer>
 )
 
@@ -64,7 +70,7 @@ const UserCard=({user})=>{
       <Box flex="grow">
       <Heading size="xs">{user.nick_name}</Heading>
       </Box>
-      <Box marginLeft={1} column={4} flex="none"><Avatar  name="Long" src={imageUrl(user.avatar)} /></Box>
+      <Box marginLeft={1} column={4} maxWidth={120} flex="none"><Avatar  name="Long" src={imageUrl(user.avatar)} /></Box>
     </Box>
     )
 }
@@ -104,41 +110,41 @@ class User extends Component{
     tabsIndex=tabsIndex<0?0:tabsIndex;
     return (
       <div>
-        {isSlef?<SelfHeader userName={userName}/>:<UserHeader userName={userName} goBack={goBack}/>}
+        {isSlef?<SelfHeader userName={userName}/>:<UserHeader userName={userName} goBack={goBack} />}
         {loading && <PageLoading />}
         {!loading && 
           <div>
-            <Box paddingX={4}>
-            <UserCard user={user}/>
-            <Box direction="row" display="flex" marginTop={3}>
-            <Column span={5}>
-              <FollowCountButton to={`/${userName}/followers`}>
-                <Text bold size="sm">{user.followersCount}</Text>
-                <Text bold size="sm" color="gray">粉丝</Text>
-              </FollowCountButton>
-            </Column>
+            <Block>
+              <UserCard user={user}/>
+              <Box direction="row" display="flex" marginTop={3}>
               <Column span={5}>
-                <FollowCountButton to={`/${userName}/following`}>
-                  <Text bold size="sm">{user.followingCount}</Text>
-                  <Text bold size="sm" color="gray">关注</Text>
+                <FollowCountButton to={`/${userName}/followers`}>
+                  <Text bold size="sm">{user.followersCount}</Text>
+                  <Text bold size="sm" color="gray">粉丝</Text>
                 </FollowCountButton>
               </Column>
-              {/* <Column span={6}>
-               <FolloButton to="#">
-                   <Text bold size="sm" align="right" truncate={true} overflow="breakWord">
-                    https://www.pinterest.com/alivaezbarzani/boards
-                   </Text>
-                </FolloButton>
-              </Column>*/}
-            </Box>
-            <Box marginTop={4}>
-            <Tabs
-               tabs={tabsData}
-               activeTabIndex={tabsIndex}
-               onChange={(e)=>{}}
-            />
-            </Box>
-          </Box>
+                <Column span={5}>
+                  <FollowCountButton to={`/${userName}/following`}>
+                    <Text bold size="sm">{user.followingCount}</Text>
+                    <Text bold size="sm" color="gray">关注</Text>
+                  </FollowCountButton>
+                </Column>
+                {/* <Column span={6}>
+                 <FolloButton to="#">
+                     <Text bold size="sm" align="right" truncate={true} overflow="breakWord">
+                      https://www.pinterest.com/alivaezbarzani/boards
+                     </Text>
+                  </FolloButton>
+                </Column>*/}
+              </Box>
+              <Box marginTop={4}>
+                <Tabs
+                   tabs={tabsData}
+                   activeTabIndex={tabsIndex}
+                   onChange={(e)=>{}}
+                />
+              </Box>
+            </Block>
           <Box marginTop={3} paddingX={2}>
             {tabsIndex==0 && <LoadableUserPosts userName={userName} minCols={2}/>}
             {tabsIndex==1 && <LoadableUserLikes userName={userName} minCols={2}/>}
