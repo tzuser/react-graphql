@@ -1,8 +1,10 @@
-import {userModel} from '../db';
+import {userModel,postModel} from '../db';
 import jwt from 'jsonwebtoken';
-import {getPageType,md5,blackList,exactLogin} from './public';
+import {getPageType,md5,blackList,exactLogin,getUserFormName} from './public';
 import {getThumbnail} from './file';
 import APIError from './APIError';
+import findRemoveSync from 'find-remove';
+import path from 'path';
 export const typeDefs=`
 type User{
   id:ID!
@@ -49,6 +51,7 @@ extend type Mutation{
   login(name:String!,password:String!):Login
   join(input:userInput):User
   editUser(input:updateUserInput):User
+  delUser(name:String!):Boolean
 }
 `
 export const getUser=async ({name})=>{
@@ -131,6 +134,16 @@ export const resolvers={
       }
       let res=await userModel.update({_id:id},input)
       return getUser({name:user_name})
+    },
+    async delUser(_,{name},ctx){
+      exactLogin(ctx.user);
+      let user=await getUserFormName(name);
+      await postModel.remove({user:{$in:user}});
+      console.log('删除用户帖子')
+      console.log(path.resolve(`./files/${name}`))
+      var result = findRemoveSync(path.resolve(`./files/${name}`), {dir: "*", files: "*.*", ignore:'avatar_*.*'})
+      console.log('删除用户文件')
+      return true
     }
   }
 };

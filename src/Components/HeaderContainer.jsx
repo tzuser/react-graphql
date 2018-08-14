@@ -31,7 +31,7 @@ const mapStateToProps=(state)=>({
 class Header extends Component{
   state={value:''}
   render(){
-    let {location:{pathname},match,showFooter}=this.props
+    let {location:{pathname},match,showFooter,children}=this.props
     let {isPc}=this.props;
     let logoList=['/search','/find','/notice','/search_keyword'];
     let isLogo=isPc && (logoList.find((item)=>pathname.includes(item)) || pathname=="/") && showFooter;
@@ -45,7 +45,7 @@ class Header extends Component{
                  <Tabs />
                </Box>
              </div>)}
-           {this.props.children}
+           {children}
            
         </HeaderBox>
       </div>

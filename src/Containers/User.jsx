@@ -16,10 +16,11 @@ import * as configActs from '../actions/config';
 import UserPosts from './UserPosts';
 import Loadable from 'react-loadable';
 import FollowUserButton from 'com_/follow/FollowUserButton';
-import UpdateUserButton from 'com_/user/UpdateUserButton';
 import FollowCountButton from 'com_/follow/FollowCountButton';
 import Block from 'com_/Block';
 import userQuery from 'gql_/user.gql';
+import UpdateUserButton from 'com_/user/UpdateUserButton';
+import DeleteButton from 'com_/user/DeleteButton';
 const LoadableUserPosts = Loadable({
   loader: () => import(/* webpackChunkName: 'UserPosts' */ './UserPosts'),
   loading:PageLoading
@@ -36,9 +37,14 @@ const UserHeader=({userName,goBack})=>(
     <Box marginLeft={-3} flex="grow">
     <IconButton  accessibilityLabel="返回" icon="arrow-back" onClick={goBack} />
     </Box>
-    <Box>
+    
+    <Box >
+      <DeleteButton userName={userName} />
+    </Box>
+    <Box  marginLeft={1}>
       <UpdateUserButton userName={userName} />
     </Box>
+
     <Box marginLeft={1} >
       <FollowUserButton userName={userName} />
     </Box>

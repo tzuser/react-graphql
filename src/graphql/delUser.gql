@@ -1,0 +1,3 @@
+mutation delUser($name:String!){
+    delUser(name:$name)
+}

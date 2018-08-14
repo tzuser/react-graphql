@@ -62,11 +62,12 @@ class Search extends React.Component{
     }=this.props;
     let list=searchKeyword || [];
     let {showHistory}=this.state;
+    let isSearch=!showHistory;
     return (
       <div>
         <SearchHeader onChange={this.onChangeKeyword.bind(this)} />
         <Block>
-         {showHistory || <Box>
+         {isSearch && <Box>
           {list.map((item,key)=>(<ListLink to={`/search/${item.name}`} key={key} text={item.name}/>))}
           </Box>}
           {showHistory && <Box>

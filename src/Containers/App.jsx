@@ -86,8 +86,6 @@ const mapDispatchToPorps=(dispatch)=>bindActionCreators({
 @withRouter
 @connect(mapStateToProps,mapDispatchToPorps)
 class App extends React.Component{
-  static childContextTypes={isFooter: PropTypes.func}
-
   constructor(props){
     super(props)
     //添加浏览器缩放事件
