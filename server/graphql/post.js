@@ -133,7 +133,6 @@ export const resolvers={
         format:(item)=>{
           if(item.post)return item.post;
           //错误处理 补删除
-          console.log(item._id,'帖子已被删除')
           likeModel.remove({_id:item._id}).exec();
         },
       })

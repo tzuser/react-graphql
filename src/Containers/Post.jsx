@@ -14,8 +14,9 @@ import {errorReply} from '_public';
 import {Link} from 'react-router-dom';
 import {connect } from 'react-redux';
 import LikePostButton from 'com_/post/LikePostButton';
+import DeleteButton from 'com_/post/DeleteButton';
 import Block from 'com_/Block';
-import DEL_POST from 'gql_/delPost.gql';
+
 import postQuery from 'gql_/post.gql';
 const Card=styled.div`
   transition: all 0.1s;
@@ -77,19 +78,7 @@ const OtherHeader=({isAdmin,postID,goBack,push})=>{
         </HeaderContainer>)
 }
 
-const DeleteButton=({postID,goBack,push})=>(
-  <Mutation mutation={DEL_POST}>
-  {(mutate)=>(            
-    <Button text="删除" size="sm" onClick={()=>{
-      mutate({variables:{post:postID}}).then(data=>{
-        goBack()
-      }).catch(error=>{
-        errorReply({error,push})
-      });
-    }}/>
-  )}
-  </Mutation>
-)
+
 
 const SelfHeader=({postID,goBack,push})=>{
   return (<HeaderContainer transparent={false}>

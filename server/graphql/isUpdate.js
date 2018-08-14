@@ -14,7 +14,6 @@ export const resolvers={
     async isUpdate(_,{name},{user}){
       exactLogin(user);
       let target=await getUserFormName(name);
-      console.log(target)
       return target['_doc'].isUpdate;
     },
   },
