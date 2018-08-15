@@ -6,6 +6,7 @@ import {loadItems} from '_public';
 import UserItem from 'com_/UserItem';
 import PageLoading from 'com_/PageLoading';
 import InTheEnd from 'com_/InTheEnd';
+import FollowUserButton from 'com_/follow/FollowUserButton'
 
 @graphql(followersQuery,{
   options:(props)=>{
@@ -24,7 +25,7 @@ class FollowList extends Component{
     return(
       <div>
         <List 
-        comp={UserItem} 
+        comp={(props)=>(<UserItem {...props} content={(props)=>(<FollowUserButton userName={props.data.name} />)} />)} 
         loadItems={(data)=>loadItems({props:this.props,queryName:'followers'})} 
         minCols={2} 
         virtualize={true}

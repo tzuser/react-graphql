@@ -30,3 +30,9 @@ export const loadItems=function({props,queryName,condition={}}){
           })
       }
   }
+
+//服务端不渲染
+export const ssrNotRender=(WappedComponent)=>{
+  if(typeof window != "object") return ()=>{return null};
+  return WappedComponent
+}

@@ -1,6 +1,6 @@
 import {userModel,postModel} from '../db';
 import jwt from 'jsonwebtoken';
-import {getPageType,md5,blackList,exactLogin,getUserFormName} from './public';
+import {getPageType,md5,blackList,exactLogin,getUserFormName,getPageData} from './public';
 import {getThumbnail} from './file';
 import APIError from './APIError';
 import findRemoveSync from 'find-remove';
@@ -39,7 +39,7 @@ input updateUserInput{
 extend type Query{
   user(name:String):User
   self:User
-  users(pageNo:Int!,pageSize:Int!):UserPage
+  users(first:Int!,after:ID,desc:Boolean):UserPage
 }
 
 type Login{
@@ -70,10 +70,17 @@ export const resolvers={
       exactLogin(ctx.user);
       return ctx.user
     },
-    async users(_,{pageNo,pageSize}){
-      let users=await userModel.find().skip(pageNo*pageSize).limit(pageSize).exec();
-      let totalCount=await userModel.find().count().exec();
-      return {pageNo,pageSize,totalCount,list:users}
+    async users(_,{first,after,desc,sort}){
+      let page=await getPageData({
+        model:userModel,
+        find:{},
+        after,
+        first,
+        desc,
+        sort,
+        populate:'',
+      })
+      return page
     },
     
   },

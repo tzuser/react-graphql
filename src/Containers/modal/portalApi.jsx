@@ -1,3 +1,4 @@
+//不能使用redux
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -7,6 +8,7 @@ const Containers=styled.div`
   z-index:10;
 `
 const portalApi = function(WarppedComponent,props){
+  if(typeof window !="object")return null;
   const doc = document;
   let node = doc.createElement('div');
   doc.body.appendChild(node);

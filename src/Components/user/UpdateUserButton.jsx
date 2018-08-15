@@ -24,7 +24,8 @@ import {withRouter} from 'react-router-dom';
 class UpdateUserButton extends Component{
   state={addLoading:false}
   render(){
-    let {userName,data:{isUpdate,refetch,loading},history:{push}}=this.props;
+    let {userName,data:{isUpdate,refetch,loading},history:{push},buttonProps}=this.props;
+    console.log(userName,loading)
     let BtnColor=isUpdate?"gray":"blue";
     let isLoading=loading || this.state.addLoading;
     return (
@@ -47,6 +48,7 @@ class UpdateUserButton extends Component{
             errorReply({error,push});
           });
         }}
+        {...buttonProps}
         />
       )}
       </Mutation>

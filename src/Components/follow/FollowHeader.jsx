@@ -6,6 +6,11 @@ import {imageUrl} from '_tools';
 import HeaderContainer from 'com_/HeaderContainer';
 import styled from 'styled-components';
 import Block from 'com_/Block';
+
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import userQuery from 'gql_/user.gql';
+
 const FollowCount = styled.div`
 	font-size:36px;
 	font-weight: bold;
@@ -26,20 +31,31 @@ const Header=({goBack})=>(
 
 
 @withRouter
+@graphql(userQuery,{
+  options:(props)=>{
+      return {
+      variables:{
+        name:props.userName||null,
+        first:20
+      }
+  }},
+})
 class FollowHeader extends Component{
 	render(){
-		let {user,history:{goBack},
-		followCount,
+		let {
+		history:{goBack},
+		data:{user,loading},
+		attrName,
 		title
 		}=this.props;
-		if(!user)return null;
+		if(loading)return null;
 		return (
 		  	<div >
 			<Header goBack={goBack}/>
 			<Block>
 			  	<Box direction="row" display="flex">
 			  		<FollowCountShow >
-			  			<FollowCount >{followCount}</FollowCount>
+			  			<FollowCount >{user[attrName]}</FollowCount>
 			            <Text bold size="md" color="gray">{title}</Text>
 			  		</FollowCountShow>
 			  	</Box>

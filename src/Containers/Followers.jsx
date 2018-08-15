@@ -3,30 +3,17 @@ import React,{Component} from 'react';
 import {Box,Text} from 'gestalt';
 import {errorReply} from '_public';
 import {withRouter} from 'react-router-dom';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 import FollowHeader from 'com_/follow/FollowHeader';
 import PageLoading from 'com_/PageLoading';
-import userQuery from 'gql_/user.gql';
 import FollowersList from 'com_/follow/FollowersList';
 
 @withRouter
-@graphql(userQuery,{
-  options:(props)=>{
-      return {
-      variables:{
-        name:props.match.params.name||null,
-        first:20
-      }
-  }},
-})
 class Following extends Component{
   render(){
-    let {data:{user,loading},match:{params:{name}}}=this.props;
-    if(loading) return <PageLoading />;
+    let {match:{params:{name}}}=this.props;
     return (
     <div>
-      <FollowHeader user={user} followCount={user.followersCount} title="粉丝"/>
+      <FollowHeader userName={name} attrName={'followersCount'} title="粉丝"/>
       <Box marginTop={2}>
         <FollowersList userName={name}/>
       </Box>

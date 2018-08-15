@@ -1,5 +1,6 @@
 import React from 'react';
 import {createPortal} from 'react-dom';
+import {ssrNotRender} from '_public';
 
 class Portal extends React.Component {
   constructor() {
@@ -22,4 +23,5 @@ class Portal extends React.Component {
     document.body.removeChild(this.node);
   }
 }
-export default Portal
+
+export default ssrNotRender(Portal)
