@@ -10,8 +10,9 @@ class UserItem extends Component{
   }
   render(){
     let {data:{name,nick_name,avatar,id},history:{push},content:Content}=this.props;
-    return <Box padding={3} >
-      <Card image={
+    return <Box padding={3} paddingY={4} >
+      <Card 
+      image={
          <Link to={`/${name}/`}>
            <Avatar
              name={name}

@@ -14,11 +14,11 @@ const UserButton=(props)=>{
   console.log('------',props.data.name)
   return (
     <Box display="flex" direction="row" >
-      <Box flex="grow" marginRight={2}>
-        <UpdateUserButton userName={props.data.name}/>
+      <Box flex="grow" marginRight={1}>
+        <UpdateUserButton userName={props.data.name} buttonProps={{size:"sm"}}/>
       </Box>
       <Box flex="grow">
-        <FollowUserButton userName={props.data.name}/>
+        <FollowUserButton userName={props.data.name} buttonProps={{size:"sm"}}/>
       </Box>
     </Box>
     )

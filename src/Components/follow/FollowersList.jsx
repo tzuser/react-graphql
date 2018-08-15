@@ -15,7 +15,7 @@ import FollowUserButton from 'com_/follow/FollowUserButton'
         name:props.userName||null,
         first:20
       },
-      //fetchPolicy: "network-only"
+      fetchPolicy: "network-only"
   }},
 })
 class FollowList extends Component{

@@ -28,7 +28,7 @@ const mapStateToProps=(state)=>({
 class FollowUserButton extends Component{
   state={addLoading:false}
   render(){
-    let {userName,data:{isFollow,refetch,loading},history:{push},selfUser}=this.props;
+    let {userName,data:{isFollow,refetch,loading},history:{push},selfUser,buttonProps}=this.props;
     let BtnColor=isFollow?"gray":"red";
     let isLoading=loading || this.state.addLoading;
     return (
@@ -66,6 +66,7 @@ class FollowUserButton extends Component{
             errorReply({error,push});
           });
         }}
+        {...buttonProps}
         />
       )}
       </Mutation>
