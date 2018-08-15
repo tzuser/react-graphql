@@ -5,8 +5,11 @@ import {imageUrl} from '_tools'
 import {withRouter} from 'react-router-dom';
 @withRouter
 class UserItem extends Component{
+  componentWillUnmount(){
+    console.log('卸载')
+  }
   render(){
-    let {data:{name,nick_name,avatar,id},history:{push}}=this.props;
+    let {data:{name,nick_name,avatar,id},history:{push},content:Content}=this.props;
     return <Box padding={3} >
       <Card image={
          <Link to={`/${name}/`}>
@@ -23,15 +26,8 @@ class UserItem extends Component{
            </Box>
        </Text>
        </Link>
-       <Button
-          onClick={(event)=>{
-            push(`/${name}/`)
-          }}
-          accessibilityLabel="Follow James Jones"
-          color="red"
-          text="关注"
-       />
-     </Card>
+       <Content {...this.props}/>
+    </Card>
     
     </Box>
   }

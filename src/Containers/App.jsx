@@ -76,6 +76,12 @@ const LoadableFollowers = Loadable({
   loading:PageLoading
 });
 
+
+const LoadableUserList = Loadable({
+  loader: () => import(/* webpackChunkName: 'UserList' */ './UserList'),
+  loading:PageLoading
+});
+
 const mapStateToProps=(state)=>({
   width:state.config.width
 })
@@ -121,6 +127,7 @@ class App extends React.Component{
           <Route path="/notice" component={LoadableNotice}/>
           <Route path='/create' component={LoadableCreate} />
           <Route path='/settings' component={LoadableSettings} />
+          <Route path='/user_list' component={LoadableUserList} />
           
           <Route path='/search/:keyword' component={LoadableSearchResult} />
 

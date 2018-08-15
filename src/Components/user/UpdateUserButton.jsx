@@ -25,6 +25,7 @@ class UpdateUserButton extends Component{
   state={addLoading:false}
   render(){
     let {userName,data:{isUpdate,refetch,loading},history:{push}}=this.props;
+    console.log(userName,loading)
     let BtnColor=isUpdate?"gray":"blue";
     let isLoading=loading || this.state.addLoading;
     return (

@@ -12,7 +12,6 @@ export const typeDefs=`
 export const resolvers={
   Query:{
     async isUpdate(_,{name},{user}){
-      exactLogin(user);
       let target=await getUserFormName(name);
       return target['_doc'].isUpdate;
     },

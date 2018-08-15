@@ -5,8 +5,12 @@ import followingQuery from 'gql_/following.gql';
 import {loadItems} from '_public';
 import UserItem from 'com_/UserItem';
 import PageLoading from 'com_/PageLoading';
+import FollowUserButton from 'com_/follow/FollowUserButton';
 import InTheEnd from 'com_/InTheEnd';
 
+const Btn=(props)=>{
+  return <FollowUserButton userName={props.data.name} />
+}
 @graphql(followingQuery,{
   options:(props)=>{
       return {
@@ -14,7 +18,7 @@ import InTheEnd from 'com_/InTheEnd';
         name:props.userName||null,
         first:20
       },
-      fetchPolicy: "network-only"
+      //fetchPolicy: "network-only"
   }},
 })
 class FollowList extends Component{
@@ -24,11 +28,13 @@ class FollowList extends Component{
     return(
       <div>
         <List 
-        comp={UserItem} 
+        comp={(props)=>(<UserItem {...props} content={Btn} />)}
         loadItems={(data)=>loadItems({props:this.props,queryName:'following'})} 
         minCols={2} 
         virtualize={true}
-        items={following?following.list:[]} />
+        items={following?following.list:[]}
+
+        />
         {following && following.isEnd && <InTheEnd/>}
       </div>
     )
