@@ -24,7 +24,6 @@ class TabsRoot extends Component{
 	}
 	render(){
 		let tabsData=this.props.tabs.map(item=>({href:item.href,text:item.text}))
-		console.log(tabsData)
 		return <TabsCom {...this.props} tabClickCallBack={this.tabClickCallBack.bind(this)} tabs={tabsData}/>
 	}
 }

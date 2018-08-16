@@ -1,5 +1,5 @@
 import mongoose,{Schema} from 'mongoose';//127.0.0.1
-let db=mongoose.connect('mongodb://web:wysj3910@127.0.0.1:27017/web')
+let db=mongoose.connect('mongodb://web:wysj3910@192.168.1.107:27017/web')
 //用户
 const userSchema=new Schema({
   name:{type:String,index:true},
@@ -34,7 +34,7 @@ const postSchema=new Schema({
   }],//图片集合
   tags:[{type:String,index:true}],//标签
   src:String,//视频 音频 等地址
-  creationDate:Date,//创建日期
+  creationDate:{type:Date,index:true},//创建日期
   updateDate:Date,//修改日期
   readNum:Number,//阅读量
   likeNum:Number,//喜欢人数
