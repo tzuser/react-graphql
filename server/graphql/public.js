@@ -35,7 +35,12 @@ export const getPageData=async ({model,find,first,after,populate,select,format,s
     if(find._id){
       find._id={...find._id,[desc?"$lt":"$gt"]:after};
     }else{
-      find._id={[desc?"$lt":"$gt"]:after};
+      if(sort!='_id'){//非ID排序
+        let findRes=await model.findById(after);
+        find[sort]={[desc?"$lt":"$gt"]:findRes[sort]};
+      }else{
+        find._id={[desc?"$lt":"$gt"]:after};
+      }
     }
   }
   const cursor=model.find(find).sort({[sort]:desc?-1:1}).populate(populate).select(select).cursor();
