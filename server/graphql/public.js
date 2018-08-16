@@ -19,13 +19,21 @@ type ${name}Page{
 export const getListFromCursor=async (cursor,first)=>{
   let list=[];
   let doc;
+  var index=0;
   while(doc = await cursor.next()) {
+
       doc.id=doc._id;
+      if(!doc){
+        console.log('aaaaa',index,doc)
+      }
       list.push(doc)
       if(list.length>=first){
         break;
       }
+
+       index++
   }
+
   return list;
 }
 
@@ -45,10 +53,10 @@ export const getPageData=async ({model,find,first,after,populate,select,format,s
   }
   const cursor=model.find(find).sort({[sort]:desc?-1:1}).populate(populate).select(select).cursor();
   let list=await getListFromCursor(cursor,first);
-  return listToPage({list,first,format});
+  return listToPage({desc,list,first,format});
 }
 
-export const listToPage=async ({list,first,format})=>{
+export const listToPage=async ({desc,list,first,format})=>{
   let last_id=list.length>0?(await list[list.length-1])._id:'';
   if(format)list=list.map(format)
   list=list.filter(item=>!!item);

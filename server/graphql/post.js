@@ -112,7 +112,7 @@ export const resolvers={
         find,
         after,
         first,
-        desc,
+        desc:false,
         sort:'creationDate',
         populate:'user'
       })
@@ -143,19 +143,15 @@ export const resolvers={
       //获取原post
       //let timeLog=getRunTime();
       let post=await postModel.findById(id,{content:1,tags:1}).exec();
-
      /* 
       let str=`${post.tags.join(" ")} ${post.content}`;
       //分词
-     
       let participle=nodejieba.extract(str,6);
       let keywords=participle.map(item=>item.word);
       if(keywords.length==0){
         return {first,list:[],isEnd:true}
       }
       */
-      
-   
       let tagsRegex=post.tags.join('|')
 
       let find={
