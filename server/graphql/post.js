@@ -113,7 +113,7 @@ export const resolvers={
         after,
         first,
         desc,
-        sort,
+        sort:'creationDate',
         populate:'user'
       })
       return page

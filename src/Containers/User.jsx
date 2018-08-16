@@ -98,6 +98,7 @@ class User extends Component{
       return <PageLoading />
     }*/
     const isSlef=selfUser && selfUser.name==userName;
+    const isAdmin=selfUser && selfUser.roles.includes('admin');
     //tabs
     let tabsData=[
             /*{
@@ -105,13 +106,22 @@ class User extends Component{
             },*/
             {
               text: "帖子",
-              href: `/${userName}/post`
+              href: `/${userName}/post`,
+              isReplace:true
             },
             {
               text: "喜欢",
-              href: `/${userName}/like`
+              href: `/${userName}/like`,
+              isReplace:true
             }
            ];
+    if(isAdmin){
+      tabsData.push({
+        text: "用户管理",
+        href: `/user_list`,
+        isReplace:false
+      })
+    }
     let tabsIndex=tabsData.findIndex(item=>pathname.startsWith(item.href));
     tabsIndex=tabsIndex<0?0:tabsIndex;
     return (
