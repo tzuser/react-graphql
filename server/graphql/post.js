@@ -2,7 +2,7 @@ import {postModel,likeModel,userModel,keywordModel} from '../db';
 import APIError from './APIError';
 import {getPageType,getPageData,listToPage,getUserIDFormName,exactLogin} from "./public";
 import {getThumbnail} from './file'
-import nodejieba from "nodejieba";
+//import nodejieba from "nodejieba";
 import {resolvers as search} from "./search";
 export const typeDefs=`
 type Photo{
@@ -143,14 +143,20 @@ export const resolvers={
       //获取原post
       //let timeLog=getRunTime();
       let post=await postModel.findById(id,{content:1,tags:1}).exec();
+
+     /* 
       let str=`${post.tags.join(" ")} ${post.content}`;
       //分词
+     
       let participle=nodejieba.extract(str,6);
       let keywords=participle.map(item=>item.word);
       if(keywords.length==0){
         return {first,list:[],isEnd:true}
       }
-      let tagsRegex=keywords.join('|')
+      */
+      
+   
+      let tagsRegex=post.tags.join('|')
 
       let find={
         _id:{$ne:post._id},

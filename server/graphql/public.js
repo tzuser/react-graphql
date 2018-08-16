@@ -36,7 +36,7 @@ export const getPageData=async ({model,find,first,after,populate,select,format,s
       find._id={...find._id,[desc?"$lt":"$gt"]:after};
     }else{
       if(sort!='_id'){//非ID排序
-        let findRes=await model.findById(after);
+        let findRes=await model.findById(after).exec();
         find[sort]={[desc?"$lt":"$gt"]:findRes[sort]};
       }else{
         find._id={[desc?"$lt":"$gt"]:after};
