@@ -112,7 +112,7 @@ export const resolvers={
         find,
         after,
         first,
-        desc:false,
+        desc,
         sort:'creationDate',
         populate:'user'
       })
