@@ -11,7 +11,6 @@ class Global{
     }
 
     constructor(){
-    	console.log('初始化')
         this.db = new PouchDB(`${DB_URL}web`, {
           ajax: {
             cache: true,

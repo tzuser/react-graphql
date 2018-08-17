@@ -47,7 +47,6 @@ class Create extends Component{
     return (
       <div>
       <form onSubmit={e => {
-              console.log('tztz')
               e.preventDefault();
               mutate({variables:{
                 type:this.state.type,

@@ -6,7 +6,7 @@ import {withRouter} from 'react-router-dom';
 @withRouter
 class UserItem extends Component{
   componentWillUnmount(){
-    console.log('卸载')
+    
   }
   render(){
     let {data:{name,nick_name,avatar,id},history:{push},content:Content}=this.props;

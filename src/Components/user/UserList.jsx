@@ -11,7 +11,6 @@ import UpdateUserButton from 'com_/user/UpdateUserButton'
 import FollowUserButton from 'com_/follow/FollowUserButton'
 
 const UserButton=(props)=>{
-  console.log('------',props.data.name)
   return (
     <Box display="flex" direction="row" >
       <Box flex="grow" marginRight={1}>
@@ -36,7 +35,6 @@ class UserList extends Component{
   render(){
     let {data:{users,loading}}=this.props;
     if(loading) return <PageLoading />;
-    console.log('渲染')
     return(
       <div>
         <List 
