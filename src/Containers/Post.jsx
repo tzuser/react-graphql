@@ -10,6 +10,7 @@ import {
   Avatar,
   Button,
   Icon,
+  Column,
 } from 'gestalt';
 import HeaderContainer from '../Components/HeaderContainer';
 import styled from 'styled-components';
@@ -76,55 +77,6 @@ const UserNode = ({ user, content, userClick }) => (
   </Box>
 );
 
-const OtherHeader = ({ isAdmin, postID, goBack, push }) => {
-  return (
-    <HeaderContainer transparent={false}>
-      <Box marginLeft={-3} flex="grow">
-        <IconButton
-          accessibilityLabel="返回"
-          icon="arrow-back"
-          onClick={() => goBack()}
-        />
-      </Box>
-      {isAdmin && (
-        <Box>
-          <DeleteButton postID={postID} goBack={goBack} push={push} />
-        </Box>
-      )}
-      <Box>
-        {/*<GrayButton>
-            <Icon accessibilityLabel="分享" icon="share" onClick={()=>goBack()} />
-            分享
-          </GrayButton>*/}
-        <LikePostButton postID={postID} push={push} initLike={false} />
-      </Box>
-    </HeaderContainer>
-  );
-};
-
-const SelfHeader = ({ postID, goBack, push }) => {
-  return (
-    <HeaderContainer transparent={false}>
-      <Box marginLeft={-3} flex="grow">
-        <IconButton
-          accessibilityLabel="返回"
-          icon="arrow-back"
-          onClick={() => goBack()}
-        />
-      </Box>
-      <Box>
-        {/*<GrayButton>
-            <Icon accessibilityLabel="分享" icon="share" onClick={()=>goBack()} />
-            分享
-          </GrayButton>*/}
-      </Box>
-      <Box marginLeft={2}>
-        <DeleteButton postID={postID} goBack={goBack} push={push} />
-      </Box>
-    </HeaderContainer>
-  );
-};
-
 const Video = ({ src }) => {
   return (
     <video controls="controls" width="100%" autoPlay="autoplay">
@@ -132,6 +84,32 @@ const Video = ({ src }) => {
     </video>
   );
 };
+
+const PostHeader = ({ isSelf, isAdmin, postID, goBack, push }) => {
+  return (
+    <Box display="flex" paddingX={4}>
+      <Box marginLeft={-3} marginTop={-1} flex="grow" mdDisplay="none">
+        <IconButton
+          accessibilityLabel="返回"
+          icon="arrow-back"
+          onClick={() => goBack()}
+        />
+      </Box>
+      <Box flex="grow" />
+      {(isAdmin || isSelf) && (
+        <Box>
+          <DeleteButton postID={postID} goBack={goBack} push={push} />
+        </Box>
+      )}
+      <Box>
+        {!isSelf && (
+          <LikePostButton postID={postID} push={push} initLike={false} />
+        )}
+      </Box>
+    </Box>
+  );
+};
+
 const Photo = ({ photos, thumbnail }) => {
   return (
     <Card onClick={e => console.log('点击')}>
@@ -162,7 +140,8 @@ const Photo = ({ photos, thumbnail }) => {
     </Card>
   );
 };
-const Content = ({ post, postID, push }) => {
+
+const Content = ({ post, postID, push, isSelf, isAdmin, goBack }) => {
   let {
     user,
     content,
@@ -176,38 +155,58 @@ const Content = ({ post, postID, push }) => {
   } = post;
   let photos = post.photos || [];
   return (
-    <Block>
-      {type == 'video' && <Video src={src} />}
-      {type == 'photo' && <Photo photos={photos} thumbnail={thumbnail} />}
-      <UserNode
-        user={user}
-        content={content}
-        userClick={(e, data) => push(`/${data.name}/`)}
+    <Block paddingX={0} paddingY={4} color="white" shape="rounded">
+      <PostHeader
+        isSelf={isSelf}
+        isAdmin={isAdmin}
+        postID={postID}
+        goBack={goBack}
+        push={push}
       />
-      <Box direction="row" display="flex" wrap={true}>
-        <Box>
-          <Text color="gray" size="xs">
-            热度 {hotNum}
-          </Text>
-        </Box>
-        <Box marginLeft={2}>
-          <Text color="gray" size="xs">
-            喜欢 {likeNum}
-          </Text>
-        </Box>
-      </Box>
-      <Box paddingY={2}>
-        <Link to={`/comments/${postID}/`}>
-          <Button text={`添加评论(${commentNum})`} />
-        </Link>
-      </Box>
-      <hr />
-      <Box direction="row" display="flex" wrap={true}>
-        {tags.map((item, key) => (
-          <Tag to={`/search/${item}`} key={key} padding={2}>
-            #{item}
-          </Tag>
-        ))}
+      <Box display="flex" direction="row" paddingY={2} wrap>
+        <Column span={12} mdSpan={8}>
+          <Box paddingX={4}>
+            {type == 'video' && <Video src={src} />}
+            {type == 'photo' && <Photo photos={photos} thumbnail={thumbnail} />}
+          </Box>
+        </Column>
+        <Column span={12} mdSpan={4}>
+          <Box paddingX={4}>
+            <Box marginTop={8} display="none" mdDisplay="block">
+              <hr />
+            </Box>
+            <UserNode
+              user={user}
+              content={content}
+              userClick={(e, data) => push(`/${data.name}/`)}
+            />
+            <Box direction="row" display="flex" wrap={true}>
+              <Box>
+                <Text color="gray" size="xs">
+                  热度 {hotNum}
+                </Text>
+              </Box>
+              <Box marginLeft={2}>
+                <Text color="gray" size="xs">
+                  喜欢 {likeNum}
+                </Text>
+              </Box>
+            </Box>
+            <Box paddingY={2}>
+              <Link to={`/comments/${postID}/`}>
+                <Button text={`添加评论(${commentNum})`} />
+              </Link>
+            </Box>
+            <hr />
+            <Box direction="row" display="flex" wrap={true}>
+              {tags.map((item, key) => (
+                <Tag to={`/search/${item}`} key={key} padding={2}>
+                  #{item}
+                </Tag>
+              ))}
+            </Box>
+          </Box>
+        </Column>
       </Box>
     </Block>
   );
@@ -221,6 +220,7 @@ class Post extends Component {
         params: { id },
       },
       selfUser,
+      isPc,
     } = this.props;
     /*if(loading ){
       return <PageLoading />
@@ -236,34 +236,63 @@ class Post extends Component {
       isAdmin = selfUser && selfUser.roles.includes('admin');
     }
     return (
-      <div>
-        {isSelf ? (
-          <SelfHeader postID={id} goBack={goBack} />
-        ) : (
-          <OtherHeader
-            isAdmin={isAdmin}
-            postID={id}
-            goBack={goBack}
-            push={push}
-          />
-        )}
+      <Box color={isPc ? 'lightGray' : 'white'}>
+        <div style={{ zIndex: 1, position: 'relative' }}>
+          <Box
+            top={true}
+            left={true}
+            marginTop={6}
+            marginLeft={6}
+            position="fixed"
+            display="none"
+            mdDisplay="block"
+          >
+            <IconButton
+              accessibilityLabel="返回"
+              icon="arrow-back"
+              onClick={() => goBack()}
+              size="lg"
+              iconColor="darkGray"
+            />
+          </Box>
+        </div>
         {loading && <PageLoading />}
+
         {!loading && (
           <div>
-            <Content post={post} postID={id} push={push} />
-            <Box paddingX={4} marginTop={2}>
+            <Box display="none" mdDisplay="block" height={30} />
+            <Content
+              post={post}
+              postID={id}
+              push={push}
+              isSelf={isSelf}
+              isAdmin={isAdmin}
+              goBack={goBack}
+            />
+            <Block
+              marginTop={8}
+              marginBottom={4}
+              display="none"
+              mdDisplay="block"
+            >
+              <Text bold size="lg">
+                相似
+              </Text>
+            </Block>
+            <Box paddingX={4} mdDisplay="none">
               <Text bold>相似</Text>
             </Box>
             <MoreLikes id={id} />
           </div>
         )}
-      </div>
+      </Box>
     );
   }
 }
 
 const mapStateToProps = state => ({
   selfUser: state.config.selfUser,
+  isPc: state.config.isPc,
 });
 
 export default graphql(postQuery, {
