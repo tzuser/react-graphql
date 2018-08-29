@@ -11,10 +11,10 @@
 
 
 
-### 启动
+### 启动 链接远程服务
 ```
 cnpm install
-npm run start
+npm run origin
 ```
 
 ### 默认是连接远程服务器的，以下连接本地的服务
