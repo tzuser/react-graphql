@@ -1,30 +1,69 @@
 module.exports = {
     env: {
         browser: true,
-        commonjs: true,
-        es6: true,
+        node: true,
     },
-    extends: 'eslint:recommended',
-    parserOptions: {
-        ecmaVersion: 2018,
-        sourceType: 'module',
-    },
+    plugins: ['react', 'jsx-a11y', 'import'],
+    parser: 'babel-eslint',
+    globals: {},
     rules: {
         indent: ['error', 2],
-        'no-unused-vars': 1,
-        'no-console': 1,
-        'linebreak-style': ['error', 'unix'],
-        quotes: ['error', 'single'],
-        semi: ['error', 'always'],
-        'no-multi-spaces': 1,
-        'react/jsx-space-before-closing': 1, // 总是在自动关闭的标签前加一个空格，正常情况下也不需要换行
-        'jsx-quotes': 1,
-        'react/jsx-closing-bracket-location': 1, // 遵循JSX语法缩进/格式
-        'react/jsx-boolean-value': 1, // 如果属性值为 true, 可以直接省略
-        'react/no-string-refs': 1, // 总是在Refs里使用回调函数
-        'react/self-closing-comp': 1, // 对于没有子元素的标签来说总是自己关闭标签
-        'react/jsx-no-bind': 1, // 当在 render() 里使用事件处理方法时，提前在构造函数里把 this 绑定上去
-        'react/sort-comp': 1, // 按照具体规范的React.createClass 的生命周期函数书写代码
-        'react/jsx-pascal-case': 1, // React模块名使用帕斯卡命名，实例使用骆驼式命名
+        'global-require': 0,
+        'new-cap': 0,
+        'func-names': 0,
+        'consistent-return': 0,
+        'max-len': 0,
+        'require-yield': 0,
+        'guard-for-in': 0,
+        'object-curly-newline': 0,
+        'linebreak-style': 0,
+        'arrow-parens': 0,
+        'comma-dangle': 0,
+        'function-paren-newline': 0,
+        'space-before-function-paren': 0,
+        'prefer-template': 0,
+
+        'import/no-extraneous-dependencies': 0,
+        'import/no-unresolved': 0,
+        'import/no-commonjs': 0,
+        'import/no-nodejs-modules': 0,
+        'import/no-mutable-exports': 0,
+        'import/extensions': [
+            2,
+            {
+                js: 'never',
+                jsx: 'never',
+            },
+        ],
+        'import/no-dynamic-require': 0,
+
+        'no-console': 0,
+        'no-plusplus': 0,
+        'no-param-reassign': 0,
+        'no-restricted-syntax': [2, 'WithStatement'],
+        'no-invalid-this': 0,
+        'no-underscore-dangle': 0,
+        'no-return-assign': 0,
+        'no-await-in-loop': 0,
+        'no-mixed-operators': 0,
+        'no-use-before-define': 0,
+
+        'react/jsx-indent': ['error', 2],
+        'react/jsx-indent-props': ['error', 2],
+        'react/jsx-filename-extension': 0,
+        'react/prefer-stateless-function': 0,
+        'react/require-default-props': 0,
+        'react/no-danger': 0,
+        'react/sort-comp': 0,
+        'react/no-array-index-key': 0,
+        'react/no-multi-comp': 0,
+        'react/forbid-prop-types': 0,
+        'react/jsx-no-bind': 0,
+        'react/no-did-update-set-state': 0,
+        'jsx-a11y/img-has-alt': 0,
+        'jsx-a11y/no-static-element-interactions': 0,
+        'jsx-a11y/no-noninteractive-element-interactions': 0,
+        'jsx-a11y/alt-text': 0,
+        'jsx-a11y/click-events-have-key-events': 0,
     },
 };
