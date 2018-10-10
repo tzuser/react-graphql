@@ -3,6 +3,7 @@ import {routerReducer} from 'react-router-redux';
 //import loads from './loads';
 import config from './config';
 import search from './search';
+import lang from './language';
 
 //逻辑复用
 const createFilteredReducer=(reducerFunction,reducerPredicate)=>{
@@ -14,6 +15,7 @@ const createFilteredReducer=(reducerFunction,reducerPredicate)=>{
 }
 
 export default combineReducers({
+  lang,
 	config,
 	search,
 	router:routerReducer,

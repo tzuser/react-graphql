@@ -1,0 +1,18 @@
+{
+  "webName": "natural treatment",
+  "home": "home",
+  "natural": "natural treatment",
+  "tcmt": "Chinese medicine",
+  "account": "Account",
+  "password": "Password",
+  "signIn": "Sign In",
+  "register": "Register",
+  "noAccount": "No account?",
+  "existingAccounts": "Existing accounts?",
+  "nickname": "Nickname",
+  "confirmPassword": "Confirm the password.",
+  "enterNickname": "Please enter nickname.",
+  "enterAccount": "Please input account number.",
+  "enterPassword": "Please input a password.",
+  "enterConfirmPassword": "Please input your password again."
+}

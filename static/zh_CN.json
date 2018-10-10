@@ -1,0 +1,18 @@
+{
+  "webName": "自然疗法",
+  "home": "首页",
+  "natural": "自然疗法",
+  "tcmt": "中医理疗",
+  "account": "账号",
+  "password": "密码",
+  "signIn": "登录",
+  "register": "注册",
+  "noAccount": "没有账号？",
+  "existingAccounts": "已有账号？",
+  "nickname": "昵称",
+  "confirmPassword": "确认密码",
+  "enterNickname": "请输入昵称",
+  "enterAccount": "请输入账号",
+  "enterPassword": "请输入密码",
+  "enterConfirmPassword": "再次请输入密码"
+}

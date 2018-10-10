@@ -6,6 +6,7 @@ import Footer from '../Components/Footer';
 import PropTypes from 'prop-types';
 import 'gestalt/dist/gestalt.css';
 import * as ConfigAct from 'act_/config';
+import { getConfig } from 'act_/language';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { filteringJitter } from '_tools';
@@ -88,6 +89,7 @@ const mapDispatchToPorps = dispatch =>
   bindActionCreators(
     {
       setWindowWidthAct: ConfigAct.setWindowWidth,
+      getConfigAct: getConfig,
     },
     dispatch
   );
@@ -100,6 +102,7 @@ const mapDispatchToPorps = dispatch =>
 class App extends React.Component {
   constructor(props) {
     super(props);
+    props.getConfigAct();
     //添加浏览器缩放事件
     if (typeof window != 'undefined') {
       this.resizeFun = () => {
@@ -115,7 +118,9 @@ class App extends React.Component {
       this.props.setWindowWidthAct(document.body.clientWidth);
     }
   }
-  componentDidCatch(data) {}
+  componentDidCatch(data) {
+
+  }
   componentWillUnmount() {
     //移除浏览器缩放事件
     if (typeof window != 'undefined') {
