@@ -32,6 +32,7 @@ class Home extends React.Component {
       <div>
         <Header />
         <PostList
+          minCols={2}
           list={posts ? posts.list : []}
           loadItems={data =>
             loadItems({ props: this.props, queryName: 'posts' })

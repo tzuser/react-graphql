@@ -1,6 +1,8 @@
 import React from 'react';
-import { connect } from 'public_/Context';
-import { Consumer } from 'context_/Language';
+import { connect } from 'react-redux';
+
+/*import { connect } from 'public_/Context';
+import { Consumer } from 'context_/Language';*/
 
 const getText = (sourceText, data) => {
   let str = sourceText;
@@ -12,11 +14,11 @@ const getText = (sourceText, data) => {
   str = str.replace(/\$\{[^\}]*\}/g, '');
   return str;
 };
+const mapStateToProps=(state)=>({
+  lang:state.lang
+})
 
-@connect(
-  Consumer,
-  'lang'
-)
+@connect(mapStateToProps)
 class T extends React.Component {
   renderFromText(text) {
     let { children } = this.props;
@@ -27,7 +29,7 @@ class T extends React.Component {
   }
   render() {
     let { n, lang, children, ...other } = this.props;
-    if (lang.isFetching) return this.renderFromText('...');
+    if (!lang.data[n]) return this.renderFromText('...');
     let sourceText = lang.data[n];
     let text = getText(sourceText, other);
     return this.renderFromText(text);

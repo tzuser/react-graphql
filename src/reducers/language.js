@@ -6,6 +6,7 @@ import {
 const initState={
   list: [],
   index: 0,
+  data:{},
 }
 
 const lang = (state = initState, action) => {
@@ -13,7 +14,7 @@ const lang = (state = initState, action) => {
     case LANG_GET_CONFIG:
       return Object.assign({},state,{list:action.list})
     case SELECT_LANGUAGE:
-      return Object.assign({},state,{index:action.index})
+      return Object.assign({},state,{index:action.index,data:action.data})
     default:
       return state
   }

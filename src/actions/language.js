@@ -6,7 +6,7 @@ export const getConfig=()=>async (dispatch,getState)=>{
   dispatch({type:LANG_GET_CONFIG, list: json })
 }
 
-export const setLanguage=(index)=> async (dispatch,getState)=>{
+export const setLanguage=(index=0)=> async (dispatch,getState)=>{
   let item = getState().lang.list[index];
   let res = await fetch(`/${item.language}.json`);
   let json = await res.json();
