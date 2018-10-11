@@ -1,55 +1,100 @@
+
 <!DOCTYPE html>
+
+
 <html>
+
+
 <head>
 	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<link rel="icon" href="/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
-	<link rel="manifest" href="/manifest.json">
-	<meta name="viewport" content="user-scalable=no"/>
-	<meta name="viewport" content="initial-scale=1,maximum-scale=1"/>
+
+	<meta http-equiv="X-UA-Compatible"
+		content="IE=edge">
+
+	<link rel="icon"
+		href="/favicon.ico"
+		mce_href="/favicon.ico"
+		type="image/x-icon">
+
+	<link rel="manifest"
+		href="/manifest.json">
+
+	<meta name="viewport"
+		content="user-scalable=no">
+
+	<meta name="viewport"
+		content="initial-scale=1,maximum-scale=1">
 
 	<title><%= htmlWebpackPlugin.options.title %></title>
+
 	<style>
-		html,body{padding:0; margin:0;height: 100%;}
-		body{ position:relative;}
-		hr{ background-color:#ccc; border:1px solid #efefef;display: block;border-bottom: 0; border-left: 0; margin: 0; }
-		#root{
+		html,
+		body {
+			padding: 0;
+			margin: 0;
+			height: 100%;
+		}
+		body {
+			position: relative;
+			font-family: -apple-system, BlinkMacSystemFont, Segoe UI,
+				Roboto Oxygen-Sans, Ubuntu, Cantarell, “Fira Sans”, “Droid Sans”,
+				Helvetica Neue, Helvetica, \\30d2\30e9\30ae\30ce\89d2\30b4 Pro W3,
+				Hiragino Kaku Gothic Pro, \\30e1\30a4\30ea\30aa, Meiryo,
+				'\FF2D\FF33 \FF30\30B4\30B7\30C3\30AF', Arial, sans-serif;
+		}
+		hr {
+			background-color: #ccc;
+			border: 1px solid #efefef;
+			display: block;
+			border-bottom: 0;
+			border-left: 0;
+			margin: 0;
+		}
+		#root {
 			z-index: 0;
 			height: auto;
 		}
-		._25:focus, ._26{
+		._25:focus,
+		._26 {
 			box-shadow: none !important;
 			user-select: none;
 		}
-		._nn{
+		._nn {
 			cursor: inherit !important;
 		}
-		._t2{
-			text-decoration:none !important;
+		._t2 {
+			text-decoration: none !important;
 		}
 		html {
-		  font-size: 100%; /* 62.5% of 16px = 10px */
+			font-size: 100%; /* 62.5% of 16px = 10px */
 		}
-		img{
+		img {
 			vertical-align: bottom;
 			user-select: none;
 		}
-		a{
+		a {
 			user-select: none;
 			text-decoration: none;
+			color:inherit;
 		}
 
-		*:focus { outline: none; }
-		input[type="search"]{-webkit-appearance:none;} 
+		*:focus {
+			outline: none;
+		}
+		input[type='search'] {
+			-webkit-appearance: none;
+		}
 	</style>
 </head>
+
 <body>
-	<div id="root"></div>
+	<div id="root" />
 </body>
-<script>
-window.main();
-/*window.addEventListener('contextmenu', function(e){
+	<script>
+		window.main();
+		/*window.addEventListener('contextmenu', function(e){
    e.preventDefault();
  });*/
-</script>
+
+	</script>
 </html>

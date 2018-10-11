@@ -10,7 +10,7 @@ import * as configActs from '../actions/config';
 import hiddenFooter from '../Components/HiddenFooter';
 import AddPhoto from '../Components/AddPhoto';
 import {imageUrl} from '_tools';
-
+import Markdown from 'com_/Markdown';
 const CreteHeader=({goBack})=>(
   <HeaderContainer>
     <Box marginLeft={-3}>
@@ -86,10 +86,12 @@ class Create extends Component{
             rows={6}>
               {this.state.content}
             </TextArea>
+
+            <Markdown source={this.state.content} />
          </Box>
 
         </Box>
-        <div style={{height:56}}>
+       {/* <div style={{height:56}}>
           <Box color="white" direction="row" display="flex"  position="fixed" left={true} right={true} bottom={true} paddingY={2} paddingX={4}>
           <Box marginLeft={-3}>
             <IconButton
@@ -116,7 +118,7 @@ class Create extends Component{
             />
           </Box>
           </Box>
-        </div>
+        </div>*/}
       </form>
       {this.state.addPhoto && <AddPhoto 
         onDismiss={()=>this.setState({addPhoto:false})}

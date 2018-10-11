@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import {imageUrl,countColumn} from '_tools';
 import {connect} from 'react-redux';
 //import {bindActionCreators} from 'redux';
+import Markdown from 'com_/Markdown';
 const ItemImg=styled(Link)`
 margin-bottom:2px;
 &:last-child{
@@ -36,17 +37,6 @@ const PlayIcon=styled.div`
 
   }
 `
-
-/* {photos.map((item,key)=>(
-   <ItemImg key={key}>
-     <Image
-     alt=""
-     naturalHeight={item.height}
-     naturalWidth={item.width}
-     src={item.url}
-     />
-   </ItemImg>)
- )}*/
 
 const ThumbnailNode=({thumbnail,itemTo})=>(
    <Mask shape="rounded">
@@ -112,8 +102,9 @@ const getArticle=({userTo,itemTo,user,thumbnail,content})=>{
       shape={isText?"rounded":"square"} 
       color={isText?"lightGray":"transparent"}
       padding={isText?2:0}
+      overflow="hidden"
       >
-        <Text overflow="normal" leading="tall" size={isText?"sm":"xs"}>{content}</Text>
+        <Markdown source={content.substring(0,50)} />
       </Box>
     </Link>
     <UserNode user={user} userTo={userTo}/>

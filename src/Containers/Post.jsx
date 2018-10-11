@@ -29,6 +29,11 @@ import DeleteButton from 'com_/post/DeleteButton';
 import Block from 'com_/Block';
 
 import postQuery from 'gql_/post.gql';
+
+import UserNode from 'com_/post/UserNode';
+import Tag from 'com_/Tag';
+import Markdown from 'com_/Markdown';
+
 const Card = styled.div`
   transition: all 0.1s;
   border-radius: 10px;
@@ -45,38 +50,6 @@ const ItemImg = styled.div`
   }
 `;
 
-const Tag = styled(Link)`
-  padding: 5px 10px;
-  color: #999;
-  font-size: 13px;
-`;
-
-const UserNode = ({ user, content, userClick }) => (
-  <Box
-    direction="row"
-    marginTop={2}
-    display="flex"
-    alignItems="start"
-    paddingY={2}
-  >
-    <div onClick={e => userClick(e, user)}>
-      <Avatar size="md" src={imageUrl(user.avatar)} name="Long" />
-    </div>
-    <Box paddingX={2}>
-      <div onClick={e => userClick(e, user)}>
-        <Text bold size="xs" inline>
-          {user.nick_name}
-        </Text>
-      </div>
-      <Box paddingY={1}>
-        <Text overflow="normal" leading="tall" size="sm">
-          {content}
-        </Text>
-      </Box>
-    </Box>
-  </Box>
-);
-
 const Video = ({ src }) => {
   return (
     <video controls="controls" width="100%" autoPlay="autoplay">
@@ -85,30 +58,12 @@ const Video = ({ src }) => {
   );
 };
 
-const PostHeader = ({ isSelf, isAdmin, postID, goBack, push }) => {
+const Article = ({ content }) => {
   return (
-    <Box display="flex" paddingX={4}>
-      <Box marginLeft={-3} marginTop={-1} flex="grow" mdDisplay="none">
-        <IconButton
-          accessibilityLabel="返回"
-          icon="arrow-back"
-          onClick={() => goBack()}
-        />
-      </Box>
-      <Box flex="grow" />
-      {(isAdmin || isSelf) && (
-        <Box>
-          <DeleteButton postID={postID} goBack={goBack} push={push} />
-        </Box>
-      )}
-      <Box>
-        {!isSelf && (
-          <LikePostButton postID={postID} push={push} initLike={false} />
-        )}
-      </Box>
-    </Box>
+    <Markdown source={content} />
   );
 };
+
 
 const Photo = ({ photos, thumbnail }) => {
   return (
@@ -141,6 +96,31 @@ const Photo = ({ photos, thumbnail }) => {
   );
 };
 
+const PostHeader = ({ isSelf, isAdmin, postID, goBack, push }) => {
+  return (
+    <Box display="flex" paddingX={4}>
+      <Box marginLeft={-3} marginTop={-1} flex="grow" mdDisplay="none">
+        <IconButton
+          accessibilityLabel="返回"
+          icon="arrow-back"
+          onClick={() => goBack()}
+        />
+      </Box>
+      <Box flex="grow" />
+      {(isAdmin || isSelf) && (
+        <Box>
+          <DeleteButton postID={postID} goBack={goBack} push={push} />
+        </Box>
+      )}
+      <Box>
+        {!isSelf && (
+          <LikePostButton postID={postID} push={push} initLike={false} />
+        )}
+      </Box>
+    </Box>
+  );
+};
+
 const Content = ({ post, postID, push, isSelf, isAdmin, goBack }) => {
   let {
     user,
@@ -168,6 +148,7 @@ const Content = ({ post, postID, push, isSelf, isAdmin, goBack }) => {
           <Box paddingX={4}>
             {type == 'video' && <Video src={src} />}
             {type == 'photo' && <Photo photos={photos} thumbnail={thumbnail} />}
+            {type == 'article' && <Article content={content} />}
           </Box>
         </Column>
         <Column span={12} mdSpan={4}>
@@ -177,7 +158,7 @@ const Content = ({ post, postID, push, isSelf, isAdmin, goBack }) => {
             </Box>
             <UserNode
               user={user}
-              content={content}
+              content={type == 'article'?'':content}
               userClick={(e, data) => push(`/${data.name}/`)}
             />
             <Box direction="row" display="flex" wrap={true}>
@@ -211,6 +192,8 @@ const Content = ({ post, postID, push, isSelf, isAdmin, goBack }) => {
     </Block>
   );
 };
+
+
 class Post extends Component {
   render() {
     let {
@@ -239,8 +222,6 @@ class Post extends Component {
       <Box color={isPc ? 'lightGray' : 'white'}>
         <div style={{ zIndex: 1, position: 'relative' }}>
           <Box
-            top={true}
-            left={true}
             marginTop={6}
             marginLeft={6}
             position="fixed"
