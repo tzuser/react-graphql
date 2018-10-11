@@ -6,12 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cross-env RUN_ENV=dev NODE_ENV=development webpack-dev-server --watch --progress --hotOnly  --mode development --config  ./webpack.dev.js",
+    "odb": "cross-env RUN_ENV=odb NODE_ENV=development webpack-dev-server --watch --progress --hotOnly  --mode development --config  ./webpack.dev.js",
     "origin": "cross-env RUN_ENV=origin NODE_ENV=development webpack-dev-server --watch --progress --hotOnly  --mode development --config  ./webpack.dev.js",
     "build": "cross-env RUN_ENV=build NODE_ENV=production webpack --mode production --config ./webpack.build.js  --optimize-minimize",
     "analyzer-build": "cross-env RUN_ENV=build NODE_ENV=production webpack --profile --json > stats.json --config ./webpack.build.js --optimize-minimize",
     "analyzer": "webpack-bundle-analyzer stats.json",
     "server": "cross-env RUN_ENV=server NODE_ENV=production node server/index.js",
-    "server-dev": "cross-env RUN_ENV=server NODE_ENV=production nodemon server/index.js -i ./files ./build ./node_modules"
+    "server-dev": "cross-env RUN_ENV=server NODE_ENV=production nodemon server/index.js -i ./files ./build ./node_modules",
+    "server-dev-odb": "cross-env RUN_ENV=server-odb NODE_ENV=production nodemon server/index.js -i ./files ./build ./node_modules"
   },
   "author": "",
   "license": "ISC",

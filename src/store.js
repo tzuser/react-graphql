@@ -24,6 +24,7 @@ export const getCreateStore=(reducers,path = '/')=>{
 		case 'dev':
 		case 'build':
 		case 'origin':
+		case 'odb':
 			initialState=window._INIT_STATE_;
 			//数据持久化
 			const persistedReducer = persistReducer(persistConfig, reducers)
@@ -32,6 +33,7 @@ export const getCreateStore=(reducers,path = '/')=>{
 			var store=createStore(persistedReducer,initialState,composeWithDevTools(applyMiddleware(...middleware)));
 			return {history,store}
 		case 'server':
+		case 'server-odb':
 			var history = createMemoryHistory({ initialEntries: [path] });
 			var middleware = [thunk, routerMiddleware(history)];
 			var store = createStore(reducers, initialState, compose(applyMiddleware(...middleware)));

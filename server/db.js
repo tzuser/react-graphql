@@ -1,5 +1,12 @@
 import mongoose,{Schema} from 'mongoose';//127.0.0.1
-let db=mongoose.connect('mongodb://web:wysj3910@127.0.0.1:27017/web')
+
+let db_url='mongodb://web:wysj3910@127.0.0.1:27017/web';
+//使用远程数据
+if(process.env.RUN_ENV=='server-odb'){
+  db_url='mongodb://web:wysj3910@otaku.tangzuo.cc:27017/web';
+}
+
+let db=mongoose.connect(db_url)
 //用户
 const userSchema=new Schema({
   name:{type:String,index:true},
