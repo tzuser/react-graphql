@@ -75,7 +75,7 @@ class SearchHeader extends PureComponent{
           onChange={this.onChange.bind(this)}
           value={this.state.value}
           />
-          {this.state.value && <Box onTouchEnd={this.onClear.bind(this)} >
+          {this.state.value && <Box onTouchEnd={this.onClear.bind(this)} onMouseDown={this.onClear.bind(this)}>
             <Icon 
             icon="clear"
             size={20}

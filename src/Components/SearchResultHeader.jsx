@@ -38,14 +38,21 @@ const SearchButton=styled(Link)`
 class SearchHeader extends Component{
   state={value:''}
   render(){
-    let {keyword,history:{goBack,push,replace}}=this.props;
+    let {keyword='',history:{goBack,push,replace}}=this.props;
     return (
       <HeaderContainer>
         <SearchButton to={`/search_keyword/${keyword}`}>
           <Box flex="grow" paddingX={2}  >
             {keyword}
           </Box>
-          <Box onTouchEnd={(e)=>{
+          <Box 
+          onMouseDown={(e)=>{
+            if (e.cancelable && !e.defaultPrevented) {
+              push(`/search_keyword`);
+              e.preventDefault();
+              }}
+            } 
+          onTouchEnd={(e)=>{
             if (e.cancelable && !e.defaultPrevented) {
               push(`/search_keyword`);
               e.preventDefault();

@@ -1,7 +1,7 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Box, Spinner, Text } from 'gestalt';
+import { Button, Box, Spinner, Text, Column } from 'gestalt';
 import SearchResultHeader from 'com_/SearchResultHeader';
 import PostList from 'com_/PostList';
 import { withRouter } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as searchAct from 'act_/search';
 import searchQuery from 'gql_/search.gql';
-
+import Block from 'com_/Block';
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
@@ -28,13 +28,14 @@ const mapDispatchToProps = dispatch =>
   options: props => {
     let {
       match: {
-        params: { keyword },
+        params: { keyword, type },
       },
     } = props;
     return {
       variables: {
         first: 20,
         keyword: keyword,
+        type: type,
       },
     };
   },
@@ -80,9 +81,38 @@ class SearchResult extends React.Component {
         params: { keyword },
       },
     } = this.props;
+    const columnList = [
+      { text: '全部', type: null },
+      { text: '文章', type: 'article' },
+      { text: '图片', type: 'photo' },
+      { text: '视频', type: 'video' },
+    ];
+    let currentType = search ? search.type : null;
     return (
       <div>
         <SearchResultHeader keyword={keyword} />
+        <Block >
+          <Box display="flex" direction="row" paddingY={2} top={50}>
+            {columnList.map((item, key) => (
+               <Box marginRight={1} key={key}>
+                <Button
+                  text={item.text}
+                  size="sm"
+                  inline={true}
+                  color={item.type == currentType ? 'red' : 'white'}
+                  onClick={() => {
+                    refetch({
+                      first: 20,
+                      keyword: keyword,
+                      type: item.type,
+                    });
+                  }}
+                />
+              </Box>
+            ))}
+          </Box>
+        </Block>
+
         <PostList
           list={search ? search.list : []}
           loadItems={this.loadItems.bind(this)}

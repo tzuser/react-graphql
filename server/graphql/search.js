@@ -4,7 +4,8 @@ import {getPageType,getPageData,listToPage} from "./public";
 //import pinyinlite from 'pinyinlite';
 export const typeDefs=`
 type SearchPage{
-  keyword:String!
+  keyword:String
+  type:String
   first:Int!
   after:ID!
   isEnd:Boolean
@@ -15,7 +16,7 @@ type keyword{
   count:Int
 }
 extend type Query{
-  search(keyword:String!,first:Int!,after:ID,user:ID):SearchPage
+  search(type:String,keyword:String,first:Int!,after:ID,user:ID):SearchPage
   searchKeyword(keyword:String):[keyword]
   updateKeyword:Boolean!
 }
@@ -29,13 +30,17 @@ extend type Mutation{
 
 export const resolvers={
   Query:{
-    async search(_,{keyword,first,after,desc,sort,user}){
-      await resolvers.Mutation.addKeyword(_,{keyword:keyword,increase:true});
-      //查询条件
-      let find={$or:[
-        {tags:keyword},
-        {content:{$regex: keyword}}
-      ]};
+    async search(_,{type,keyword,first,after,desc,sort,user}){
+      let find={};
+      if(keyword){
+        await resolvers.Mutation.addKeyword(_,{keyword:keyword,increase:true});
+        //查询条件
+        find={$or:[
+          {tags:keyword},
+          {content:{$regex: keyword}}
+        ]};
+      }
+      if(type)find.type=type;
       if(user)find.user=user;
       if(after)find._id={"$gt":after};
       let page=await await getPageData({
@@ -48,7 +53,7 @@ export const resolvers={
         user,
         populate:'user'
       });
-      return {...page,keyword};
+      return {...page,keyword,type};
     },
 
     async searchKeyword(_,{keyword}){

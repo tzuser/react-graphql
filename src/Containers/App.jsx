@@ -135,7 +135,7 @@ class App extends React.Component {
           <Route path="/settings" component={LoadableSettings} />
           <Route path="/user_list" component={LoadableUserList} />
 
-          <Route path="/search/:keyword" component={LoadableSearchResult} />
+          <Route path="/search/:keyword?" component={LoadableSearchResult} />
 
           <Route path="/search_keyword/:keyword" component={LoadableSearch} />
           <Route path="/search_keyword" component={LoadableSearch} />
