@@ -3,7 +3,7 @@ import mongoose,{Schema} from 'mongoose';//127.0.0.1
 let db_url='mongodb://web:wysj3910@127.0.0.1:27017/web';
 //使用远程数据
 if(process.env.RUN_ENV=='server-odb'){
-  db_url='mongodb://web:wysj3910@otaku.tangzuo.cc:27017/web';
+  db_url='mongodb://web:wysj3910@192.168.1.107:27017/web';
 }
 
 let db=mongoose.connect(db_url)

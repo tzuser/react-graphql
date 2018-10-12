@@ -17,7 +17,7 @@ if(process.env.RUN_ENV=='origin'){
 if(process.env.RUN_ENV=='odb'){
   hosts={
     HOST:'',
-    STATIC_URL:'//otaku.tangzuo.cc',
+    STATIC_URL:'//192.168.1.107:8181',
     DB_URL:'/graphql',
   }
 }
