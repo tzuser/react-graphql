@@ -42,7 +42,7 @@ export const resolvers={
       }
       if(type)find.type=type;
       if(user)find.user=user;
-      if(after)find._id={"$gt":after};
+      //if(after)find._id={"$lt":after};
       let page=await await getPageData({
         model:postModel,
         find,
