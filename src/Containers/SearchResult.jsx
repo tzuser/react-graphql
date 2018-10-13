@@ -10,6 +10,7 @@ import { bindActionCreators } from 'redux';
 import * as searchAct from 'act_/search';
 import searchQuery from 'gql_/search.gql';
 import Block from 'com_/Block';
+import UsersRow from 'con_/UsersRow';
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
@@ -112,7 +113,7 @@ class SearchResult extends React.Component {
             ))}
           </Box>
         </Block>
-
+        <UsersRow />
         <PostList
           list={search ? search.list : []}
           loadItems={this.loadItems.bind(this)}
