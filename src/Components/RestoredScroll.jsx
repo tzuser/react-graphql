@@ -1,22 +1,24 @@
 import React,{Component} from 'react';
+import ReactDOM from 'react-dom';
+
 //记录子组件滚动条位置及恢复
 class RestoredScroll extends Component{
   componentDidMount() {
     if(typeof window!=="object")return;
     let positons=window[this.props.id];
     if(positons){
-      let obj=this.refs.box.firstChild;
+      let obj=ReactDOM.findDOMNode(this);// this.refs.box.firstChild;
       obj.scrollTop=positons[0];
       obj.scrollLeft=positons[1];
     }
   }
   componentWillUnmount() {
     if(typeof window!=="object")return;
-    let obj=this.refs.box.firstChild;
+    let obj=ReactDOM.findDOMNode(this);
     window[this.props.id]=[obj.scrollTop,obj.scrollLeft];
   }
   render(){
-    return (<div ref="box">{this.props.children}</div>)
+    return this.props.children
   }
 }
 
