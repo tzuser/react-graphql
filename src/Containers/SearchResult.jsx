@@ -79,16 +79,16 @@ class SearchResult extends React.Component {
       data: { search, refetch, fetchMore, loading },
       history: { push },
       match: {
-        params: { keyword },
+        params: { type,keyword },
       },
     } = this.props;
     const columnList = [
-      { text: '全部', type: null },
+      { text: '全部', type: 'all' },
       { text: '文章', type: 'article' },
       { text: '图片', type: 'photo' },
       { text: '视频', type: 'video' },
     ];
-    let currentType = search ? search.type : null;
+    let currentType = search ? type : 'all';
     return (
       <div>
         <SearchResultHeader keyword={keyword} />
@@ -105,11 +105,12 @@ class SearchResult extends React.Component {
                   inline={true}
                   color={item.type == currentType ? 'red' : 'white'}
                   onClick={() => {
-                    refetch({
+                    push(`/search/${item.type}/${keyword}`)
+                   /* refetch({
                       first: 20,
                       keyword: keyword,
                       type: item.type,
-                    });
+                    });*/
                   }}
                 />
               </Box>

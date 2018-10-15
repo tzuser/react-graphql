@@ -40,7 +40,7 @@ export const resolvers={
           {content:{$regex: keyword}}
         ]};
       }
-      if(type)find.type=type;
+      if(type && type!='all')find.type=type;
       if(user)find.user=user;
       //if(after)find._id={"$lt":after};
       let page=await await getPageData({

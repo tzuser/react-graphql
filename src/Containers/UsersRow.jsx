@@ -11,7 +11,7 @@ import RowListBox from 'com_/RowListBox';
 import UpdateUserButton from 'com_/user/UpdateUserButton';
 import FollowUserButton from 'com_/follow/FollowUserButton';
 import { withRouter } from 'react-router-dom';
-
+import RestoredScroll from 'com_/RestoredScroll';
 const UserButton = props => {
   return <Box display="flex" direction="row" />;
 };
@@ -38,18 +38,19 @@ class UserList extends Component {
       data: { users, loading },
     } = this.props;
     if (loading) return <PageLoading />;
-    console.log(users);
     return (
-      <RowListBox>
-        {users &&
-          users.list.map((item, key) => (
-            <Box width={200} key={key} flex="none">
-              <UserItem data={item} content={UserButton} />
-            </Box>
-          ))}
-        {users && users.isEnd && <InTheEnd />}
-      </RowListBox>
+      <RestoredScroll id="userRow">
+        <RowListBox>
+          {users &&
+            users.list.map((item, key) => (
+              <Box width={120} key={key} flex="none">
+                <UserItem data={item} content={UserButton} />
+              </Box>
+            ))}
+        </RowListBox>
+      </RestoredScroll>
     );
   }
 }
 export default UserList;
+/*{users && users.isEnd && <InTheEnd />}*/

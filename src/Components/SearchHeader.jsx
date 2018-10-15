@@ -61,7 +61,7 @@ class SearchHeader extends PureComponent{
   //提交搜索
   onSubmit(event){
     event.preventDefault();
-    this.props.history.push(`/search/${this.state.value}`)
+    this.props.history.push(`/search/all/${this.state.value}`)
   }
   render(){
     let {history:{goBack,push},onChange}=this.props;

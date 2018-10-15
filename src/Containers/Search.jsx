@@ -68,11 +68,11 @@ class Search extends React.Component{
         <SearchHeader onChange={this.onChangeKeyword.bind(this)} />
         <Block>
          {isSearch && <Box>
-          {list.map((item,key)=>(<ListLink to={`/search/${item.name}`} key={key} text={item.name}/>))}
+          {list.map((item,key)=>(<ListLink to={`/search/all/${item.name}`} key={key} text={item.name}/>))}
           </Box>}
           {showHistory && <Box>
             <ListTitle text="历史记录"/>
-            {historyList.map((item,key)=>(<ListLink to={`/search/${item}`} key={key} text={item}/>))}
+            {historyList.map((item,key)=>(<ListLink to={`/search/all/${item}`} key={key} text={item}/>))}
             </Box>}
           <Spinner show={loading} accessibilityLabel="Example spinner" />
           {searchKeyword && searchKeyword.isEnd && <Box paddingY={2}><Text align="center" color="gray">到底了~</Text></Box>}

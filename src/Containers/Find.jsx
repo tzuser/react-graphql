@@ -10,11 +10,11 @@ class Find extends Component {
       <div>
         <Header />
         <Block>
-          <ListLink to={`/search/流行`} text="流行" />
-          <ListLink to={`/search/Gifs`} text="Gifs" />
-          <ListLink to={`/search/视频`} text="视频" />
+          <ListLink to={`/search/all/流行`} text="流行" />
+          <ListLink to={`/search/all/Gifs`} text="Gifs" />
+          <ListLink to={`/search/all/视频`} text="视频" />
           <ListTitle text="全部分类" />
-          <ListLink to={`/search/a`} text="a" />
+          <ListLink to={`/search/all/a`} text="a" />
         </Block>
       </div>
     );
