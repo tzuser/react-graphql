@@ -1,35 +1,55 @@
-//我关注的
-import React,{Component} from 'react';
-import {Box,Text,IconButton} from 'gestalt';
-import {errorReply} from '_public';
-import {withRouter} from 'react-router-dom';
+import React, { Component } from 'react';
+import List from 'com_/List';
 import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+import { Box } from 'gestalt';
+import { loadItems } from '_public';
+import UserItem from 'com_/UserItem';
 import PageLoading from 'com_/PageLoading';
-import UserListComponent from 'com_/user/UserList';
-import HeaderContainer from 'com_/HeaderContainer';
+import InTheEnd from 'com_/InTheEnd';
+import usersQuery from 'gql_/users.gql';
+import RowListBox from 'com_/RowListBox';
+import UpdateUserButton from 'com_/user/UpdateUserButton';
+import FollowUserButton from 'com_/follow/FollowUserButton';
+import { withRouter } from 'react-router-dom';
+
+const UserButton = props => {
+  return <Box display="flex" direction="row" />;
+};
 
 @withRouter
-class UserList extends Component{
-  render(){
-    let {history:{goBack,push} }=this.props;
+@graphql(usersQuery, {
+  options: props => {
+    let {
+      match: {
+        params: { keyword },
+      },
+    } = props;
+    return {
+      variables: {
+        first: 20,
+        keyword: keyword,
+      },
+    };
+  },
+})
+class UserList extends Component {
+  render() {
+    let {
+      data: { users, loading },
+    } = this.props;
+    if (loading) return <PageLoading />;
+    console.log(users);
     return (
-    <div>
-    <HeaderContainer>
-      <Box marginLeft={-3}>
-      <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={()=>goBack()} />
-      </Box>
-      <Box flex="grow">
-        <Text bold size="lg">用户列表</Text>
-      </Box>
-    </HeaderContainer>
-      <Box marginTop={2}>
-        <UserListComponent  />
-      </Box>
-    </div>
-    )
+      <RowListBox>
+        {users &&
+          users.list.map((item, key) => (
+            <Box width={200} key={key} flex="none">
+              <UserItem data={item} content={UserButton} />
+            </Box>
+          ))}
+        {users && users.isEnd && <InTheEnd />}
+      </RowListBox>
+    );
   }
 }
-
-
-export default UserList
+export default UserList;

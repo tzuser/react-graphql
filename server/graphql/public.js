@@ -6,15 +6,16 @@ export const md5=(text)=>{
   return crypto.createHash('md5').update(text).digest('hex');
 };
 //获取页面字段
-export const getPageType=(name)=>{
-return `
-type ${name}Page{
-  first:Int!
-  after:ID
-  isEnd:Boolean
-  list:[${name}!]
-}`
-}
+export const getPageType = (name,other='') => {
+  return `
+    type ${name}Page{
+      first:Int!
+      after:ID
+      isEnd:Boolean
+      ${other}
+      list:[${name}!]
+    }`;
+};
 //通过游标获取列表
 export const getListFromCursor=async (cursor,first)=>{
   let list=[];

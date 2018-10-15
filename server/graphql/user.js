@@ -12,6 +12,7 @@ import { getThumbnail } from './file';
 import APIError from './APIError';
 //import findRemoveSync from 'find-remove';
 import path from 'path';
+console.log(getPageType('User',`keyword:String`))
 export const typeDefs = `
 type User{
   id:ID!
@@ -25,7 +26,7 @@ type User{
   roles:[String]
 }
 
-${getPageType('User')}
+${getPageType('User',`keyword:String`)}
 
 input userInput{
   name:String!
@@ -46,7 +47,7 @@ input updateUserInput{
 extend type Query{
   user(name:String):User
   self:User
-  users(first:Int!,after:ID,desc:Boolean):UserPage
+  users(keyword:String,first:Int!,after:ID,desc:Boolean):UserPage
 }
 
 type Login{
@@ -77,17 +78,25 @@ export const resolvers = {
       exactLogin(ctx.user);
       return ctx.user;
     },
-    async users(_, { first, after, desc, sort }) {
+    async users(_, {keyword,first, after, desc, sort }) {
+      let find={};
+      if(keyword){
+        find={$or:[
+          {name:{$regex: keyword}},
+          {nick_name:{$regex: keyword}},
+          {user_name:{$regex: keyword}}
+        ]};
+      }
       let page = await getPageData({
         model: userModel,
-        find: {},
+        find,
         after,
         first,
         desc,
         sort,
         populate: '',
       });
-      return page;
+      return {...page,keyword};
     },
   },
   Mutation: {

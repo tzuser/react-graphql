@@ -1,7 +1,8 @@
 #import "./userField.gql"
 
-query Users($first:Int!,$after:ID){
-  users(first:$first,after:$after){
+query Users($keyword:String,$first:Int!,$after:ID){
+  users(keyword:$keyword,first:$first,after:$after){
+    keyword
     first
     after
     isEnd

@@ -92,8 +92,11 @@ class SearchResult extends React.Component {
     return (
       <div>
         <SearchResultHeader keyword={keyword} />
+
+          <UsersRow />
+
         <Block >
-          <Box display="flex" direction="row" paddingY={2} top={50}>
+          <Box display="flex" direction="row" paddingY={2}> 
             {columnList.map((item, key) => (
                <Box marginRight={1} key={key}>
                 <Button
@@ -113,7 +116,7 @@ class SearchResult extends React.Component {
             ))}
           </Box>
         </Block>
-        <UsersRow />
+       
         <PostList
           list={search ? search.list : []}
           loadItems={this.loadItems.bind(this)}
