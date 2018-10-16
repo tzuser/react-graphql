@@ -39,6 +39,12 @@ const LoadableFind = Loadable({
   loader: () => import(/* webpackChunkName: 'Find' */ './Find'),
   loading: PageLoading,
 });
+
+const LoadablePushPost = Loadable({
+  loader: () => import(/* webpackChunkName: 'PushPost' */ './PushPost'),
+  loading: PageLoading,
+});
+
 const LoadableNotice = Loadable({
   loader: () => import(/* webpackChunkName: 'Notice' */ './Notice'),
   loading: PageLoading,
@@ -130,6 +136,7 @@ class App extends React.Component {
           <Route path="/login" component={LoadableLogin} />
           <Route path="/join" component={LoadableJoin} />
           <Route path="/find" component={LoadableFind} />
+          <Route path="/pushPost" component={LoadablePushPost} />
           <Route path="/notice" component={LoadableNotice} />
           <Route path="/create" component={LoadableCreate} />
           <Route path="/settings" component={LoadableSettings} />

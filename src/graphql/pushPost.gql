@@ -1,0 +1,23 @@
+#import "./photoField.gql"
+#import "./userField.gql"
+query GetPush($first:Int!,$after:ID){
+  getPush(first:$first,after:$after) {
+    first
+    after
+    isEnd
+    list{
+     id
+     content
+     type
+     thumbnail{
+       ...PhotoField
+     }
+     photos{
+       ...PhotoField
+     }
+     user{
+      ...UserField
+     }
+    }
+  }
+}

@@ -9,6 +9,7 @@ import * as file from './file';
 import * as search from './search';
 import * as follow from './follow';
 import * as isUpdate from './isUpdate';
+import * as pushgql from './push';
 
 import { graphqlKoa,graphiqlKoa } from 'apollo-server-koa';
 
@@ -45,6 +46,7 @@ addSchema(file);
 addSchema(search);
 addSchema(follow);
 addSchema(isUpdate);
+addSchema(pushgql);
 
 const mySchema = makeExecutableSchema({typeDefs,resolvers})
 

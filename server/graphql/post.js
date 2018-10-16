@@ -4,6 +4,8 @@ import {getPageType,getPageData,listToPage,getUserIDFormName,exactLogin} from ".
 import {getThumbnail} from './file'
 //import nodejieba from "nodejieba";
 import {resolvers as search} from "./search";
+import {resolvers as pushgql} from "./push";
+
 console.log(
  getPageType('SearchPost',`keyword:String
       type:String`))
@@ -219,6 +221,10 @@ export const resolvers={
       input.user=ctx.user;
       input.thumbnail=input.thumbnail?await getThumbnail(input.thumbnail,ctx.user.name):null;
       let post=await postModel(input).save();
+
+      pushgql.Mutation.pushPost(_,{post:post.id});
+
+      // push Post
       return post.id
     },
     async editPost(_,{id,input},ctx){

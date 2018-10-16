@@ -64,7 +64,7 @@ const commentSchema=new Schema({
 //喜欢
 const likeSchema=new Schema({
   user:{type:Schema.Types.ObjectId,ref:'User'},//用户
-  post:{type:Schema.Types.ObjectId,ref:'Post'},//帖子
+  post:{type:Schema.Types.ObjectId,ref:'Post'},//帖子 
 })
 
 //搜索
@@ -80,9 +80,17 @@ const followSchema=new Schema({
   follow:{type:Schema.Types.ObjectId,ref:'User'},//关注用户
 })
 
+// push
+const pushSchema=new Schema({
+  user:{type:Schema.Types.ObjectId,ref:'User'},//用户
+  postUser:{type:Schema.Types.ObjectId,ref:'User'},
+  post:{type:Schema.Types.ObjectId,ref:'Post'}
+})
+
 export const userModel    = mongoose.model('User',userSchema)
 export const postModel    = mongoose.model('Post',postSchema)
 export const likeModel    = mongoose.model('Like',likeSchema)
 export const commentModel = mongoose.model('Comment',commentSchema)
 export const keywordModel = mongoose.model('Keyword',keywordSchema)
 export const followModel  = mongoose.model('Follow',followSchema)
+export const pushModel  = mongoose.model('Push',pushSchema)
