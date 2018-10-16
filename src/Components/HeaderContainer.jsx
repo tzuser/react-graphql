@@ -10,7 +10,7 @@ const HeaderBox = styled.div`
   top: 0;
   right: 0;
   left: 0;
-  position: ${p => (p.isPc ? 'fixed' : 'none')};
+  position: ${p => (p.isFixed ? 'fixed' : 'none')};
   padding: 12px 16px;
   height: 64px;
   box-sizing: border-box;
@@ -43,6 +43,7 @@ class Header extends Component {
       isSpace = true,
       isBackground = true,
       showMenu = true,
+      isFixed=true,
     } = this.props;
     let { isPc } = this.props;
     let backgroundColor = isBackground
@@ -51,7 +52,7 @@ class Header extends Component {
     showMenu = isPc && showFooter && showMenu;
     return (
       <Space isSpace={isSpace}>
-        <HeaderBox isPc={isPc} backgroundColor={backgroundColor}>
+        <HeaderBox isPc={isPc} isFixed={isFixed} backgroundColor={backgroundColor}>
           {showMenu && (
             <div style={{ textAlign: 'center' }}>
               <Box

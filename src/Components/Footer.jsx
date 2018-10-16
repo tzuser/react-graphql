@@ -97,8 +97,8 @@ export  class Tabs extends Component{
           location={location}
           to="/find"
           index={1}
-          label="搜索"
-          icon="search"
+          label="关注"
+          icon="people"
           active={active}
           onActive={(index)=>this.setState({active:index})}/>
         <IconColumn

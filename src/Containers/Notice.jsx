@@ -1,37 +1,20 @@
-import React,{Component} from 'react';
-import HeaderContainer from '../Components/HeaderContainer';
-import {Box,SegmentedControl} from 'gestalt';
-import PageLoading from '../Components/PageLoading';
-class Notice extends Component{
-  constructor(props) {
-    super(props);
-    this.state = { 
-      itemIndex: 0,
-      items: ['通知', '收件箱']
-    };
-    this.handleItemChange = this.handleItemChange.bind(this);
-  }
-
-  handleItemChange({ activeIndex }) {
-    this.setState(prevState => ({ itemIndex: activeIndex }));
-  };
-  render(){
-    return <div>
-    <HeaderContainer>
-      <Box flex="grow"  justifyContent="center" display="flex">
-        <Box maxWidth={420} flex="grow" >
-          <SegmentedControl
-                  items={this.state.items}
-                  selectedItemIndex={this.state.itemIndex}
-                  onChange={this.handleItemChange}
-                />
+import React, { Component } from 'react';
+//import PageLoading from '../Components/PageLoading';
+import HeaderContainer from 'com_/HeaderContainer';
+import { Box, Text } from 'gestalt';
+class Notice extends Component {
+  render() {
+    return (
+      <div>
+        <HeaderContainer />
+        <Box padding={4}>
+          <Text color="gray" align="center">
+            空空如也~
+          </Text>
         </Box>
-      </Box>
-    </HeaderContainer>
-    <PageLoading />
-    </div>
+      </div>
+    );
   }
 }
-
 
 export default Notice;

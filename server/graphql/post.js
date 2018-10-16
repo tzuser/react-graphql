@@ -4,6 +4,9 @@ import {getPageType,getPageData,listToPage,getUserIDFormName,exactLogin} from ".
 import {getThumbnail} from './file'
 //import nodejieba from "nodejieba";
 import {resolvers as search} from "./search";
+console.log(
+ getPageType('SearchPost',`keyword:String
+      type:String`))
 export const typeDefs=`
 type Photo{
   url:String
@@ -29,7 +32,11 @@ type Post{
   tags:[String!]
 }
 
-${getPageType('Post')}
+${getPageType('Post',`
+  keyword:String
+  type:String
+  `)}
+
 
 extend type Query{
   post(id:ID!):Post
@@ -37,6 +44,7 @@ extend type Query{
   posts(first:Int!,after:ID,desc:Boolean,userName:String):PostPage
   likes(first:Int!,after:ID,desc:Boolean,userName:String!):PostPage
   moreLikes(id:ID!,first:Int!,after:ID,desc:Boolean):PostPage
+  searchPost(type:String,keyword:String,first:Int!,after:ID,user:ID):PostPage
 }
 
 input PhotoInput{
@@ -118,6 +126,33 @@ export const resolvers={
       })
       return page
     },
+
+    async searchPost(_,{type,keyword,first,after,desc,sort,user}){
+      let find={};
+      if(keyword){
+        await search.Mutation.addKeyword(_,{keyword:keyword,increase:true});
+        //查询条件
+        find={$or:[
+          {tags:keyword},
+          {content:{$regex: keyword}}
+        ]};
+      }
+      if(type && type!='all')find.type=type;
+      if(user)find.user=user;
+      //if(after)find._id={"$lt":after};
+      let page=await await getPageData({
+        model:postModel,
+        find,
+        first,
+        after,
+        desc,
+        sort,
+        user,
+        populate:'user'
+      });
+      return {...page,keyword,type};
+    },
+
     //喜欢的帖子
     async likes(_,{first,after,desc,sort,userName}){
       let userID=await getUserIDFormName(userName);

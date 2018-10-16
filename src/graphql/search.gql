@@ -1,7 +1,7 @@
 #import "./photoField.gql"
 #import "./userField.gql"
-query Search($type:String,$keyword:String,$first:Int!,$after:ID){
-  search(type:$type,keyword:$keyword,first:$first,after:$after) {
+query SearchPost($type:String,$keyword:String,$first:Int!,$after:ID){
+  searchPost(type:$type,keyword:$keyword,first:$first,after:$after) {
     keyword
     type
     first

@@ -3,20 +3,12 @@ import APIError from './APIError';
 import {getPageType,getPageData,listToPage} from "./public";
 //import pinyinlite from 'pinyinlite';
 export const typeDefs=`
-type SearchPage{
-  keyword:String
-  type:String
-  first:Int!
-  after:ID!
-  isEnd:Boolean
-  list:[Post]
-}
+
 type keyword{
   name:String!
   count:Int
 }
 extend type Query{
-  search(type:String,keyword:String,first:Int!,after:ID,user:ID):SearchPage
   searchKeyword(keyword:String):[keyword]
   updateKeyword:Boolean!
 }
@@ -30,32 +22,6 @@ extend type Mutation{
 
 export const resolvers={
   Query:{
-    async search(_,{type,keyword,first,after,desc,sort,user}){
-      let find={};
-      if(keyword){
-        await resolvers.Mutation.addKeyword(_,{keyword:keyword,increase:true});
-        //查询条件
-        find={$or:[
-          {tags:keyword},
-          {content:{$regex: keyword}}
-        ]};
-      }
-      if(type && type!='all')find.type=type;
-      if(user)find.user=user;
-      //if(after)find._id={"$lt":after};
-      let page=await await getPageData({
-        model:postModel,
-        find,
-        first,
-        after,
-        desc,
-        sort,
-        user,
-        populate:'user'
-      });
-      return {...page,keyword,type};
-    },
-
     async searchKeyword(_,{keyword}){
       if(!keyword)return [];
       let list = await keywordModel.find({

@@ -48,7 +48,7 @@ class Footer extends Component{
              <Column span={3}>
                <IconLink replace to="/find" activeClassName="active">
                  <div>
-                   <Icon  accessibilityLabel="搜索" icon="search" size="24"/>
+                   <Icon  accessibilityLabel="关注" icon="people" size="24"/>
                  </div>
                </IconLink>
              </Column>
