@@ -5,12 +5,12 @@ import { Box, Spinner } from 'gestalt';
 import Header from 'com_/Header';
 import PostList from 'com_/PostList';
 import { withRouter } from 'react-router-dom';
-//import RestoredScroll from 'com_/RestoredScroll';
-import pushPostQuery from 'gql_/pushPost.gql';
+import subscribeQuery from 'gql_/subscribe.gql';
 import { loadItems } from '_public';
 import InTheEnd from 'com_/InTheEnd';
+
 @withRouter
-@graphql(pushPostQuery, {
+@graphql(subscribeQuery, {
   options: props => {
     return {
       variables: {
@@ -19,29 +19,29 @@ import InTheEnd from 'com_/InTheEnd';
     };
   },
 })
-class PushPost extends React.Component {
+class Subscribe extends React.Component {
   constructor(props) {
     super(props);
   }
   render() {
     let {
-      data: { getPush, refetch, fetchMore, loading },
+      data: { subscribe, refetch, fetchMore, loading },
       history: { push },
     } = this.props;
     return (
       <div>
         <Header />
         <PostList
-          list={getPush ? getPush.list : []}
+          list={subscribe ? subscribe.list : []}
           loadItems={data =>
-            loadItems({ props: this.props, queryName: 'getPush' })
+            loadItems({ props: this.props, queryName: 'subscribe' })
           }
         />
         <Spinner show={loading} accessibilityLabel="Example spinner" />
-        {getPush && getPush.isEnd && <InTheEnd />}
+        {subscribe && subscribe.isEnd && <InTheEnd />}
       </div>
     );
   }
 }
 
-export default PushPost;
+export default Subscribe;

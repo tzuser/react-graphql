@@ -1,15 +1,24 @@
-import {postModel,likeModel,userModel,keywordModel} from '../db';
+import {
+  postModel,
+  likeModel,
+  userModel,
+  keywordModel,
+  followModel,
+} from '../db';
 import APIError from './APIError';
-import {getPageType,getPageData,listToPage,getUserIDFormName,exactLogin} from "./public";
-import {getThumbnail} from './file'
+import {
+  getPageType,
+  getPageData,
+  listToPage,
+  getUserIDFormName,
+  exactLogin,
+} from './public';
+import { getThumbnail } from './file';
 //import nodejieba from "nodejieba";
-import {resolvers as search} from "./search";
-import {resolvers as pushgql} from "./push";
+import { resolvers as search } from './search';
+import { resolvers as subscribe } from './subscribe';
 
-console.log(
- getPageType('SearchPost',`keyword:String
-      type:String`))
-export const typeDefs=`
+export const typeDefs = `
 type Photo{
   url:String
   width:Int
@@ -34,10 +43,13 @@ type Post{
   tags:[String!]
 }
 
-${getPageType('Post',`
+${getPageType(
+  'Post',
+  `
   keyword:String
   type:String
-  `)}
+  `
+)}
 
 
 extend type Query{
@@ -78,193 +90,217 @@ extend type Mutation{
   editPost(id:ID!,input:PostEditInput):String
   delPost(post:ID!):String
   like(post:ID!,isLike:Boolean!):String
+  addPostHot(post:ID!):Boolean
+  patch:Boolean
 }
 
-`
+`;
 //获取运行时间
-const getRunTime=()=>{
-  let startTime=+new Date();
-  return (msg='执行时间')=>{
-    let currentTime=+new Date();
-    let time=currentTime-startTime;
-    console.log(`${msg} ${time}`)
-  }
-}
+const getRunTime = () => {
+  let startTime = +new Date();
+  return (msg = '执行时间') => {
+    let currentTime = +new Date();
+    let time = currentTime - startTime;
+    console.log(`${msg} ${time}`);
+  };
+};
 
-export const resolvers={
-  Query:{
-    async post(_,{id},ctx){
-      let res=await postModel.findById(id).populate('user').exec();
-      if(!res){
-        throw new APIError('获取文章失败!',1015);
+export const resolvers = {
+  Query: {
+    async post(_, { id }, ctx) {
+      let res = await postModel
+        .findById(id)
+        .populate('user')
+        .exec();
+      if (res.state == 1) {
+        throw new APIError('文章已被删除!', 1015);
       }
-      let {_doc:post}=res;
-      postModel.update({_id:id},{$inc:{readNum:+1}}).exec();//添加阅读量
-      return {...post,id:post._id}
-    },
-    async isLike(_,{id},ctx){
-      let isLike=false;
-      if(ctx.user){
-        isLike=await likeModel.findOne({post:id,user:ctx.user}).count().exec()>0;
+      if (!res) {
+        throw new APIError('获取文章失败!', 1015);
       }
-      return isLike
+      let { _doc: post } = res;
+      postModel.update({ _id: id }, { $inc: { readNum: +1 } }).exec(); //添加阅读量
+      return { ...post, id: post._id };
     },
-    async posts(_,{first,after,desc,sort,userName}){
+    async isLike(_, { id }, ctx) {
+      let isLike = false;
+      if (ctx.user) {
+        isLike =
+          (await likeModel
+            .findOne({ post: id, user: ctx.user, state: 0 })
+            .count()
+            .exec()) > 0;
+      }
+      return isLike;
+    },
+    async posts(_, { first, after, desc, sort = 'creationDate', userName }) {
       let find;
-      try{
-        let userID=await getUserIDFormName(userName);
-        find={user:userID};
-      }catch(err){
-        find={}
+      try {
+        let userID = await getUserIDFormName(userName);
+        find = { user: userID, state: 0 };
+      } catch (err) {
+        find = { state: 0 };
       }
-      let page=await getPageData({
-        model:postModel,
+      let page = await getPageData({
+        model: postModel,
         find,
         after,
         first,
         desc,
-        sort:'creationDate',
-        populate:'user'
-      })
-      return page
+        sort,
+        populate: 'user',
+      });
+      return page;
     },
 
-    async searchPost(_,{type,keyword,first,after,desc,sort,user}){
-      let find={};
-      if(keyword){
-        await search.Mutation.addKeyword(_,{keyword:keyword,increase:true});
+    async searchPost(_, { type, keyword, first, after, desc, sort, user }) {
+      let find = {};
+      if (keyword) {
+        await search.Mutation.addKeyword(_, {
+          keyword: keyword,
+          increase: true,
+        });
         //查询条件
-        find={$or:[
-          {tags:keyword},
-          {content:{$regex: keyword}}
-        ]};
+        find = {
+          state: 0,
+          $or: [{ tags: keyword }, { content: { $regex: keyword } }],
+        };
       }
-      if(type && type!='all')find.type=type;
-      if(user)find.user=user;
+      if (type && type != 'all') find.type = type;
+      if (user) find.user = user;
       //if(after)find._id={"$lt":after};
-      let page=await await getPageData({
-        model:postModel,
+      let page = await await getPageData({
+        model: postModel,
         find,
         first,
         after,
         desc,
         sort,
         user,
-        populate:'user'
+        populate: 'user',
       });
-      return {...page,keyword,type};
+      return { ...page, keyword, type };
     },
 
     //喜欢的帖子
-    async likes(_,{first,after,desc,sort,userName}){
-      let userID=await getUserIDFormName(userName);
-      let find={user:userID};
-      let page=await getPageData({
-        model:likeModel,
+    async likes(_, { first, after, desc, sort, userName }) {
+      let userID = await getUserIDFormName(userName);
+      let find = { user: userID, state: 0 };
+      let page = await getPageData({
+        model: likeModel,
         find,
-        after:after,
+        after: after,
         first,
         desc,
         sort,
-        populate:{path:"post",populate:{path:"user"}},
-        format:(item)=>{
-          if(item.post)return item.post;
+        populate: { path: 'post', populate: { path: 'user' } },
+        format: item => {
+          if (item.post) return item.post;
           //错误处理 补删除
-          likeModel.remove({_id:item._id}).exec();
+          likeModel.remove({ _id: item._id }).exec();
         },
-      })
-      return page
+      });
+      return page;
     },
     //more like this
-    async moreLikes(_,{id,first,after}){
+    async moreLikes(_, { id, first, after }) {
       //获取原post
-      //let timeLog=getRunTime();
-      let post=await postModel.findById(id,{content:1,tags:1}).exec();
-     /* 
-      let str=`${post.tags.join(" ")} ${post.content}`;
-      //分词
-      let participle=nodejieba.extract(str,6);
-      let keywords=participle.map(item=>item.word);
-      if(keywords.length==0){
-        return {first,list:[],isEnd:true}
-      }
-      */
-      let tagsRegex=post.tags.join('|')
-
-      let find={
-        _id:{$ne:post._id},
-        $or:[
-          {tags:{$regex:tagsRegex}},
-          {content:{$regex:tagsRegex}},
-        ]
-      }
-
-      let page=await getPageData({
-        model:postModel,
+      let post = await postModel.findById(id, { content: 1, tags: 1 }).exec();
+      let tagsRegex = post.tags.join('|');
+      let find = {
+        _id: { $ne: post._id },
+        state: 0,
+        $or: [
+          { tags: { $regex: tagsRegex } },
+          { content: { $regex: tagsRegex } },
+        ],
+      };
+      let page = await getPageData({
+        model: postModel,
         find,
         after,
         first,
-        populate:'user'
-      })
-      return page
-    }
+        populate: 'user',
+      });
+      return page;
+    },
   },
-  Mutation:{
-    async addPost(_,{input},ctx){
+  Mutation: {
+    async addPost(_, { input }, ctx) {
       exactLogin(ctx.user);
-      input.creationDate=new Date().valueOf();
-      input.updateDate=input.creationDate;
-      input.readNum=0;
-      input.likeNum=0;
-      input.hotNum=0;
-      input.commentNum=0;
-      input.user=ctx.user;
-      input.thumbnail=input.thumbnail?await getThumbnail(input.thumbnail,ctx.user.name):null;
-      let post=await postModel(input).save();
-
-      pushgql.Mutation.pushPost(_,{post:post.id});
-
-      // push Post
-      return post.id
+      input.creationDate = new Date().valueOf();
+      input.updateDate = input.creationDate;
+      input.readNum = 0;
+      input.likeNum = 0;
+      input.hotNum = 0;
+      input.commentNum = 0;
+      input.user = ctx.user;
+      input.thumbnail = input.thumbnail
+        ? await getThumbnail(input.thumbnail, ctx.user.name)
+        : null;
+      let post = await postModel(input).save();
+      //发送订阅
+      subscribe.Mutation.subscribePost(_, { post: post.id });
+      return post.id;
     },
-    async editPost(_,{id,input},ctx){
+    async editPost(_, { id, input }, ctx) {
       exactLogin(ctx.user);
-      input.updateDate=+new Date();
-      let res=await postModel.update({_id:id},{$set:input}).exec();
-      if(!res.ok)throw new APIError('修改失败!',1);
-      return '修改成功'
+      input.updateDate = +new Date();
+      let res = await postModel.update({ _id: id }, { $set: input }).exec();
+      if (!res.ok) throw new APIError('修改失败!', 1);
+      return '修改成功';
     },
-    async delPost(_,{post},ctx){
+    async delPost(_, { post }, ctx) {
       exactLogin(ctx.user);
-      let doc=await postModel.findById(post).exec();
-      let isAdmin=ctx.user.roles.includes('admin');
-      if(!isAdmin && doc.user+''!=ctx.user._id+''){
-        throw new APIError('用户无权限!',1005);
-        return
+      let doc = await postModel.findById(post).exec();
+      let isAdmin = ctx.user.roles.includes('admin');
+      if (!isAdmin && doc.user + '' != ctx.user._id + '') {
+        throw new APIError('用户无权限!', 1005);
+        return;
       }
-      await postModel.remove({_id:post}).exec();
-
+      await postModel.update({ _id: post }, { $set: { state: 1 } }).exec();
+      // await postModel.remove({_id:post}).exec();
       //删除喜欢
-      await likeModel.remove({post:post}).exec();
+      await likeModel.update({ post: post }, { $set: { state: 1 } }).exec();
+      //await likeModel.remove({post:post}).exec();
       //通知喜欢的用户
-      console.log(`你喜欢的帖子[${doc.content}]已被删除`)
-      return "删除成功";
+      console.log(`你喜欢的帖子[${doc.content}]已被删除`);
+      return '删除成功';
     },
-    async like(_,{post,isLike},ctx){
+    async like(_, { post, isLike }, ctx) {
       exactLogin(ctx.user);
-      let find={post,user:ctx.user};
-      if(isLike){
-        if(await likeModel.findOne(find).count().exec()>0)return '你已喜欢'
-        await likeModel(find).save();
-        return '喜欢成功'
-      }else{
-        await likeModel.remove(find).exec();
-        return '删除成功'
+      let find = { post, user: ctx.user };
+      if (isLike) {
+        if (
+          (await likeModel
+            .findOne({ ...find, state: 0 })
+            .count()
+            .exec()) > 0
+        )
+          return '你已喜欢';
+
+        await likeModel
+          .update(find, { $set: { state: 0 } }, { upsert: true })
+          .exec();
+        //await likeModel(find).save();
+        resolvers.Mutation.addPostHot(_, { post });
+        return '喜欢成功';
+      } else {
+        await likeModel.update(find, { $set: { state: 1 } }).exec();
+        //await likeModel.remove(find).exec();
+        return '删除成功';
       }
-    }
-    
-  }
-}
-
-
-
+    },
+    async addPostHot(_, { post }) {
+      let res = await postModel
+        .update({ _id: post }, { $inc: { hotNum: +1 } })
+        .exec();
+      return true;
+    },
+    async patch(_, {}) {
+      await likeModel.update(null, { $set: { state: 0 } }, { multi: true });
+      await postModel.update(null, { $set: { state: 0 } }, { multi: true });
+      await followModel.update(null, { $set: { state: 0 } }, { multi: true });
+    },
+  },
+};

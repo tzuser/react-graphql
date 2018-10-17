@@ -2,6 +2,8 @@ import {userType} from './user';
 import {commentModel,postModel,userModel} from '../db';
 import {getPageType,getPageData,exactLogin} from './public';
 import APIError from './APIError';
+import {resolvers as post} from "./post";
+
 export const typeDefs=`
 type Comment{
   id:ID!
@@ -22,7 +24,6 @@ extend type Query{
 }
 extend type Mutation{
   comment(input:CommentInput):String
-  test(input:CommentInput):String
 }
 `
 export const resolvers={
@@ -51,18 +52,7 @@ export const resolvers={
       }
       input.creationDate=+new Date();
       commentModel(input).save();
-      postModel.update({_id:input.post},{$inc:{commentNum:+1,hotNum:+1}}).exec();
+      post.Mutation.addPostHot(_,{post:input.post})
     },
-    async test(_,{input},ctx){
-      let user=await userModel.findOne({name:'tzuser'}).exec();
-      input.user=user;
-      if(!input.reply){
-        let {user}=await postModel.findOne({_id:input.post},{user:1}).exec()
-        input.reply=user;
-      }
-      input.creationDate=+new Date();
-      commentModel(input).save();
-      postModel.update({_id:input.post},{$inc:{commentNum:+1,hotNum:+1}}).exec();
-    }
   }
 }

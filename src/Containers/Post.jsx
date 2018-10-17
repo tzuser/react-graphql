@@ -193,7 +193,25 @@ const Content = ({ post, postID, push, isSelf, isAdmin, goBack }) => {
   );
 };
 
-
+const Header=({goBack})=>(
+  <div style={{ zIndex: 1, position: 'relative' }}>
+    <Box
+      marginTop={6}
+      marginLeft={6}
+      position="fixed"
+      display="none"
+      mdDisplay="block"
+    >
+      <IconButton
+        accessibilityLabel="返回"
+        icon="arrow-back"
+        onClick={() => goBack()}
+        size="lg"
+        iconColor="darkGray"
+      />
+    </Box>
+  </div>
+)
 class Post extends Component {
   render() {
     let {
@@ -211,6 +229,8 @@ class Post extends Component {
     if (error) {
       return <div>文章没找到或已被删除!</div>;
     }
+
+
     let isSelf = false;
     let isAdmin = false;
 
@@ -220,25 +240,9 @@ class Post extends Component {
     }
     return (
       <Box color={isPc ? 'lightGray' : 'white'}>
-        <div style={{ zIndex: 1, position: 'relative' }}>
-          <Box
-            marginTop={6}
-            marginLeft={6}
-            position="fixed"
-            display="none"
-            mdDisplay="block"
-          >
-            <IconButton
-              accessibilityLabel="返回"
-              icon="arrow-back"
-              onClick={() => goBack()}
-              size="lg"
-              iconColor="darkGray"
-            />
-          </Box>
-        </div>
-        {loading && <PageLoading />}
+        <Header goBack={goBack}/>
 
+        {loading && <PageLoading />}
         {!loading && (
           <div>
             <Box display="none" mdDisplay="block" height={30} />

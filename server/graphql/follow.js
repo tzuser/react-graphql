@@ -15,7 +15,7 @@ export const resolvers={
   Query:{
     async followers(_,{name,first,after,desc}){
       let userID=await getUserIDFormName(name);
-      let find={follow:userID};
+      let find={follow:userID,state:0};
       let page=await getPageData({
         model:followModel,
         find,
@@ -29,7 +29,7 @@ export const resolvers={
     },
     async following(_,{name,first,after,desc}){
       let followUserID=await getUserIDFormName(name);
-      let find={user:followUserID};
+      let find={user:followUserID,state:0};
       let page=await getPageData({
         model:followModel,
         find,
@@ -46,7 +46,8 @@ export const resolvers={
       let followUserID=await getUserIDFormName(name);
       let isFollow=await followModel.findOne({
         user:user,
-        follow:followUserID
+        follow:followUserID,
+        state:0,
       }).count().exec()
       return isFollow;
     },
@@ -61,15 +62,19 @@ export const resolvers={
           follow:followUser
         };
       if(isFollow){
-        if(await followModel.findOne(find).count().exec()>0)return '你已关注'
-        await followModel(find).save();
+        if(await followModel.findOne({...find,state:0}).count().exec()>0)return '你已关注'
+        //await followModel(find).save();
+        await followModel.update(find, { $set: { state: 0 } },{upsert: true}).exec();
         followUser.followersCount++;
         await followUser.save();
         user.followingCount++;
         await user.save()
         return '关注成功'
       }else{
-        await followModel.remove(find).exec();
+
+        //await followModel.remove(find).exec();
+        await followModel.update(find, { $set: { state: 1 } }).exec();
+
         if(followUser.followersCount>0){
           followUser.followersCount--;
           await followUser.save();

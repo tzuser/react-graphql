@@ -1,7 +1,7 @@
 #import "./photoField.gql"
 #import "./userField.gql"
-query GetPush($first:Int!,$after:ID){
-  getPush(first:$first,after:$after) {
+query Subscribe($first:Int!,$after:ID){
+  subscribe(first:$first,after:$after) {
     first
     after
     isEnd

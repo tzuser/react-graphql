@@ -95,7 +95,7 @@ export  class Tabs extends Component{
           onActive={(index)=>this.setState({active:index})}/>
         <IconColumn
           location={location}
-          to="/pushPost"
+          to="/subscribe"
           index={1}
           label="关注"
           icon="people"

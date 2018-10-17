@@ -1,15 +1,15 @@
-import {postModel,followModel,userModel,pushModel} from '../db';
+import {postModel,followModel,userModel,subscribeModel} from '../db';
 import APIError from './APIError';
 import {getPageType,getPageData,listToPage,getUserIDFormName,exactLogin} from "./public";
 
 export const typeDefs=`
 
 extend type Query{
-  getPush(first:Int!,after:ID,desc:Boolean):PostPage
+  subscribe(first:Int!,after:ID,desc:Boolean):PostPage
 }
 
 extend type Mutation{
-  pushPost(post:ID!):Int
+  subscribePost(post:ID!):Int
 }
 
 `
@@ -17,11 +17,11 @@ extend type Mutation{
 
 export const resolvers={
   Query:{
-    async getPush(_,{first,after,desc,sort},{user}){
+    async subscribe(_,{first,after,desc,sort='creationDate'},{user}){
       exactLogin(user);
       let find={user:user};
       let page=await getPageData({
-        model:pushModel,
+        model:subscribeModel,
         find,
         after:after,
         first,
@@ -36,7 +36,7 @@ export const resolvers={
     }
   },
   Mutation:{
-    async pushPost(_,{post}){
+    async subscribePost(_,{post}){
       //find user for post 
       let {user:postUser}=await postModel.findById(post).populate({path:'user'}).exec();
       let cursor=followModel.find({follow:postUser}).cursor();
@@ -45,13 +45,13 @@ export const resolvers={
       let upDateCount=0;
       while(followDoc=await cursor.next()){
         // target User
-        let pushData={
+        let subscribeItem={
           post:post,
           postUser:postUser,
           user:followDoc.user
         }
-        if(await pushModel.findOne(pushData).count().exec()==0){
-          await pushModel(pushData).save();
+        if(await subscribeModel.findOne(subscribeItem).count().exec()==0){
+          await subscribeModel(subscribeItem).save();
           upDateCount++;
         }
       }

@@ -6,6 +6,8 @@ if(process.env.RUN_ENV=='server-odb'){
   db_url='mongodb://web:wysj3910@192.168.1.107:27017/web';
 }
 
+// state 通用定义 0 可用 1 禁止 
+
 let db=mongoose.connect(db_url)
 //用户
 const userSchema=new Schema({
@@ -49,7 +51,8 @@ const postSchema=new Schema({
   commentNum:Number,//评论量
   rootUser:{type:Schema.Types.ObjectId,ref:'User'},//发帖人
   fromUser:{type:Schema.Types.ObjectId,ref:'User'},//被转帖人
-  comments:[{type:Schema.Types.ObjectId,ref:'Comment'}]
+  comments:[{type:Schema.Types.ObjectId,ref:'Comment'}],
+  state:{ type: Number, default: 0 },//状态
 })
 
 //评论
@@ -59,12 +62,14 @@ const commentSchema=new Schema({
   content:String,//内容
   creationDate:Date,//评论日期
   user:{type:Schema.Types.ObjectId,ref:'User'},//用户
+  state:{ type: Number, default: 0 },//状态
 })
 
 //喜欢
 const likeSchema=new Schema({
   user:{type:Schema.Types.ObjectId,ref:'User'},//用户
   post:{type:Schema.Types.ObjectId,ref:'Post'},//帖子 
+  state:{ type: Number, default: 0 },//状态
 })
 
 //搜索
@@ -74,17 +79,26 @@ const keywordSchema=new Schema({
   count:{ type: Number, default: 1 }//搜索次数
 })
 
+//查看记录
+const readRecord=new Schema({
+  user:{type:Schema.Types.ObjectId,ref:'User'},//用户
+  post:{type:Schema.Types.ObjectId,ref:'Post'},//帖子
+  date:Date,//日期
+})
+
 //关注
 const followSchema=new Schema({
   user:{type:Schema.Types.ObjectId,ref:'User'},//用户
   follow:{type:Schema.Types.ObjectId,ref:'User'},//关注用户
+  state:{ type: Number, default: 0 },//状态
 })
 
-// push
-const pushSchema=new Schema({
+// subscribe
+const subscribeSchema=new Schema({
   user:{type:Schema.Types.ObjectId,ref:'User'},//用户
   postUser:{type:Schema.Types.ObjectId,ref:'User'},
-  post:{type:Schema.Types.ObjectId,ref:'Post'}
+  post:{type:Schema.Types.ObjectId,ref:'Post'},
+  state:{ type: Number, default: 0 },//状态
 })
 
 export const userModel    = mongoose.model('User',userSchema)
@@ -93,4 +107,5 @@ export const likeModel    = mongoose.model('Like',likeSchema)
 export const commentModel = mongoose.model('Comment',commentSchema)
 export const keywordModel = mongoose.model('Keyword',keywordSchema)
 export const followModel  = mongoose.model('Follow',followSchema)
-export const pushModel  = mongoose.model('Push',pushSchema)
+export const subscribeModel  = mongoose.model('Subscribe',subscribeSchema)
+export const readModel  = mongoose.model('ReadRecord',readRecord)
