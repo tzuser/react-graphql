@@ -130,7 +130,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div>
+      <React.Fragment>
         <Switch>
           <Route exact path="/" component={LoadableHome} />
           <Route path="/login" component={LoadableLogin} />
@@ -154,7 +154,7 @@ class App extends React.Component {
           <Route path="/:name" component={LoadableUser} />
         </Switch>
         <Footer />
-      </div>
+      </React.Fragment>
     );
   }
 }

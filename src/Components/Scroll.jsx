@@ -1,31 +1,56 @@
 import React,{Component} from 'react';
+import ReactDOM from 'react-dom';
+import styled from 'styled-components';
+
+const ScrollBox = styled.div`
+  height: 100%;
+  overflow: auto;
+`;
 //组件滚动条位置及恢复
 class Scroll extends Component{
   constructor(props){
     super(props)
     this.isSpace=false;
     this.scrollEventFun=this.scrollEvent.bind(this);
+    this.pHeight=0;
   }
   componentWillUnmount(){
-    window.removeEventListener('scroll',this.scrollEventFun)
+    this.target.removeEventListener('scroll',this.scrollEventFun)
   }
   componentDidMount() {
+    this.target=ReactDOM.findDOMNode(this);
     let {top,bottom,left,right,onTop,onBottom}=this.props;
+
+    const target=this.target;
+    this.pHeight=target.scrollHeight;
     if(bottom){
-      window.scrollTo(0,document.body.scrollHeight)
+      target.scrollTo(0,target.scrollHeight)
     }else if(top){
-      window.scrollTo(0,0)
+      target.scrollTo(0,0)
     }
     if(onTop){
-      window.addEventListener('scroll',this.scrollEventFun)
+      target.addEventListener('scroll',this.scrollEventFun)
+    }
+  }
+  componentDidUpdate(){
+    let {top,bottom}=this.props;
+    const target=this.target;
+    if(this.pHeight!=target.scrollHeight){//高度改变时
+      if(bottom){
+        target.scrollTo(0,target.scrollHeight)
+      }else if(top){
+        target.scrollTo(0,0)
+      }
     }
   }
   scrollEvent(e){
     let {space=10,onTop}=this.props;
-    let cTop=document.documentElement.scrollTop+document.body.scrollTop;
+    const target=this.target;
+
+    let cTop=target.scrollTop;
     //底部
     //console.log()
-    if(document.body.scrollHeight-(cTop+document.body.clientHeight)<space){
+    if(target.scrollHeight-(cTop+target.clientHeight)<space){
       if(!this.isSpace){
         this.isSpace=true;
         //console.log('底部')
@@ -34,7 +59,7 @@ class Scroll extends Component{
       if(!this.isSpace){
         this.isSpace=true;
         if(onTop){
-          onTop(cTop);
+          onTop(target,cTop);
         }
         //console.log('头部')
       }
@@ -42,8 +67,9 @@ class Scroll extends Component{
       this.isSpace=false;
     }
   }
+
   render(){
-    return false
+    return <ScrollBox>{this.props.children}</ScrollBox> 
   }
 }
 

@@ -152,7 +152,7 @@ class User extends Component {
         )}
         {loading && <PageLoading />}
         {!loading && (
-          <div>
+          <Box marginTop={2}>
             <Block>
               <UserCard user={user} />
               <Box direction="row" display="flex" marginTop={3}>
@@ -200,7 +200,7 @@ class User extends Component {
                 <LoadableUserLikes userName={userName} minCols={2} />
               )}
             </Box>
-          </div>
+          </Box>
         )}
       </div>
     );

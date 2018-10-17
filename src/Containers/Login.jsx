@@ -5,7 +5,6 @@ import { Label,Tooltip,Box,Spinner,Text,Button,Icon,TextField} from 'gestalt';
 import {Link} from 'react-router-dom';
 import HeaderContainer from '../Components/HeaderContainer';
 import styled from 'styled-components';
-import Scroll from '../Components/Scroll';
 import * as configActs from '../actions/config';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';

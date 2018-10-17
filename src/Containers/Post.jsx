@@ -14,7 +14,6 @@ import {
 } from 'gestalt';
 import HeaderContainer from '../Components/HeaderContainer';
 import styled from 'styled-components';
-import Scroll from '../Components/Scroll';
 import PageLoading from '../Components/PageLoading';
 import MoreLikes from './MoreLikes';
 import { GrayButton, RedButton } from '../Components/IconButton.jsx';
@@ -181,7 +180,7 @@ const Content = ({ post, postID, push, isSelf, isAdmin, goBack }) => {
             <hr />
             <Box direction="row" display="flex" wrap={true}>
               {tags.map((item, key) => (
-                <Tag to={`/search/${item}`} key={key} padding={2}>
+                <Tag to={`/search/all/${item}`} key={key} padding={2}>
                   #{item}
                 </Tag>
               ))}
@@ -223,9 +222,6 @@ class Post extends Component {
       selfUser,
       isPc,
     } = this.props;
-    /*if(loading ){
-      return <PageLoading />
-    }*/
     if (error) {
       return <div>文章没找到或已被删除!</div>;
     }

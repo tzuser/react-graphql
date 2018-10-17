@@ -91,6 +91,7 @@ extend type Mutation{
   delPost(post:ID!):String
   like(post:ID!,isLike:Boolean!):String
   addPostHot(post:ID!):Boolean
+  addPostComment(post:ID!):Boolean
   patch:Boolean
 }
 
@@ -294,6 +295,13 @@ export const resolvers = {
     async addPostHot(_, { post }) {
       let res = await postModel
         .update({ _id: post }, { $inc: { hotNum: +1 } })
+        .exec();
+      return true;
+    },
+
+    async addPostComment(_, { post }) {
+      let res = await postModel
+        .update({ _id: post }, { $inc: { commentNum: +1, hotNum: +1 } })
         .exec();
       return true;
     },

@@ -52,7 +52,8 @@ export const resolvers={
       }
       input.creationDate=+new Date();
       commentModel(input).save();
-      post.Mutation.addPostHot(_,{post:input.post})
+
+      await post.Mutation.addPostComment(_,{post:input.post})
     },
   }
 }

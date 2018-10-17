@@ -15,7 +15,6 @@ import {
 import HeaderContainer from '../Components/HeaderContainer';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Scroll from '../Components/Scroll';
 import * as configActs from '../actions/config';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

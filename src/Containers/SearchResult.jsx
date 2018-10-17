@@ -16,7 +16,7 @@ import styled from 'styled-components';
 const Stacky=styled.div`
   position:sticky;
   top:63px;
-  z-index:99;
+  z-index:1;
   background:rgba(255,255,255)
 `
 

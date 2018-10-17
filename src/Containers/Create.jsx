@@ -4,7 +4,6 @@ import gql from 'graphql-tag';
 import {Image,Label,Tooltip,Box,Spinner,Text,Button,Icon,TextField,IconButton,TextArea } from 'gestalt';
 import HeaderContainer from '../Components/HeaderContainer';
 import styled from 'styled-components';
-import Scroll from '../Components/Scroll';
 import * as configActs from '../actions/config';
 
 import hiddenFooter from '../Components/HiddenFooter';

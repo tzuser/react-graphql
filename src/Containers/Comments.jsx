@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import {
@@ -96,6 +98,9 @@ class Comments extends Component {
   /*componentWillReceiveProps(nextProps){
     console.log(nextProps);
   }*/
+  /*componentDidMount() {
+    this.scrollBox = ReactDOM.findDOMNode(this);
+  }*/
   async getNewComments(isPoll = false) {
     //获取新消息
     if (!this.props.data || !this.props.data.comments) return;
@@ -163,30 +168,8 @@ class Comments extends Component {
     let list = comments.list.concat().reverse();
     let { replyName, replyId } = this.state;
     return (
-      <div>
-        <Scroll
-          bottom={true}
-          onTop={cTop => {
-            if (comments.isEnd) return;
-            let scrollStartH = document.body.scrollHeight;
-            fetchMore({
-              variables: { after: comments.after, first: comments.first },
-              updateQuery: (previousResult, { fetchMoreResult }) => {
-                if (previousResult.comments.list) {
-                  fetchMoreResult.comments.list = previousResult.comments.list.concat(
-                    fetchMoreResult.comments.list
-                  );
-                }
-                return fetchMoreResult;
-              },
-            }).then(data => {
-              let span = document.body.scrollHeight - scrollStartH;
-              if (span > 0) window.scrollTo(0, span + cTop);
-            });
-          }}
-        />
-
-        <HeaderContainer>
+      <Box height="100%" display="flex" direction="column">
+        <HeaderContainer isFixed={false}>
           <Box marginLeft={-3}>
             <IconButton
               accessibilityLabel="返回"
@@ -200,36 +183,52 @@ class Comments extends Component {
             </Text>
           </Box>
         </HeaderContainer>
-
-        <Block>
-          <Spinner
-            show={!comments.isEnd}
-            accessibilityLabel="Example spinner"
-          />
-          {list.map((item, key) => (
-            <UserNode
-              key={key}
-              user={item.user}
-              reply={item.reply}
-              content={item.content}
-              onReply={({ id, nick_name }) =>
-                this.setState({ replyId: id, replyName: nick_name })
-              }
-              userClick={(e, data) => push(`/${data.name}/`)}
+        <Scroll
+          bottom={true}
+          onTop={(target, cTop) => {
+            console.log('aaa');
+            if (comments.isEnd) return;
+            let scrollStartH = target.scrollHeight;
+            fetchMore({
+              variables: { after: comments.after, first: comments.first },
+              updateQuery: (previousResult, { fetchMoreResult }) => {
+                if (previousResult.comments.list) {
+                  fetchMoreResult.comments.list = previousResult.comments.list.concat(
+                    fetchMoreResult.comments.list
+                  );
+                }
+                return fetchMoreResult;
+              },
+            }).then(data => {
+              let span = target.scrollHeight - scrollStartH;
+              if (span > 0) target.scrollTo(0, span + cTop);
+            });
+          }}
+        >
+          <Block>
+            <Spinner
+              show={!comments.isEnd}
+              accessibilityLabel="Example spinner"
             />
-          ))}
-        </Block>
-
-        <div style={{ height: 64 }} />
+            {list.map((item, key) => (
+              <UserNode
+                key={key}
+                user={item.user}
+                reply={item.reply}
+                content={item.content}
+                onReply={({ id, nick_name }) =>
+                  this.setState({ replyId: id, replyName: nick_name })
+                }
+                userClick={(e, data) => push(`/${data.name}/`)}
+              />
+            ))}
+          </Block>
+        </Scroll>
         <Mutation mutation={ADD_COMMENT}>
           {addComment => {
             return (
               <Box
                 color="white"
-                position="fixed"
-                left={true}
-                right={true}
-                bottom={true}
               >
                 {replyName && (
                   <Box
@@ -272,6 +271,7 @@ class Comments extends Component {
                           type="text"
                           value={this.state.comment}
                           placeholder="评论"
+                          autoComplete="off"
                           onChange={({ event, value }) => {
                             this.setState({ comment: value });
                           }}
@@ -289,7 +289,7 @@ class Comments extends Component {
             );
           }}
         </Mutation>
-      </div>
+      </Box>
     );
   }
 }
