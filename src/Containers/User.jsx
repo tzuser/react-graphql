@@ -176,13 +176,13 @@ class User extends Component {
                     </Text>
                   </FollowCountButton>
                 </Column>
-                {/* <Column span={6}>
-                 <FolloButton to="#">
+                <Column span={6}>
+                 <a href={`https://${userName}.tumblr.com/`} target="_blank">
                      <Text bold size="sm" align="right" truncate={true} overflow="breakWord">
-                      https://www.pinterest.com/alivaezbarzani/boards
+                      https://metaotushe.tumblr.com/
                      </Text>
-                  </FolloButton>
-                </Column>*/}
+                  </a>
+                </Column>
               </Box>
               <Box marginTop={4}>
                 <Tabs

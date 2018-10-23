@@ -16,6 +16,7 @@ import InTheEnd from 'com_/InTheEnd';
       variables: {
         first: 20,
       },
+      ssr: false,
     };
   },
 })
