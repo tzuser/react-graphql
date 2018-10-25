@@ -3,13 +3,13 @@
 # dependencies
 /node_modules
 
-# testing
-/coverage
-
 # production
+/www
 /build
 
-/files/*
+# ide
+/.idea
+/.vscode
 
 # misc
 .DS_Store

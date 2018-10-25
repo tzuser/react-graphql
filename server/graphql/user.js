@@ -12,7 +12,7 @@ import { getThumbnail } from './file';
 import APIError from './APIError';
 //import findRemoveSync from 'find-remove';
 import path from 'path';
-console.log(getPageType('User',`keyword:String`))
+
 export const typeDefs = `
 type User{
   id:ID!

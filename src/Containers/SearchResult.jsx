@@ -12,13 +12,14 @@ import searchQuery from 'gql_/search.gql';
 import Block from 'com_/Block';
 import UsersRow from 'con_/UsersRow';
 import styled from 'styled-components';
+import { withTheme } from 'styled-components';
 
-const Stacky=styled.div`
-  position:sticky;
-  top:63px;
-  z-index:1;
-  background:rgba(255,255,255)
-`
+const Stacky = styled.div`
+  position: sticky;
+  top: 63px;
+  z-index: 1;
+  background: rgba(255, 255, 255);
+`;
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch =>
@@ -29,6 +30,7 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
+@withTheme
 @withRouter
 @connect(
   mapStateToProps,
@@ -62,9 +64,7 @@ class SearchResult extends React.Component {
         variables: { after, first },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (previousResult.searchPost.list) {
-            fetchMoreResult.searchPost.list = previousResult.searchPost.list.concat(
-              fetchMoreResult.searchPost.list
-            );
+            fetchMoreResult.searchPost.list = previousResult.searchPost.list.concat(fetchMoreResult.searchPost.list);
           }
           return fetchMoreResult;
         },
@@ -91,12 +91,7 @@ class SearchResult extends React.Component {
         params: { type, keyword },
       },
     } = this.props;
-    const columnList = [
-      { text: '全部', type: 'all' },
-      { text: '文章', type: 'article' },
-      { text: '图片', type: 'photo' },
-      { text: '视频', type: 'video' },
-    ];
+    const columnList = [{ text: '全部', type: 'all' }, { text: '文章', type: 'article' }, { text: '图片', type: 'photo' }, { text: '视频', type: 'video' }];
     let currentType = searchPost ? type : 'all';
     return (
       <div>
@@ -104,7 +99,7 @@ class SearchResult extends React.Component {
 
         <UsersRow />
         <Stacky>
-          <Block >
+          <Block>
             <Box display="flex" direction="row" paddingY={2}>
               {columnList.map((item, key) => (
                 <Box marginRight={1} key={key}>
@@ -127,10 +122,7 @@ class SearchResult extends React.Component {
             </Box>
           </Block>
         </Stacky>
-        <PostList
-          list={searchPost ? searchPost.list : []}
-          loadItems={this.loadItems.bind(this)}
-        />
+        <PostList list={searchPost ? searchPost.list : []} loadItems={this.loadItems.bind(this)} />
         <Spinner show={loading} accessibilityLabel="Example spinner" />
         {searchPost &&
           searchPost.isEnd && (

@@ -1,6 +1,5 @@
 {
-  "singleQuote":true,
-  "trailingComma":"es5",
-  "auto_format_on_save":true,
-  "tabWidth":2,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "printWidth": 200
 }

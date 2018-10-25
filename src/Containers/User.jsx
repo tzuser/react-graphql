@@ -1,18 +1,7 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import {
-  Box,
-  Spinner,
-  Text,
-  IconButton,
-  Mask,
-  Image,
-  Avatar,
-  Button,
-  Heading,
-  Column,
-} from 'gestalt';
+import { Box, Spinner, Text, IconButton, Mask, Image, Avatar, Button, Heading, Column } from 'gestalt';
 import Tabs from '../Components/Tabs';
 import HeaderContainer from '../Components/HeaderContainer';
 import PageLoading from '../Components/PageLoading';
@@ -32,6 +21,8 @@ import Block from 'com_/Block';
 import userQuery from 'gql_/user.gql';
 import UpdateUserButton from 'com_/user/UpdateUserButton';
 import DeleteButton from 'com_/user/DeleteButton';
+import { withTheme } from 'styled-components';
+
 const LoadableUserPosts = Loadable({
   loader: () => import(/* webpackChunkName: 'UserPosts' */ './UserPosts'),
   loading: PageLoading,
@@ -44,11 +35,7 @@ const LoadableUserLikes = Loadable({
 const UserHeader = ({ userName, goBack }) => (
   <HeaderContainer>
     <Box marginLeft={-3} flex="grow">
-      <IconButton
-        accessibilityLabel="返回"
-        icon="arrow-back"
-        onClick={goBack}
-      />
+      <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={goBack} />
     </Box>
 
     <Box>
@@ -145,11 +132,7 @@ class User extends Component {
     tabsIndex = tabsIndex < 0 ? 0 : tabsIndex;
     return (
       <div>
-        {isSlef ? (
-          <SelfHeader userName={userName} />
-        ) : (
-          <UserHeader userName={userName} goBack={goBack} />
-        )}
+        {isSlef ? <SelfHeader userName={userName} /> : <UserHeader userName={userName} goBack={goBack} />}
         {loading && <PageLoading />}
         {!loading && (
           <Box marginTop={2}>
@@ -177,28 +160,20 @@ class User extends Component {
                   </FollowCountButton>
                 </Column>
                 <Column span={6}>
-                 <a href={`https://${userName}.tumblr.com/`} target="_blank">
-                     <Text bold size="sm" align="right" truncate={true} overflow="breakWord">
+                  <a href={`https://${userName}.tumblr.com/`} target="_blank">
+                    <Text bold size="sm" align="right" truncate={true} overflow="breakWord">
                       https://metaotushe.tumblr.com/
-                     </Text>
+                    </Text>
                   </a>
                 </Column>
               </Box>
               <Box marginTop={4}>
-                <Tabs
-                  tabs={tabsData}
-                  activeTabIndex={tabsIndex}
-                  onChange={e => {}}
-                />
+                <Tabs tabs={tabsData} activeTabIndex={tabsIndex} onChange={e => {}} />
               </Box>
             </Block>
             <Box marginTop={3} paddingX={2}>
-              {tabsIndex == 0 && (
-                <LoadableUserPosts userName={userName} minCols={2} />
-              )}
-              {tabsIndex == 1 && (
-                <LoadableUserLikes userName={userName} minCols={2} />
-              )}
+              {tabsIndex == 0 && <LoadableUserPosts userName={userName} minCols={2} />}
+              {tabsIndex == 1 && <LoadableUserLikes userName={userName} minCols={2} />}
             </Box>
           </Box>
         )}
@@ -212,7 +187,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
-export default graphql(userQuery, {
+export default withTheme(graphql(userQuery, {
   options: props => {
     return {
       variables: {
@@ -225,4 +200,4 @@ export default graphql(userQuery, {
     mapStateToProps,
     mapDispatchToProps
   )(User)
-);
+));

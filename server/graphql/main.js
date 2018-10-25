@@ -11,7 +11,7 @@ import * as follow from './follow';
 import * as isUpdate from './isUpdate';
 import * as subscribe from './subscribe';
 
-import { graphqlKoa,graphiqlKoa } from 'apollo-server-koa';
+import { ApolloServer, gql } from 'apollo-server-koa';
 
 const typeDefs=[`
   type Query {
@@ -48,9 +48,9 @@ addSchema(follow);
 addSchema(isUpdate);
 addSchema(subscribe);
 
-const mySchema = makeExecutableSchema({typeDefs,resolvers})
-
-//路由处理
+const server =  new ApolloServer({typeDefs,resolvers,context: ({ctx}) => ctx})
+export default server
+/*//路由处理
 const router = new Router();
 router.all('/graphql', async (ctx, next) =>{
   await graphqlKoa({
@@ -62,4 +62,4 @@ router.all('/graphql', async (ctx, next) =>{
 router.get('/graphiql', async (ctx, next) =>{
   graphiqlKoa({ endpointURL: '/graphql' })(ctx)
 });
-export default router
+export default router*/

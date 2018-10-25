@@ -4,17 +4,15 @@ import ReactDOM from 'react-dom';
 //import {RemoveServerSideCss} from './Module/MaterialUIServiceRendering';
 import Loadable from 'react-loadable';
 import App from './Containers/App';
-import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink, createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ConnectedRouter } from 'react-router-redux';
 
 import { getCreateStore } from './store';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 
 import reducers from './reducers/index';
 import { persistStore } from 'redux-persist';
@@ -22,8 +20,7 @@ import { PersistGate } from 'redux-persist/lib/integration/react';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 import host from 'public_/host.js';
 let { DB_URL } = host;
-//import './Module/PWA.js'
-//import './pwa.js';
+
 const link = new BatchHttpLink({
 	uri: DB_URL,
 	credentials: 'include',
@@ -32,6 +29,7 @@ const link = new BatchHttpLink({
 const client = new ApolloClient({
 	link,
 	cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
+	ssrForceFetchDelay: 100,
 });
 
 let { store, history } = getCreateStore(reducers); //获取store
@@ -55,16 +53,15 @@ if (process.env.NODE_ENV == 'development') {
 	}
 }
 //是否是服务器渲染
-const renderDOM =
-	process.env.NODE_ENV == 'production' ? ReactDOM.hydrate : ReactDOM.render;
+const renderDOM = process.env.NODE_ENV == 'production' ? ReactDOM.hydrate : ReactDOM.render;
 const render = (AppCom = App) => {
 	renderDOM(
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
 				<ApolloProvider client={client}>
-					<ConnectedRouter history={history}>
+					<Router history={history}>
 						<AppCom />
-					</ConnectedRouter>
+					</Router>
 				</ApolloProvider>
 			</PersistGate>
 		</Provider>,

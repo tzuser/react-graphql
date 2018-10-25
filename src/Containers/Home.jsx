@@ -9,6 +9,8 @@ import { withRouter } from 'react-router-dom';
 import homePostsQuery from 'gql_/homePosts.gql';
 import { loadItems } from '_public';
 import InTheEnd from 'com_/InTheEnd';
+import { withTheme } from 'styled-components';
+@withTheme
 @withRouter
 @graphql(homePostsQuery, {
   options: props => {
@@ -31,12 +33,7 @@ class Home extends React.Component {
     return (
       <div>
         <Header />
-        <PostList
-          list={posts ? posts.list : []}
-          loadItems={data =>
-            loadItems({ props: this.props, queryName: 'posts' })
-          }
-        />
+        <PostList list={posts ? posts.list : []} loadItems={data => loadItems({ props: this.props, queryName: 'posts' })} />
         <Spinner show={loading} accessibilityLabel="Example spinner" />
         {posts && posts.isEnd && <InTheEnd />}
       </div>

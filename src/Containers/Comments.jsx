@@ -3,18 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import {
-  Box,
-  Spinner,
-  Text,
-  IconButton,
-  Mask,
-  Image,
-  Avatar,
-  Button,
-  Icon,
-  TextField,
-} from 'gestalt';
+import { Box, Spinner, Text, IconButton, Mask, Image, Avatar, Button, Icon, TextField } from 'gestalt';
 import HeaderContainer from '../Components/HeaderContainer';
 import styled from 'styled-components';
 import Scroll from '../Components/Scroll';
@@ -26,6 +15,7 @@ import PageLoading from '../Components/PageLoading';
 import commentsQuery from 'gql_/comments.gql';
 import ADD_COMMENT from 'gql_/addComment.gql';
 import Block from 'com_/Block';
+import { withTheme } from 'styled-components';
 
 const CommentInput = styled.div`
   input {
@@ -38,13 +28,7 @@ const CommentInput = styled.div`
   }
 `;
 const UserNode = ({ user, content, reply, onReply, userClick }) => (
-  <Box
-    direction="row"
-    marginTop={2}
-    display="flex"
-    alignItems="start"
-    paddingY={2}
-  >
+  <Box direction="row" marginTop={2} display="flex" alignItems="start" paddingY={2}>
     <div onClick={e => userClick(e, user)}>
       <Avatar size="sm" src={imageUrl(user.avatar)} name="Long" />
     </div>
@@ -54,24 +38,14 @@ const UserNode = ({ user, content, reply, onReply, userClick }) => (
           onReply(user);
         }}
       >
-        <Box
-          direction="row"
-          display="flex"
-          justifyContent="start"
-          alignItems="start"
-        >
+        <Box direction="row" display="flex" justifyContent="start" alignItems="start">
           <Text bold size="xs" inline>
             {user.nick_name}
           </Text>
           {reply && (
             <Box direction="row" display="flex">
               <Box marginLeft={1} marginRight={1}>
-                <Icon
-                  icon="send"
-                  accessibilityLabel="send"
-                  color="gray"
-                  size={12}
-                />
+                <Icon icon="send" accessibilityLabel="send" color="gray" size={12} />
               </Box>
               <Text size="xs" inline>
                 {reply.nick_name}
@@ -89,6 +63,19 @@ const UserNode = ({ user, content, reply, onReply, userClick }) => (
     </Box>
   </Box>
 );
+
+@withTheme
+@graphql(commentsQuery, {
+  options: props => {
+    return {
+      variables: {
+        id: props.match.params.id,
+        first: 20,
+      }
+    };
+  },
+})
+@hiddenFooter
 class Comments extends Component {
   state = {
     comment: '',
@@ -171,11 +158,7 @@ class Comments extends Component {
       <Box height="100%" display="flex" direction="column">
         <HeaderContainer isFixed={false}>
           <Box marginLeft={-3}>
-            <IconButton
-              accessibilityLabel="返回"
-              icon="arrow-back"
-              onClick={() => goBack()}
-            />
+            <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={() => goBack()} />
           </Box>
           <Box flex="grow">
             <Text bold size="lg">
@@ -193,9 +176,7 @@ class Comments extends Component {
               variables: { after: comments.after, first: comments.first },
               updateQuery: (previousResult, { fetchMoreResult }) => {
                 if (previousResult.comments.list) {
-                  fetchMoreResult.comments.list = previousResult.comments.list.concat(
-                    fetchMoreResult.comments.list
-                  );
+                  fetchMoreResult.comments.list = previousResult.comments.list.concat(fetchMoreResult.comments.list);
                 }
                 return fetchMoreResult;
               },
@@ -206,19 +187,14 @@ class Comments extends Component {
           }}
         >
           <Block>
-            <Spinner
-              show={!comments.isEnd}
-              accessibilityLabel="Example spinner"
-            />
+            <Spinner show={!comments.isEnd} accessibilityLabel="Example spinner" />
             {list.map((item, key) => (
               <UserNode
                 key={key}
                 user={item.user}
                 reply={item.reply}
                 content={item.content}
-                onReply={({ id, nick_name }) =>
-                  this.setState({ replyId: id, replyName: nick_name })
-                }
+                onReply={({ id, nick_name }) => this.setState({ replyId: id, replyName: nick_name })}
                 userClick={(e, data) => push(`/${data.name}/`)}
               />
             ))}
@@ -227,28 +203,11 @@ class Comments extends Component {
         <Mutation mutation={ADD_COMMENT}>
           {addComment => {
             return (
-              <Box
-                color="white"
-              >
+              <Box color="white">
                 {replyName && (
-                  <Box
-                    paddingX={4}
-                    display="flex"
-                    color="lightGray"
-                    direction="row"
-                    justifyContent="between"
-                    alignItems="center"
-                  >
+                  <Box paddingX={4} display="flex" color="lightGray" direction="row" justifyContent="between" alignItems="center">
                     <div>回复 {replyName}</div>
-                    <IconButton
-                      accessibilityLabel="Love"
-                      icon="clear"
-                      size="sm"
-                      iconColor="darkGray"
-                      onClick={() =>
-                        this.setState({ replyId: null, replyName: null })
-                      }
-                    />
+                    <IconButton accessibilityLabel="Love" icon="clear" size="sm" iconColor="darkGray" onClick={() => this.setState({ replyId: null, replyName: null })} />
                   </Box>
                 )}
                 <form
@@ -257,13 +216,7 @@ class Comments extends Component {
                     this.send(addComment);
                   }}
                 >
-                  <Box
-                    paddingY={3}
-                    paddingX={4}
-                    display="flex"
-                    direction="row"
-                    alignItems="center"
-                  >
+                  <Box paddingY={3} paddingX={4} display="flex" direction="row" alignItems="center">
                     <Box flex="grow">
                       <CommentInput>
                         <TextField
@@ -294,14 +247,4 @@ class Comments extends Component {
   }
 }
 
-export default graphql(commentsQuery, {
-  options: props => {
-    return {
-      variables: {
-        id: props.match.params.id,
-        first: 20,
-      },
-      //pollInterval:10000
-    };
-  },
-})(hiddenFooter(Comments));
+export default Comments;

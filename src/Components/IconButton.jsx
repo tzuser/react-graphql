@@ -25,19 +25,19 @@ const IconButtonBase=styled.a`
     padding:0 4px;
   }
 `
-export const RedButton=IconButtonBase.extend`
+export const RedButton=styled(IconButtonBase)`
   background-color: #bd081c;
   color:#fff;
   & svg{
     color:#fff;
   }`
-export const GrayButton=IconButtonBase.extend`
+export const GrayButton=styled(IconButtonBase)`
   background-color: #efefef;
   color:#555;
   & svg{
     color:#555;
   }`
-export const DisabledButton=IconButtonBase.extend`
+export const DisabledButton=styled(IconButtonBase)`
   background-color: #efefef;
   color:#b5b5b5;
   cursor: default;

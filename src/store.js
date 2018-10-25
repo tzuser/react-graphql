@@ -1,5 +1,4 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 
 import createMemoryHistory from 'history/createMemoryHistory';
@@ -29,13 +28,13 @@ export const getCreateStore=(reducers,path = '/')=>{
 			//数据持久化
 			const persistedReducer = persistReducer(persistConfig, reducers)
 			var history = createBrowserHistory()
-			var middleware=[thunk,routerMiddleware(history)];
+			var middleware=[thunk];
 			var store=createStore(persistedReducer,initialState,composeWithDevTools(applyMiddleware(...middleware)));
 			return {history,store}
 		case 'server':
 		case 'server-odb':
 			var history = createMemoryHistory({ initialEntries: [path] });
-			var middleware = [thunk, routerMiddleware(history)];
+			var middleware = [thunk];
 			var store = createStore(reducers, initialState, compose(applyMiddleware(...middleware)));
 			return {history,store};
 	}

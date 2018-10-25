@@ -8,7 +8,8 @@ import { withRouter } from 'react-router-dom';
 import subscribeQuery from 'gql_/subscribe.gql';
 import { loadItems } from '_public';
 import InTheEnd from 'com_/InTheEnd';
-
+import { withTheme } from 'styled-components';
+@withTheme
 @withRouter
 @graphql(subscribeQuery, {
   options: props => {

@@ -1,17 +1,6 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
-import {
-  Box,
-  Spinner,
-  Text,
-  IconButton,
-  Mask,
-  Image,
-  Avatar,
-  Button,
-  Icon,
-  Column,
-} from 'gestalt';
+import { Box, Spinner, Text, IconButton, Mask, Image, Avatar, Button, Icon, Column } from 'gestalt';
 import HeaderContainer from '../Components/HeaderContainer';
 import styled from 'styled-components';
 import PageLoading from '../Components/PageLoading';
@@ -32,6 +21,7 @@ import postQuery from 'gql_/post.gql';
 import UserNode from 'com_/post/UserNode';
 import Tag from 'com_/Tag';
 import Markdown from 'com_/Markdown';
+import { withTheme } from 'styled-components';
 
 const Card = styled.div`
   transition: all 0.1s;
@@ -58,11 +48,8 @@ const Video = ({ src }) => {
 };
 
 const Article = ({ content }) => {
-  return (
-    <Markdown source={content} />
-  );
+  return <Markdown source={content} />;
 };
-
 
 const Photo = ({ photos, thumbnail }) => {
   return (
@@ -70,24 +57,14 @@ const Photo = ({ photos, thumbnail }) => {
       <Mask shape="rounded">
         {photos.length == 0 && (
           <ItemImg>
-            <Image
-              alt=""
-              naturalHeight={thumbnail.height}
-              naturalWidth={thumbnail.width}
-              src={imageUrl(thumbnail.url)}
-            />
+            <Image alt="" naturalHeight={thumbnail.height} naturalWidth={thumbnail.width} src={imageUrl(thumbnail.url)} />
           </ItemImg>
         )}
 
         {photos.length > 0 &&
           photos.map((item, key) => (
             <ItemImg key={key}>
-              <Image
-                alt=""
-                naturalHeight={item.height}
-                naturalWidth={item.width}
-                src={imageUrl(item.url)}
-              />
+              <Image alt="" naturalHeight={item.height} naturalWidth={item.width} src={imageUrl(item.url)} />
             </ItemImg>
           ))}
       </Mask>
@@ -99,11 +76,7 @@ const PostHeader = ({ isSelf, isAdmin, postID, goBack, push }) => {
   return (
     <Box display="flex" paddingX={4}>
       <Box marginLeft={-3} marginTop={-1} flex="grow" mdDisplay="none">
-        <IconButton
-          accessibilityLabel="返回"
-          icon="arrow-back"
-          onClick={() => goBack()}
-        />
+        <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={() => goBack()} />
       </Box>
       <Box flex="grow" />
       {(isAdmin || isSelf) && (
@@ -111,37 +84,17 @@ const PostHeader = ({ isSelf, isAdmin, postID, goBack, push }) => {
           <DeleteButton postID={postID} goBack={goBack} push={push} />
         </Box>
       )}
-      <Box>
-        {!isSelf && (
-          <LikePostButton postID={postID} push={push} initLike={false} />
-        )}
-      </Box>
+      <Box>{!isSelf && <LikePostButton postID={postID} push={push} initLike={false} />}</Box>
     </Box>
   );
 };
 
 const Content = ({ post, postID, push, isSelf, isAdmin, goBack }) => {
-  let {
-    user,
-    content,
-    type,
-    tags,
-    commentNum,
-    hotNum,
-    likeNum,
-    src,
-    thumbnail,
-  } = post;
+  let { user, content, type, tags, commentNum, hotNum, likeNum, src, thumbnail } = post;
   let photos = post.photos || [];
   return (
     <Block paddingX={0} paddingY={4} color="white" shape="rounded">
-      <PostHeader
-        isSelf={isSelf}
-        isAdmin={isAdmin}
-        postID={postID}
-        goBack={goBack}
-        push={push}
-      />
+      <PostHeader isSelf={isSelf} isAdmin={isAdmin} postID={postID} goBack={goBack} push={push} />
       <Box display="flex" direction="row" paddingY={2} wrap>
         <Column span={12} mdSpan={8}>
           <Box paddingX={4}>
@@ -155,11 +108,7 @@ const Content = ({ post, postID, push, isSelf, isAdmin, goBack }) => {
             <Box marginTop={8} display="none" mdDisplay="block">
               <hr />
             </Box>
-            <UserNode
-              user={user}
-              content={type == 'article'?'':content}
-              userClick={(e, data) => push(`/${data.name}/`)}
-            />
+            <UserNode user={user} content={type == 'article' ? '' : content} userClick={(e, data) => push(`/${data.name}/`)} />
             <Box direction="row" display="flex" wrap={true}>
               <Box>
                 <Text color="gray" size="xs">
@@ -192,25 +141,26 @@ const Content = ({ post, postID, push, isSelf, isAdmin, goBack }) => {
   );
 };
 
-const Header=({goBack})=>(
+const Header = ({ goBack }) => (
   <div style={{ zIndex: 1, position: 'relative' }}>
-    <Box
-      marginTop={6}
-      marginLeft={6}
-      position="fixed"
-      display="none"
-      mdDisplay="block"
-    >
-      <IconButton
-        accessibilityLabel="返回"
-        icon="arrow-back"
-        onClick={() => goBack()}
-        size="lg"
-        iconColor="darkGray"
-      />
+    <Box marginTop={6} marginLeft={6} position="fixed" display="none" mdDisplay="block">
+      <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={() => goBack()} size="lg" iconColor="darkGray" />
     </Box>
   </div>
-)
+);
+
+@withTheme
+@graphql(postQuery, {
+  options: props => {
+    return {
+      variables: {
+        id: props.match.params.id,
+      },
+      //fetchPolicy: "network-only"
+    };
+  },
+})
+@connect(mapStateToProps)
 class Post extends Component {
   render() {
     let {
@@ -226,7 +176,6 @@ class Post extends Component {
       return <div>文章没找到或已被删除!</div>;
     }
 
-
     let isSelf = false;
     let isAdmin = false;
 
@@ -236,26 +185,14 @@ class Post extends Component {
     }
     return (
       <Box color={isPc ? 'lightGray' : 'white'}>
-        <Header goBack={goBack}/>
+        <Header goBack={goBack} />
 
         {loading && <PageLoading />}
         {!loading && (
           <div>
             <Box display="none" mdDisplay="block" height={30} />
-            <Content
-              post={post}
-              postID={id}
-              push={push}
-              isSelf={isSelf}
-              isAdmin={isAdmin}
-              goBack={goBack}
-            />
-            <Block
-              marginTop={8}
-              marginBottom={4}
-              display="none"
-              mdDisplay="block"
-            >
+            <Content post={post} postID={id} push={push} isSelf={isSelf} isAdmin={isAdmin} goBack={goBack} />
+            <Block marginTop={8} marginBottom={4} display="none" mdDisplay="block">
               <Text bold size="lg">
                 相似
               </Text>
@@ -276,13 +213,4 @@ const mapStateToProps = state => ({
   isPc: state.config.isPc,
 });
 
-export default graphql(postQuery, {
-  options: props => {
-    return {
-      variables: {
-        id: props.match.params.id,
-      },
-      //fetchPolicy: "network-only"
-    };
-  },
-})(connect(mapStateToProps)(Post));
+export default Post;

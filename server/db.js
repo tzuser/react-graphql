@@ -1,4 +1,6 @@
-import mongoose,{Schema} from 'mongoose';//127.0.0.1
+import mongoose from 'mongoose';//127.0.0.1
+
+let Schema = mongoose.Schema;
 
 let db_url='mongodb://web:wysj3910@127.0.0.1:27017/web';
 //使用远程数据

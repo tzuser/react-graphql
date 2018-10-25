@@ -5,11 +5,11 @@ const staticServer =require('koa-static')
 const staticCache = require('koa-static-cache')
 const Koa = require('koa')
 const render = require('./render.js')
-const graphql = require('./graphql/main.js')
+const server = require('./graphql/main.js')
 const {setUser} = require('./graphql/user.js')
 const bodyParser = require('koa-bodyparser');
 const cors = require('koa2-cors');
-const gzip = require('koa-gzip');
+const gzip = require('koa-compress');
 //解决视频播放
 const range = require('koa-range');
 const app = new Koa()
@@ -20,7 +20,8 @@ app.use(range);
 app.use(cors({credentials:true}));//跨域
 app.use(setUser);//设置用户
 //接口
-app.use(graphql.routes()).use(graphql.allowedMethods());
+//app.use(graphql.routes()).use(graphql.allowedMethods());
+server.applyMiddleware({ app });
 
 const router = new Router();
 router.get('/', render);

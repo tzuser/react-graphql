@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 //import PageLoading from '../Components/PageLoading';
 import HeaderContainer from 'com_/HeaderContainer';
 import { Box, Text } from 'gestalt';
+import { withTheme } from 'styled-components';
+@withTheme
 class Notice extends Component {
   render() {
     return (
