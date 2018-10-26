@@ -1,0 +1,8 @@
+#import "./userField.gql"
+
+query Self{
+  self{
+    ...UserField
+    roles
+  }
+}

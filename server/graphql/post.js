@@ -152,7 +152,6 @@ export const resolvers = {
         sort,
         populate: 'user',
       });
-      console.log(page)
       return page;
     },
 

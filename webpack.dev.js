@@ -71,7 +71,7 @@ const config={
     
     proxy:[{
        context: ['/graphql'],
-       target: 'http://localhost:8182',
+       target: 'http://localhost:8181',
        changeOrigin: true,
        secure: false
     }],
