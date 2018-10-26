@@ -12,7 +12,7 @@ import searchQuery from 'gql_/search.gql';
 import Block from 'com_/Block';
 import UsersRow from 'con_/UsersRow';
 import styled from 'styled-components';
-import { withTheme } from 'styled-components';
+
 
 const Stacky = styled.div`
   position: sticky;
@@ -30,7 +30,7 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-@withTheme
+
 @withRouter
 @connect(
   mapStateToProps,

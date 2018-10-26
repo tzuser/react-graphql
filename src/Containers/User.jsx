@@ -21,7 +21,7 @@ import Block from 'com_/Block';
 import userQuery from 'gql_/user.gql';
 import UpdateUserButton from 'com_/user/UpdateUserButton';
 import DeleteButton from 'com_/user/DeleteButton';
-import { withTheme } from 'styled-components';
+//
 
 const LoadableUserPosts = Loadable({
   loader: () => import(/* webpackChunkName: 'UserPosts' */ './UserPosts'),
@@ -82,6 +82,20 @@ const UserCard = ({ user }) => {
   );
 };
 
+
+@graphql(userQuery, {
+  options: props => {
+    return {
+      variables: {
+        name: props.match.params.name || null,
+      },
+    };
+  },
+})
+@connect(
+  mapStateToProps,
+  mapDispatchToProps
+)
 class User extends Component {
   state = { tabIndex: 0 };
   componentWillReceiveProps(nextProps) {
@@ -130,8 +144,11 @@ class User extends Component {
     }
     let tabsIndex = tabsData.findIndex(item => pathname.startsWith(item.href));
     tabsIndex = tabsIndex < 0 ? 0 : tabsIndex;
+    console.log(user)
+    if(!user)return 'user为空'
     return (
       <div>
+        啥地方来看进来看我
         {isSlef ? <SelfHeader userName={userName} /> : <UserHeader userName={userName} goBack={goBack} />}
         {loading && <PageLoading />}
         {!loading && (
@@ -177,6 +194,7 @@ class User extends Component {
             </Box>
           </Box>
         )}
+
       </div>
     );
   }
@@ -187,17 +205,4 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
-export default withTheme(graphql(userQuery, {
-  options: props => {
-    return {
-      variables: {
-        name: props.match.params.name || null,
-      },
-    };
-  },
-})(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(User)
-));
+export default User

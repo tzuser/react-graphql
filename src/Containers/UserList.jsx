@@ -8,9 +8,9 @@ import gql from 'graphql-tag';
 import PageLoading from 'com_/PageLoading';
 import UserListComponent from 'com_/user/UserList';
 import HeaderContainer from 'com_/HeaderContainer';
-import { withTheme } from 'styled-components';
 
-@withTheme
+
+
 @withRouter
 class UserList extends Component {
   render() {

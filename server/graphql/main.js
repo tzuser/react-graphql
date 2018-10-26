@@ -1,55 +1,16 @@
-import Router  from 'koa-router';
+//import Router from 'koa-router';
 //import graphqlHTTP from 'koa-graphql';
 import formatError from './formatError';
-import {makeExecutableSchema} from 'graphql-tools';
-import * as post from './post';
-import * as user from './user';
-import * as comment from './comment';
-import * as file from './file';
-import * as search from './search';
-import * as follow from './follow';
-import * as isUpdate from './isUpdate';
-import * as subscribe from './subscribe';
+// import { makeExecutableSchema } from 'graphql-tools';
+import { ApolloServer } from 'apollo-server-koa';
+import schema from './schema';
 
-import { ApolloServer, gql } from 'apollo-server-koa';
+/*typeDefAll=gql`
+  ${typeDefAll}
+`*/
 
-const typeDefs=[`
-  type Query {
-    hello: String
-  }
-  type Mutation{
-    hello: String
-  }
-  schema {
-    query: Query
-    mutation: Mutation
-  }
-`];
-
-const resolvers=[{
-  Query:{
-    hello:()=>{
-      return "hello world"
-    }
-  }
-}];
-
-const addSchema=(data)=>{
-  typeDefs.push(data.typeDefs)
-  resolvers.push(data.resolvers)
-}
-
-addSchema(post);
-addSchema(user);
-addSchema(comment);
-addSchema(file);
-addSchema(search);
-addSchema(follow);
-addSchema(isUpdate);
-addSchema(subscribe);
-
-const server =  new ApolloServer({typeDefs,resolvers,context: ({ctx}) => ctx})
-export default server
+const server = new ApolloServer({ schema, formatError, context: ({ ctx }) => ctx });
+export default server;
 /*//路由处理
 const router = new Router();
 router.all('/graphql', async (ctx, next) =>{

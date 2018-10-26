@@ -15,7 +15,7 @@ import PageLoading from '../Components/PageLoading';
 import commentsQuery from 'gql_/comments.gql';
 import ADD_COMMENT from 'gql_/addComment.gql';
 import Block from 'com_/Block';
-import { withTheme } from 'styled-components';
+
 
 const CommentInput = styled.div`
   input {
@@ -64,7 +64,7 @@ const UserNode = ({ user, content, reply, onReply, userClick }) => (
   </Box>
 );
 
-@withTheme
+
 @graphql(commentsQuery, {
   options: props => {
     return {

@@ -9,8 +9,8 @@ import { withRouter } from 'react-router-dom';
 import homePostsQuery from 'gql_/homePosts.gql';
 import { loadItems } from '_public';
 import InTheEnd from 'com_/InTheEnd';
-import { withTheme } from 'styled-components';
-@withTheme
+
+
 @withRouter
 @graphql(homePostsQuery, {
   options: props => {

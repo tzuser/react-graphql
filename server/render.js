@@ -23,6 +23,8 @@ import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { SchemaLink } from 'apollo-link-schema';
+import schema from './graphql/schema';
 
 const prepHTML = (data, { html, head, style, body, script, styleTags, state, apollo_state }) => {
 	data = data.replace('<html', `<html ${html}`);
@@ -31,7 +33,7 @@ const prepHTML = (data, { html, head, style, body, script, styleTags, state, apo
 		'<body>',
 		`<body><script>
 		window._INIT_STATE_ = ${JSON.stringify(state)};
-		window.__APOLLO_STATE__ = ${JSON.stringify(apollo_state)};
+		window.__APOLLO_STATE__ = ${JSON.stringify(apollo_state).replace(/</g, '\\u003c')};
 		</script>`
 	);
 	data = data.replace('<div id="root"></div>', `<div id="root">${body}</div>${styleTags}`);
@@ -42,13 +44,14 @@ const prepHTML = (data, { html, head, style, body, script, styleTags, state, apo
 const render = async (ctx, next) => {
 	const client = new ApolloClient({
 		ssrMode: true,
-		link: new HttpLink({
+		/*link: new HttpLink({
 			uri: 'http://localhost:8181/graphql',
 			credentials: 'include',
 			headers: {
 				cookie: ctx.headers['cookie'],
 			},
-		}),
+		}),*/
+		link: new SchemaLink({ schema }),
 		cache: new InMemoryCache(),
 	});
 
@@ -62,21 +65,21 @@ const render = async (ctx, next) => {
 
 	//初始请求数据
 	//await initalActions(store,ctx.req.url,initialRequestConfig)
-
+	/*<StyleSheetManager sheet={sheet.instance}>*/
+	/*</StyleSheetManager>*/
 	let modules = [];
 	const AppRender = (
-		<Loadable.Capture report={moduleName => modules.push(moduleName)}>
-			<StyleSheetManager sheet={sheet.instance}>
-				<ApolloProvider client={client}>
-					<Provider store={store}>
-						<Router history={history}>
+		<ApolloProvider client={client}>
+			<Loadable.Capture report={moduleName => modules.push(moduleName)}>
+				<Provider store={store}>
+					<Router history={history}>
 							<App />
-						</Router>
-					</Provider>
-				</ApolloProvider>
-			</StyleSheetManager>
-		</Loadable.Capture>
+					</Router>
+				</Provider>
+			</Loadable.Capture>
+		</ApolloProvider>
 	);
+
 	await getDataFromTree(AppRender);
 	let routeMarkup = renderToString(AppRender);
 	const apollo_state = client.extract();

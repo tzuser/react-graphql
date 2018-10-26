@@ -8,9 +8,9 @@ import likesQuery from 'gql_/likes.gql';
 import { loadItems } from '_public';
 import PageLoading from 'com_/PageLoading';
 import InTheEnd from 'com_/InTheEnd';
-import { withTheme } from 'styled-components';
 
-@withTheme
+
+
 class UserLikes extends React.Component {
   render() {
     let {

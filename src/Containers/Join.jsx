@@ -9,8 +9,8 @@ import * as configActs from '../actions/config';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import hiddenFooter from '../Components/HiddenFooter';
-import { withTheme } from 'styled-components';
-@withTheme
+
+
 class Join extends Component {
   state = {
     nick_name: '',

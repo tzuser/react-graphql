@@ -17,8 +17,9 @@ import { getThumbnail } from './file';
 //import nodejieba from "nodejieba";
 import { resolvers as search } from './search';
 import { resolvers as subscribe } from './subscribe';
+import { gql } from 'apollo-server-koa';
 
-export const typeDefs = `
+export const typeDefs = gql`
 type Photo{
   url:String
   width:Int
@@ -121,7 +122,7 @@ export const resolvers = {
       }
       let { _doc: post } = res;
       postModel.update({ _id: id }, { $inc: { readNum: +1 } }).exec(); //添加阅读量
-      return { ...post, id: post._id };
+      return { ...post, id: post._id.toString() };
     },
     async isLike(_, { id }, ctx) {
       let isLike = false;
@@ -151,6 +152,7 @@ export const resolvers = {
         sort,
         populate: 'user',
       });
+      console.log(page)
       return page;
     },
 
@@ -198,7 +200,7 @@ export const resolvers = {
         format: item => {
           if (item.post) return item.post;
           //错误处理 补删除
-          likeModel.remove({ _id: item._id }).exec();
+          likeModel.remove({ _id: item._id.toString() }).exec();
         },
       });
       return page;

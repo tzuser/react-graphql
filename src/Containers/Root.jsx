@@ -9,7 +9,7 @@ import * as ConfigAct from 'act_/config';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { filteringJitter } from '_tools';
-import { withTheme } from 'styled-components';
+//
 //去抖动
 const instanceFillteringJitter = filteringJitter();
 
@@ -97,7 +97,7 @@ const mapDispatchToPorps = dispatch =>
     },
     dispatch
   );
-@withTheme
+  
 @withRouter
 @connect(
   mapStateToProps,

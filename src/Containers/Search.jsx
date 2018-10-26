@@ -11,7 +11,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import searchKeywordQuery from 'gql_/searchKeyword.gql';
 import Block from 'com_/Block';
-import { withTheme } from 'styled-components';
+
 
 const mapStateToProps=(state)=>({
   historyList:state.search.list
@@ -20,7 +20,7 @@ const mapDispatchToProps=(dispatch)=>bindActionCreators({
 
 },dispatch)
 
-@withTheme
+
 @withRouter
 @connect(mapStateToProps,mapDispatchToProps)
 @graphql(searchKeywordQuery,{

@@ -12,8 +12,9 @@ import { getThumbnail } from './file';
 import APIError from './APIError';
 //import findRemoveSync from 'find-remove';
 import path from 'path';
+import { gql } from 'apollo-server-koa';
 
-export const typeDefs = `
+export const typeDefs = gql`
 type User{
   id:ID!
   name:String!

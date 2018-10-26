@@ -23,7 +23,7 @@ export const getListFromCursor=async (cursor,first)=>{
   var index=0;
   while(doc = await cursor.next()) {
 
-      doc.id=doc._id;
+      doc.id=doc._id.toString();
       if(!doc){
         console.log('aaaaa',index,doc)
       }
@@ -58,7 +58,7 @@ export const getPageData=async ({model,find,first,after,populate,select,format,s
 }
 
 export const listToPage=async ({desc,list,first,format})=>{
-  let last_id=list.length>0?(await list[list.length-1])._id:'';
+  let last_id=list.length>0?(await list[list.length-1])._id.toString():'';
   if(format)list=list.map(format)
   list=list.filter(item=>!!item);
   let isEnd=list.length!=first;

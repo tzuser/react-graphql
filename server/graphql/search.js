@@ -1,8 +1,9 @@
 import {postModel,likeModel,userModel,keywordModel} from '../db';
 import APIError from './APIError';
 import {getPageType,getPageData,listToPage} from "./public";
+import { gql } from 'apollo-server-koa';
 //import pinyinlite from 'pinyinlite';
-export const typeDefs=`
+export const typeDefs=gql`
 
 type keyword{
   name:String!
@@ -46,7 +47,7 @@ export const resolvers={
       let keywordItem=await keywordModel.findOne({name:keyword}).exec();
       if(keywordItem){
         if(increase){
-          await keywordModel.update({_id:keywordItem._id},{$inc:{count:1}})
+          await keywordModel.update({_id:keywordItem._id.toString()},{$inc:{count:1}})
         }
         return false;
       }

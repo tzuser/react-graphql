@@ -1,8 +1,7 @@
-//require('@babel/polyfill')
 require('@babel/register')({
-  plugins: ['add-module-exports', 'dynamic-import-node',"import-graphql"],
+  plugins: [ 'dynamic-import-node',"import-graphql"],
 });
-
+//'add-module-exports',
 const alias = require('../alias');
 require('node-require-alias').setAlias(alias);
 

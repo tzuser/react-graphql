@@ -21,7 +21,7 @@ import postQuery from 'gql_/post.gql';
 import UserNode from 'com_/post/UserNode';
 import Tag from 'com_/Tag';
 import Markdown from 'com_/Markdown';
-import { withTheme } from 'styled-components';
+
 
 const Card = styled.div`
   transition: all 0.1s;
@@ -149,7 +149,7 @@ const Header = ({ goBack }) => (
   </div>
 );
 
-@withTheme
+
 @graphql(postQuery, {
   options: props => {
     return {

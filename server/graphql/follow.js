@@ -1,90 +1,99 @@
-import {followModel,userModel} from '../db'
-import {getPageType,getUserIDFormName,getUserFormName,getPageData,exactLogin} from "./public";
+import { followModel, userModel } from '../db';
+import { getPageType, getUserIDFormName, getUserFormName, getPageData, exactLogin } from './public';
 import APIError from './APIError';
-export const typeDefs=`
-  extend type Query{
-    followers(name:String!,first:Int!,after:ID,desc:Boolean):UserPage
-    following(name:String!,first:Int!,after:ID,desc:Boolean):UserPage
-    isFollow(name:String!):Boolean
+import { gql } from 'apollo-server-koa';
+export const typeDefs = gql`
+  extend type Query {
+    followers(name: String!, first: Int!, after: ID, desc: Boolean): UserPage
+    following(name: String!, first: Int!, after: ID, desc: Boolean): UserPage
+    isFollow(name: String!): Boolean
   }
-  extend type Mutation{
-    follow(name:String!,isFollow:Boolean!):String
+  extend type Mutation {
+    follow(name: String!, isFollow: Boolean!): String
   }
-`
-export const resolvers={
-  Query:{
-    async followers(_,{name,first,after,desc}){
-      let userID=await getUserIDFormName(name);
-      let find={follow:userID,state:0};
-      let page=await getPageData({
-        model:followModel,
+`;
+export const resolvers = {
+  Query: {
+    async followers(_, { name, first, after, desc }) {
+      let userID = await getUserIDFormName(name);
+      let find = { follow: userID, state: 0 };
+      let page = await getPageData({
+        model: followModel,
         find,
         after,
         first,
         desc,
-        populate:'user',
-        format:(item)=>item.user,
-      })
-      return page
+        populate: 'user',
+        format: item => item.user,
+      });
+      return page;
     },
-    async following(_,{name,first,after,desc}){
-      let followUserID=await getUserIDFormName(name);
-      let find={user:followUserID,state:0};
-      let page=await getPageData({
-        model:followModel,
+    async following(_, { name, first, after, desc }) {
+      let followUserID = await getUserIDFormName(name);
+      let find = { user: followUserID, state: 0 };
+      let page = await getPageData({
+        model: followModel,
         find,
         after,
         first,
         desc,
-        populate:'follow',
-        format:(item)=>item.follow,
-      })
-      return page
+        populate: 'follow',
+        format: item => item.follow,
+      });
+      return page;
     },
-    async isFollow(_,{name},{user}){
+    async isFollow(_, { name }, { user }) {
       exactLogin(user);
-      let followUserID=await getUserIDFormName(name);
-      let isFollow=await followModel.findOne({
-        user:user,
-        follow:followUserID,
-        state:0,
-      }).count().exec()
+      let followUserID = await getUserIDFormName(name);
+      let isFollow = await followModel
+        .findOne({
+          user: user,
+          follow: followUserID,
+          state: 0,
+        })
+        .count()
+        .exec();
       return isFollow;
     },
   },
-  Mutation:{
-    async follow(_,{name,isFollow},{user}){
+  Mutation: {
+    async follow(_, { name, isFollow }, { user }) {
       exactLogin(user);
-      if(user.name==name)throw new APIError('不能关注自己!',1);
-      let followUser=await getUserFormName(name);
-      let find={
-          user:user,
-          follow:followUser
-        };
-      if(isFollow){
-        if(await followModel.findOne({...find,state:0}).count().exec()>0)return '你已关注'
+      if (user.name == name) throw new APIError('不能关注自己!', 1);
+      let followUser = await getUserFormName(name);
+      let find = {
+        user: user,
+        follow: followUser,
+      };
+      if (isFollow) {
+        if (
+          (await followModel
+            .findOne({ ...find, state: 0 })
+            .count()
+            .exec()) > 0
+        )
+          return '你已关注';
         //await followModel(find).save();
-        await followModel.update(find, { $set: { state: 0 } },{upsert: true}).exec();
+        await followModel.update(find, { $set: { state: 0 } }, { upsert: true }).exec();
         followUser.followersCount++;
         await followUser.save();
         user.followingCount++;
-        await user.save()
-        return '关注成功'
-      }else{
-
+        await user.save();
+        return '关注成功';
+      } else {
         //await followModel.remove(find).exec();
         await followModel.update(find, { $set: { state: 1 } }).exec();
 
-        if(followUser.followersCount>0){
+        if (followUser.followersCount > 0) {
           followUser.followersCount--;
           await followUser.save();
         }
-        if(user.followingCount>0){
+        if (user.followingCount > 0) {
           user.followingCount--;
           await user.save();
         }
-        return '删除成功'
+        return '删除成功';
       }
     },
-  }
-}
+  },
+};

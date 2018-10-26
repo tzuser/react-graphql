@@ -7,9 +7,9 @@ import { withRouter } from 'react-router-dom';
 import userPostsQuery from 'gql_/userPosts.gql';
 import { loadItems } from '_public';
 import InTheEnd from 'com_/InTheEnd';
-import { withTheme } from 'styled-components';
 
-@withTheme
+
+
 class UserPosts extends React.Component {
   render() {
     let {
