@@ -8,6 +8,7 @@
     "start": "cross-env RUN_ENV=dev NODE_ENV=development webpack-dev-server --watch --progress --hotOnly  --mode development --config  ./webpack.dev.js",
     "build": "cross-env RUN_ENV=build NODE_ENV=production webpack --mode production --config ./webpack.build.js  --optimize-minimize",
     "server": "cross-env RUN_ENV=server NODE_ENV=production babel-node --harmony  server/index.js",
+    "server2": "cross-env RUN_ENV=server NODE_ENV=development babel-node --harmony  server/index.js",
     "server-dev": "cross-env RUN_ENV=server NODE_ENV=development nodemon --exec babel-node --harmony  server/index.js"
   },
   "author": "",
@@ -17,8 +18,9 @@
     "antd-mobile": "^2.2.6",
     "apollo-cache-inmemory": "^1.1.11",
     "apollo-client": "^2.2.8",
+    "apollo-link": "^1.2.3",
     "apollo-link-batch-http": "^1.2.2",
-    "apollo-link-http": "^1.5.3",
+    "apollo-link-error": "^1.1.1",
     "apollo-link-schema": "^1.1.1",
     "apollo-server-koa": "^2.1.0",
     "axios": "^0.18.0",

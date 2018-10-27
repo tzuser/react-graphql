@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { Route, withRouter, Switch } from "react-router-dom";
 import Loadable from "react-loadable";
-import InitSelf from 'com_/InitSelf';
+
 /*import styled, { ThemeProvider } from "styled-components";*/
 
 const Root = Loadable({
@@ -13,8 +13,7 @@ class App extends PureComponent {
   render() {
     return (
       <React.Fragment>
-          <InitSelf />
-          <Root />
+            <Root />
       </React.Fragment>
     );
   }

@@ -17,14 +17,8 @@ import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 import 'isomorphic-fetch';
 
-//Apollo
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
-import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
-
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { SchemaLink } from 'apollo-link-schema';
-import schema from './graphql/schema';
+import getApolloClient from './graphql/client';
 
 const prepHTML = (data, { html, head, style, body, script, styleTags, state, apollo_state }) => {
 	data = data.replace('<html', `<html ${html}`);
@@ -42,19 +36,7 @@ const prepHTML = (data, { html, head, style, body, script, styleTags, state, apo
 };
 
 const render = async (ctx, next) => {
-	const client = new ApolloClient({
-		ssrMode: true,
-		/*link: new HttpLink({
-			uri: 'http://localhost:8181/graphql',
-			credentials: 'include',
-			headers: {
-				cookie: ctx.headers['cookie'],
-			},
-		}),*/
-		link: new SchemaLink({ schema }),
-		cache: new InMemoryCache(),
-	});
-
+	const client=getApolloClient(ctx);
 	const filePath = path.resolve(__dirname, '../build/index.html');
 
 	let htmlData = fs.readFileSync(filePath, 'utf8');
@@ -63,20 +45,18 @@ const render = async (ctx, next) => {
 
 	const sheet = new ServerStyleSheet();
 
-	//初始请求数据
-	//await initalActions(store,ctx.req.url,initialRequestConfig)
-	/*<StyleSheetManager sheet={sheet.instance}>*/
-	/*</StyleSheetManager>*/
 	let modules = [];
 	const AppRender = (
 		<ApolloProvider client={client}>
-			<Loadable.Capture report={moduleName => modules.push(moduleName)}>
-				<Provider store={store}>
-					<Router history={history}>
+			<StyleSheetManager sheet={sheet.instance}>
+				<Loadable.Capture report={moduleName => modules.push(moduleName)}>
+					<Provider store={store}>
+						<Router history={history}>
 							<App />
-					</Router>
-				</Provider>
-			</Loadable.Capture>
+						</Router>
+					</Provider>
+				</Loadable.Capture>
+			</StyleSheetManager>
 		</ApolloProvider>
 	);
 
@@ -84,8 +64,6 @@ const render = async (ctx, next) => {
 	let routeMarkup = renderToString(AppRender);
 	const apollo_state = client.extract();
 	const initialState = store.getState();
-	//console.log(store.getState())
-	//let state=initialState;//store.getState();
 
 	let bundles = getBundles(stats, modules);
 
@@ -100,7 +78,7 @@ const render = async (ctx, next) => {
 			styleTagStr += fs.readFileSync(path.join(__dirname, '../build', `/${style.file}`), 'utf8');
 		})
 		.join('\n');
-	styleTagStr = `<style id="jss-server-side" type="text/css">${styleTagStr}</style>`;
+	styleTagStr = `<style id="jss-server-side" >${styleTagStr}</style>`;
 
 	let scriptTagStr = scripts
 		.map(bundle => {

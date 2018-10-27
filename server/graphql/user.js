@@ -76,7 +76,8 @@ export const resolvers = {
       return ctx.user;
     },
     self(_, {}, ctx) {
-      exactLogin(ctx.user);
+      if(!ctx.user)return null;
+      //exactLogin(ctx.user);
       return ctx.user;
     },
     async users(_, {keyword,first, after, desc, sort }) {
@@ -105,10 +106,14 @@ export const resolvers = {
       password = md5(password); //加密密码
       let user = await userModel.findOne({ name, password }).exec(); //查找用户是否存在
       if (user) {
-        var token = jwt.sign({ name: user._doc.name }, 'wysj3910', {
+        let doc=user._doc;
+        var token = jwt.sign({ name: doc.name }, 'wysj3910', {
           expiresIn: '7 days',
         });
         ctx.cookies.set('token', token);
+        ctx.cookies.set('name', doc.name);
+        ctx.cookies.set('nick_name', doc.nick_name);
+        ctx.cookies.set('admin', doc.roles.includes('admin'));
         return { token, user };
       } else {
         throw new APIError('账号或密码错误', 1004);

@@ -7,12 +7,10 @@ import gql from 'graphql-tag';
 import FOLLOW from 'gql_/follow.gql';
 import {withRouter} from 'react-router-dom';
 import userQuery from 'gql_/user.gql';
-import {connect} from 'react-redux';
-const mapStateToProps=(state)=>({
-  selfUser:state.config.selfUser
-})
+import initSelf from 'com_/InitSelf';
+
 @withRouter
-@connect(mapStateToProps)
+@initSelf
 @graphql(gql`
   query IsFollow($name:String!){
     isFollow(name:$name)

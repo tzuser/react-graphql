@@ -21,7 +21,8 @@ import postQuery from 'gql_/post.gql';
 import UserNode from 'com_/post/UserNode';
 import Tag from 'com_/Tag';
 import Markdown from 'com_/Markdown';
-
+import initSelf from 'com_/InitSelf';
+import { withRouter } from 'react-router-dom';
 
 const Card = styled.div`
   transition: all 0.1s;
@@ -149,7 +150,8 @@ const Header = ({ goBack }) => (
   </div>
 );
 
-
+@initSelf
+@withRouter
 @graphql(postQuery, {
   options: props => {
     return {
@@ -209,7 +211,6 @@ class Post extends Component {
 }
 
 const mapStateToProps = state => ({
-  selfUser: state.config.selfUser,
   isPc: state.config.isPc,
 });
 

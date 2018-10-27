@@ -5,11 +5,7 @@ import { Label, Tooltip, Box, Spinner, Text, Button, Icon, TextField, RadioButto
 import HeaderContainer from '../Components/HeaderContainer';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import * as configActs from '../actions/config';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import hiddenFooter from '../Components/HiddenFooter';
-
 
 class Join extends Component {
   state = {
@@ -25,7 +21,6 @@ class Join extends Component {
     let {
       mutate,
       history: { goBack, replace },
-      setSelfAct,
     } = this.props;
 
     return (
@@ -116,26 +111,10 @@ class Join extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  selfUser: state.config.selfUser,
-});
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      setSelfAct: configActs.setSelf,
-    },
-    dispatch
-  );
-
 export default graphql(gql`
   mutation join($nick_name: String!, $name: String!, $password: String!, $verify_password: String!) {
     join(input: { nick_name: $nick_name, name: $name, password: $password, verify_password: $verify_password }) {
       name
     }
   }
-`)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(hiddenFooter(Join))
-);
+`)(hiddenFooter(Join));

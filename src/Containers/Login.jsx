@@ -5,21 +5,8 @@ import { Label, Tooltip, Box, Spinner, Text, Button, Icon, TextField } from 'ges
 import { Link } from 'react-router-dom';
 import HeaderContainer from '../Components/HeaderContainer';
 import styled from 'styled-components';
-import * as configActs from '../actions/config';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import hiddenFooter from '../Components/HiddenFooter';
 
-const mapStateToProps = state => ({
-  selfUser: state.config.selfUser,
-});
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      setSelfAct: configActs.setSelf,
-    },
-    dispatch
-  );
 
 @graphql(gql`
   mutation login($name: String!, $password: String!) {
@@ -38,10 +25,6 @@ const mapDispatchToProps = dispatch =>
     roles
   }
 `)
-@connect(
-  mapStateToProps,
-  mapDispatchToProps
-)
 @hiddenFooter
 class Login extends Component {
   state = {
@@ -71,7 +54,8 @@ class Login extends Component {
               },
             })
               .then(({ data: { login: { token, user } } }) => {
-                setSelfAct({ token, user });
+                //update cache
+                //setSelfAct({ token, user });
                 goBack();
               })
               .catch(err => {

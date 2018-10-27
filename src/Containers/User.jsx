@@ -9,8 +9,6 @@ import PageLoading from '../Components/PageLoading';
 import { imageUrl } from '_tools';
 import { errorReply } from '_public';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Route } from 'react-router-dom';
 import * as configActs from '../actions/config';
 import UserPosts from './UserPosts';
@@ -21,6 +19,8 @@ import Block from 'com_/Block';
 import userQuery from 'gql_/user.gql';
 import UpdateUserButton from 'com_/user/UpdateUserButton';
 import DeleteButton from 'com_/user/DeleteButton';
+import initSelf from 'com_/InitSelf';
+import { withRouter } from 'react-router-dom';
 //
 
 const LoadableUserPosts = Loadable({
@@ -82,7 +82,8 @@ const UserCard = ({ user }) => {
   );
 };
 
-
+@initSelf
+@withRouter
 @graphql(userQuery, {
   options: props => {
     return {
@@ -92,10 +93,6 @@ const UserCard = ({ user }) => {
     };
   },
 })
-@connect(
-  mapStateToProps,
-  mapDispatchToProps
-)
 class User extends Component {
   state = { tabIndex: 0 };
   componentWillReceiveProps(nextProps) {
@@ -144,7 +141,6 @@ class User extends Component {
     }
     let tabsIndex = tabsData.findIndex(item => pathname.startsWith(item.href));
     tabsIndex = tabsIndex < 0 ? 0 : tabsIndex;
-    console.log(user)
     if(!user)return 'user为空'
     return (
       <div>
@@ -200,9 +196,5 @@ class User extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  selfUser: state.config.selfUser,
-});
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
 export default User

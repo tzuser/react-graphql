@@ -1,5 +1,5 @@
-import * as post from './post';
 import * as user from './user';
+import * as post from './post';
 import * as comment from './comment';
 import * as file from './file';
 import * as search from './search';
@@ -39,8 +39,8 @@ const addSchema = data => {
   resolvers.push(data.resolvers);
 };
 
-addSchema(post);
 addSchema(user);
+addSchema(post);
 addSchema(comment);
 addSchema(file);
 addSchema(search);

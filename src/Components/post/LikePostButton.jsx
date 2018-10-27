@@ -5,15 +5,13 @@ import {Button,Icon} from 'gestalt';
 import gql from 'graphql-tag';
 import {errorReply} from '_public';
 import likesQuery from 'gql_/likes.gql';
-import {connect} from 'react-redux';
+import initSelf from 'com_/InitSelf';
+
 const LIKE=gql`mutation like($post:ID!,$isLike:Boolean!){
     like(post:$post,isLike:$isLike)
 }`
 
-const mapStateToProps=(state)=>({
-  selfUser:state.config.selfUser
-})
-@connect(mapStateToProps)
+@initSelf
 @graphql(gql`
   query IsLike($id:ID!){
     isLike(id:$id)

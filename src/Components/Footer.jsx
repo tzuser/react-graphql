@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as configActs from '../actions/config';
 import ClassNames from 'classnames'
+import initSelf from 'com_/InitSelf';
 
 const Foot=styled.div`
 left: 0;
@@ -66,16 +67,10 @@ class IconColumn extends Component{
 }
 
 
-const mapStateToProps=(state)=>({
-  selfUser:state.config.selfUser,
-})
 
-const mapDispatchToProps=(dispatch)=>bindActionCreators({
 
-},dispatch)
-
+@initSelf
 @withRouter
-@connect(mapStateToProps,mapDispatchToProps)
 export  class Tabs extends Component{
   state={active:null}
   render(){
