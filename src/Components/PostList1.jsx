@@ -2,9 +2,9 @@ import React from 'react';
 import { Avatar, Box, Masonry, Spinner, Text, Image, Mask, Icon } from 'gestalt';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { imageUrl } from '_tools';
+import { imageUrl, countColumn } from '_tools';
+import { connect } from 'react-redux';
 import Markdown from 'com_/Markdown';
-import ListShow from 'com_/ListShow';
 
 const ItemImg = styled(Link)`
   margin-bottom: 2px;
@@ -114,9 +114,13 @@ const Article = ({ userTo, itemTo, user, thumbnail, content }) => {
   );
 };
 
+const mapStateToProps = state => ({
+  width: state.config.width,
+});
+@connect(mapStateToProps)
 class PostList extends React.Component {
-  componentDidMount() {
-    console.log('componentDidMount');
+  componentDidMount(){
+    console.log('componentDidMount')
   }
   renderItem({ data, itemIdx, addRelatedItems }) {
     let { id, content, type, user, photos, thumbnail } = data;
@@ -160,13 +164,23 @@ class PostList extends React.Component {
   }
   render() {
     let { list = [], loadItems, store, minCols = 1, width, virtualize = true } = this.props;
+    let column = countColumn({ minCols, defaultWidth: width });
     return (
-      <ListShow
-        list={list}
-        comp={this.renderItem.bind(this)}
-        loadItems={loadItems}
-        scrollContainer={() => window}
-      />
+      <div style={{ width: column.listWidth, margin: '0 auto' }}>
+        <Masonry
+          comp={this.renderItem.bind(this)}
+          items={list}
+          loadItems={loadItems}
+          scrollContainer={() => window}
+          minCols={column.column}
+          virtualize={virtualize}
+          flexible={true}
+          columnWidth={column.width}
+          gutterWidth={0}
+          virtualBoundsTop={300}
+          virtualBoundsBottom={300}
+        />
+      </div>
     );
   }
 }

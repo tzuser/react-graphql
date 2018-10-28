@@ -12,6 +12,7 @@ import searchQuery from 'gql_/search.gql';
 import Block from 'com_/Block';
 import UsersRow from 'con_/UsersRow';
 import styled from 'styled-components';
+import { loadItems } from '_public';
 
 
 const Stacky = styled.div`
@@ -54,13 +55,14 @@ const mapDispatchToProps = dispatch =>
 })
 class SearchResult extends React.Component {
   loadItems(data) {
+
     let {
       data: { searchPost, refetch, fetchMore, loading },
     } = this.props;
     if (!searchPost) return;
     let { first, after, totalCount, isEnd } = searchPost;
     if (!isEnd && !loading) {
-      this.props.data.fetchMore({
+      this.props.data.fetchMore;({
         variables: { after, first },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (previousResult.searchPost.list) {
@@ -122,7 +124,8 @@ class SearchResult extends React.Component {
             </Box>
           </Block>
         </Stacky>
-        <PostList list={searchPost ? searchPost.list : []} loadItems={this.loadItems.bind(this)} />
+        <PostList list={searchPost ? searchPost.list : []} 
+        loadItems={data => loadItems({ props: this.props, queryName: 'searchPost' ,condition:{keyword:keyword} })} />
         <Spinner show={loading} accessibilityLabel="Example spinner" />
         {searchPost &&
           searchPost.isEnd && (

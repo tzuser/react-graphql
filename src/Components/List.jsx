@@ -19,7 +19,7 @@ class List extends Component{
         scrollContainer={()=>window}
         minCols={column.column}
         virtualize={virtualize}
-        flexible={false}
+        flexible={true}
         columnWidth={column.width}
         gutterWidth={0}
       />

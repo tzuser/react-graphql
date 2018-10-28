@@ -174,6 +174,7 @@ class Post extends Component {
       selfUser,
       isPc,
     } = this.props;
+    console.log(this.props)
     if (error) {
       return <div>文章没找到或已被删除!</div>;
     }

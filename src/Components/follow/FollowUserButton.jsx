@@ -9,7 +9,6 @@ import {withRouter} from 'react-router-dom';
 import userQuery from 'gql_/user.gql';
 import initSelf from 'com_/InitSelf';
 
-@withRouter
 @initSelf
 @graphql(gql`
   query IsFollow($name:String!){
@@ -23,6 +22,7 @@ import initSelf from 'com_/InitSelf';
       errorPolicy:"ignore",
     })
 })
+@withRouter
 class FollowUserButton extends Component{
   state={addLoading:false}
   render(){

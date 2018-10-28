@@ -6,6 +6,7 @@
 # production
 /www
 /build
+/files
 
 # ide
 /.idea

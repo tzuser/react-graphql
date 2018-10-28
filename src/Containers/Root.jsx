@@ -97,13 +97,13 @@ const mapDispatchToPorps = dispatch =>
     },
     dispatch
   );
-  
+
 @withRouter
 @connect(
   mapStateToProps,
   mapDispatchToPorps
 )
-class App extends React.Component {
+class Root extends React.Component {
   constructor(props) {
     super(props);
     //添加浏览器缩放事件
@@ -121,7 +121,6 @@ class App extends React.Component {
       this.props.setWindowWidthAct(document.body.clientWidth);
     }
   }
-  componentDidCatch(data) {}
   componentWillUnmount() {
     //移除浏览器缩放事件
     if (typeof window != 'undefined') {
@@ -141,12 +140,9 @@ class App extends React.Component {
           <Route path="/create" component={LoadableCreate} />
           <Route path="/settings" component={LoadableSettings} />
           <Route path="/user_list" component={LoadableUserList} />
-
           <Route path="/search/:type/:keyword?" component={LoadableSearchResult} />
-
           <Route path="/search_keyword/:keyword" component={LoadableSearch} />
           <Route path="/search_keyword" component={LoadableSearch} />
-
           <Route path="/post/:id" component={LoadablePost} />
           <Route path="/comments/:id" component={LoadableComments} />
           <Route path="/:name/following" component={LoadableFollowing} />
@@ -158,4 +154,4 @@ class App extends React.Component {
     );
   }
 }
-export default App;
+export default Root;

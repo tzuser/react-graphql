@@ -26,9 +26,6 @@ const SearchButton = styled(Link)`
 
 class Header extends Component {
   state = { value: '' };
-  componentDidMount() {
-    console.log('Did Mount');
-  }
   render() {
     return (
       <HeaderContainer>

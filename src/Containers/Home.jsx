@@ -31,12 +31,12 @@ class Home extends React.Component {
       history: { push },
     } = this.props;
     return (
-      <div>
+      <React.Fragment>
         <Header />
         <PostList list={posts ? posts.list : []} loadItems={data => loadItems({ props: this.props, queryName: 'posts' })} />
         <Spinner show={loading} accessibilityLabel="Example spinner" />
         {posts && posts.isEnd && <InTheEnd />}
-      </div>
+      </React.Fragment>
     );
   }
 }

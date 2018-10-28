@@ -22,7 +22,6 @@ const LIKE=gql`mutation like($post:ID!,$isLike:Boolean!){
       variables:{
         id:props.postID
       },
-      errorPolicy:"ignore",
       //fetchPolicy: "network-only"
     }
   }
@@ -31,6 +30,7 @@ class LikeButton extends Component{
   state={addLoading:false}
   render(){
     let {postID,push,data:{isLike,refetch,loading},selfUser}=this.props;
+    console.log(postID,'//')
     let Btn=isLike?GrayButton:RedButton
     if(loading || this.state.addLoading)Btn=DisabledButton;
     return (
