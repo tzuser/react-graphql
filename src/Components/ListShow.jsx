@@ -56,14 +56,17 @@ class ListShow extends Component {
   componentWillUnmount() {
     this.scrollContainer.removeEventListener('scroll', this.onScroll);
   }
+
   render() {
     const { list, comp } = this.props;
     return (
-      <ListBox>
-        {list.map((item, key) => {
-          return <li key={key}>{comp({ data: item })}</li>;
-        })}
-      </ListBox>
+      <React.Fragment>
+        <ListBox>
+          {list.map((item, key) => {
+            return <li key={key}>{comp({ data: item })}</li>;
+          })}
+        </ListBox>
+      </React.Fragment>
     );
   }
 }
