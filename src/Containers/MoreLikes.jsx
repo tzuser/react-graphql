@@ -4,9 +4,10 @@ import gql from 'graphql-tag';
 import { Box,Spinner,Text } from 'gestalt';
 import PostList from '../Components/PostList';
 import {withRouter} from 'react-router-dom';
+import { loadItems } from '_public';
 
 class MoreLikes extends React.Component{
-  loadItems(data){
+ /* loadItems(data){
     let { data: { moreLikes, refetch ,fetchMore,loading} }=this.props
     if(!moreLikes)return;
     let {first,after,totalCount,isEnd}=moreLikes
@@ -21,7 +22,7 @@ class MoreLikes extends React.Component{
           }
         })
     }
-  }
+  }*/
  
   render(){
     let { data: { moreLikes, refetch ,fetchMore,loading},history:{push} }=this.props;
@@ -31,7 +32,7 @@ class MoreLikes extends React.Component{
           <PostList 
           list={moreLikes?moreLikes.list:[]}
           minCols={2}
-          loadItems={this.loadItems.bind(this)}
+          loadItems={data =>loadItems({ props: this.props, queryName: 'moreLikes' })}
           />
         </Box>
         <Spinner show={loading} accessibilityLabel="Example spinner" />

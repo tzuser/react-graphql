@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import {Box,Text} from 'gestalt'
 
 const ListBox = styled.ul`
   list-style: none;
@@ -56,18 +57,42 @@ class ListShow extends Component {
   componentWillUnmount() {
     this.scrollContainer.removeEventListener('scroll', this.onScroll);
   }
-
+  getItem(page) {
+    const { list, comp, pageNum = 20 } = this.props;
+    let doms = [];
+    for (let i = pageNum; i > 0; i--) {
+      let key = pageNum * (page + 1) - i;
+      console.log(key);
+      if(!list[key])break;
+      doms.push(<li key={key}>{comp({ data: list[key] })}</li>);
+    }
+    return doms;
+  }
+  getPage() {
+    const { list, pageNum = 20 } = this.props;
+    const pageLen = Math.ceil(list.length / pageNum);
+    let index = 0;
+    let doms = [];
+    for (let page = 0; page < pageLen; page++) {
+      doms.push(
+        <React.Fragment key={page}>
+          <ListBox >{this.getItem(page, pageNum)}</ListBox>
+          <Box paddingY={4} marginBottom={12}><Text align="center" color="gray">第{page}页</Text></Box>
+        </React.Fragment>
+      );
+    }
+    return doms;
+  }
   render() {
-    const { list, comp } = this.props;
-    return (
-      <React.Fragment>
-        <ListBox>
-          {list.map((item, key) => {
-            return <li key={key}>{comp({ data: item })}</li>;
-          })}
-        </ListBox>
-      </React.Fragment>
-    );
+    const { list, comp, pageNum = 20 } = this.props;
+
+    return <React.Fragment>{this.getPage()}</React.Fragment>;
   }
 }
 export default ListShow;
+
+/* <ListBox>
+          {list.map((item, key) => {
+            return <li key={key}>{comp({ data: item })}</li>;
+          })}
+        </ListBox>*/

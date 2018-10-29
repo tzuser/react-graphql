@@ -13,6 +13,29 @@ export const errorReply = async ({ error, push }) => {
 };
 
 //通过属性名获取分页数据 queryName请求名称 condition条件
+/*export const loadItems = function({ props, queryName, condition = {} }) {
+  let {
+    data: { refetch, fetchMore, loading },
+  } = props;
+  let itemData = props.data[queryName];
+  if (!itemData) return;
+
+  let { first, after, totalCount, isEnd } = itemData;
+  if (!isEnd && !loading) {
+    props.data.fetchMore({
+      variables: { after, first, ...condition },
+      updateQuery: (previousResult, { fetchMoreResult }) => {
+        if (previousResult[queryName].list) {
+          fetchMoreResult[queryName].list = previousResult[queryName].list.concat(
+            fetchMoreResult[queryName].list
+          );
+        }
+        return fetchMoreResult;
+      },
+    });
+  }
+};*/
+
 export const loadItems = function({ props, queryName, condition = {} }) {
   return new Promise((resolve, reject) => {
     let {

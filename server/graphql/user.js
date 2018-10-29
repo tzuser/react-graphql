@@ -110,10 +110,10 @@ export const resolvers = {
         var token = jwt.sign({ name: doc.name }, 'wysj3910', {
           expiresIn: '7 days',
         });
-        ctx.cookies.set('token', token);
+        ctx.cookies.set('token', token);/*
         ctx.cookies.set('name', doc.name);
         ctx.cookies.set('nick_name', doc.nick_name);
-        ctx.cookies.set('admin', doc.roles.includes('admin'));
+        ctx.cookies.set('admin', doc.roles.includes('admin'));*/
         return { token, user };
       } else {
         throw new APIError('账号或密码错误', 1004);
