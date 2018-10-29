@@ -8,7 +8,6 @@ import SearchHeader from 'com_/SearchHeader';
 import {withRouter} from 'react-router-dom';
 import {ListLink,ListTitle} from 'com_/ListButton';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import searchKeywordQuery from 'gql_/searchKeyword.gql';
 import Block from 'com_/Block';
 
@@ -16,13 +15,10 @@ import Block from 'com_/Block';
 const mapStateToProps=(state)=>({
   historyList:state.search.list
 })
-const mapDispatchToProps=(dispatch)=>bindActionCreators({
-
-},dispatch)
 
 
 @withRouter
-@connect(mapStateToProps,mapDispatchToProps)
+@connect(mapStateToProps)
 @graphql(searchKeywordQuery,{
   options:(props)=>{
     let {match:{params:{keyword}}}=props

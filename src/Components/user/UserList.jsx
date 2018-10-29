@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import List from 'com_/List';
+import ListShow from 'com_/ListShow';
 import { graphql } from 'react-apollo';
 import { Box, Column, Text, Button } from 'gestalt';
 import { loadItems } from '_public';
@@ -61,11 +61,12 @@ class UserList extends Component {
     if (loading) return <PageLoading />;
     return (
       <div>
-        <List
+        <ListShow
           comp={props => <UserItem {...props} content={UserButton} />}
           loadItems={data =>
             loadItems({ props: this.props, queryName: 'users' })
           }
+          scrollContainer={()=>window}
           minCols={2}
           virtualize={true}
           items={users ? users.list : []}

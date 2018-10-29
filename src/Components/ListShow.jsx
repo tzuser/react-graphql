@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import {Box,Text} from 'gestalt'
+import { Box, Text } from 'gestalt';
 
 const ListBox = styled.ul`
   list-style: none;
@@ -24,7 +24,7 @@ const ListBox = styled.ul`
   }
   @media (max-width: 767px) {
     & {
-      column-count: 1;
+      column-count: ${p => p.minCols};
     }
   }
 `;
@@ -32,7 +32,6 @@ const ListBox = styled.ul`
 class ListShow extends Component {
   constructor(props) {
     super(props);
-    this.scrollContainer = props.scrollContainer();
     this.onScroll = this._onScroll.bind(this);
   }
   _onScroll(e) {
@@ -44,7 +43,6 @@ class ListShow extends Component {
         this.isSpace = true;
         console.log('底部');
         let pms = this.props.loadItems();
-        console.log(pms);
         pms.then(res => {
           this.isSpace = false;
         });
@@ -52,47 +50,56 @@ class ListShow extends Component {
     }
   }
   componentDidMount() {
-    this.scrollContainer.addEventListener('scroll', this.onScroll);
+    this.scrollContainer = this.props.scrollContainer();
+    if (this.scrollContainer) this.scrollContainer.addEventListener('scroll', this.onScroll);
   }
   componentWillUnmount() {
-    this.scrollContainer.removeEventListener('scroll', this.onScroll);
+    if (this.scrollContainer) this.scrollContainer.removeEventListener('scroll', this.onScroll);
   }
-  getItem(page) {
-    const { list, comp, pageNum = 20 } = this.props;
-    let doms = [];
-    for (let i = pageNum; i > 0; i--) {
-      let key = pageNum * (page + 1) - i;
-      console.log(key);
-      if(!list[key])break;
-      doms.push(<li key={key}>{comp({ data: list[key] })}</li>);
-    }
-    return doms;
-  }
+
   getPage() {
-    const { list, pageNum = 20 } = this.props;
-    const pageLen = Math.ceil(list.length / pageNum);
+    const { items, pageNum = 20, minCols = 1, comp } = this.props;
+    const pageLen = Math.ceil(items.length / pageNum);
     let index = 0;
     let doms = [];
     for (let page = 0; page < pageLen; page++) {
+      let pageItems = items.slice(page * pageNum, (page + 1) * pageNum);
       doms.push(
-        <React.Fragment key={page}>
-          <ListBox >{this.getItem(page, pageNum)}</ListBox>
-          <Box paddingY={4} marginBottom={12}><Text align="center" color="gray">第{page}页</Text></Box>
-        </React.Fragment>
+        <ListPage
+          key={page}
+          items={pageItems}
+          page={page}
+          pageNum={pageNum}
+          comp={comp}
+          minCols={minCols}
+        />
       );
     }
+
     return doms;
   }
   render() {
-    const { list, comp, pageNum = 20 } = this.props;
-
     return <React.Fragment>{this.getPage()}</React.Fragment>;
   }
 }
-export default ListShow;
 
-/* <ListBox>
-          {list.map((item, key) => {
-            return <li key={key}>{comp({ data: item })}</li>;
-          })}
-        </ListBox>*/
+class ListPage extends Component {
+  getItem(items, comp) {
+    return items.map((item, key) => <li key={key}>{comp({ data: item })}</li>);
+  }
+  render() {
+    let { items, page, pageNum, comp, minCols } = this.props;
+    return (
+      <React.Fragment>
+        <ListBox minCols={minCols}>{this.getItem(items, comp)}</ListBox>
+        <Box paddingY={4} marginBottom={12}>
+          <Text align="center" color="gray">
+            第{page}页
+          </Text>
+        </Box>
+      </React.Fragment>
+    );
+  }
+}
+
+export default ListShow;

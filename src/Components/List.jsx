@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+/*import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {Masonry} from 'gestalt';
 import {countColumn} from '_tools'
@@ -27,4 +27,4 @@ class List extends Component{
     )
   }
 }
-export default List
+export default List*/

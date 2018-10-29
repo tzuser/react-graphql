@@ -25,7 +25,6 @@ const Space = styled.div`
 `;
 
 const mapStateToProps = state => ({
-  isPc: state.config.isPc,
   showFooter: state.config.showFooter,
 });
 
@@ -45,14 +44,13 @@ class Header extends Component {
       showMenu = true,
       isFixed=true,
     } = this.props;
-    let { isPc } = this.props;
     let backgroundColor = isBackground
       ? `rgba(255, 255, 255, ${transparent ? 0.9 : 1})`
       : 'none';
-    showMenu = isPc && showFooter && showMenu;
+    showMenu = showFooter && showMenu;
     return (
       <Space isSpace={isSpace}>
-        <HeaderBox isPc={isPc} isFixed={isFixed} backgroundColor={backgroundColor}>
+        <HeaderBox isFixed={isFixed} backgroundColor={backgroundColor}>
           {showMenu && (
             <div style={{ textAlign: 'center' }}>
               <Box
@@ -61,6 +59,8 @@ class Header extends Component {
                 color="lightGray"
                 shape="rounded"
                 overflow="hidden"
+                display="none"
+                smDisplay="block"
               >
                 <Tabs />
               </Box>

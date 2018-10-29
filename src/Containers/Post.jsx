@@ -162,7 +162,6 @@ const Header = ({ goBack }) => (
     };
   },
 })
-@connect(mapStateToProps)
 class Post extends Component {
   render() {
     let {
@@ -172,7 +171,6 @@ class Post extends Component {
         params: { id },
       },
       selfUser,
-      isPc,
     } = this.props;
     console.log(this.props)
     if (error) {
@@ -187,7 +185,7 @@ class Post extends Component {
       isAdmin = selfUser && selfUser.roles.includes('admin');
     }
     return (
-      <Box color={isPc ? 'lightGray' : 'white'}>
+      <Box color={'white'}>
         <Header goBack={goBack} />
 
         {loading && <PageLoading />}
@@ -210,9 +208,5 @@ class Post extends Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  isPc: state.config.isPc,
-});
 
 export default Post;

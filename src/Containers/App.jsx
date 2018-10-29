@@ -1,3 +1,4 @@
+//千山鸟飞绝 万径人踪灭 孤舟蓑笠翁 独钓寒江雪
 import React, { PureComponent } from 'react';
 import { Route, withRouter, Switch } from 'react-router-dom';
 import Loadable from 'react-loadable';

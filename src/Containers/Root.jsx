@@ -6,7 +6,6 @@ import Footer from '../Components/Footer';
 import PropTypes from 'prop-types';
 import 'gestalt/dist/gestalt.css';
 import * as ConfigAct from 'act_/config';
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { filteringJitter } from '_tools';
 //
@@ -87,46 +86,13 @@ const LoadableUserList = Loadable({
   loading: PageLoading,
 });
 
-const mapStateToProps = state => ({
-  width: state.config.width,
-});
-const mapDispatchToPorps = dispatch =>
-  bindActionCreators(
-    {
-      setWindowWidthAct: ConfigAct.setWindowWidth,
-    },
-    dispatch
-  );
 
 @withRouter
-@connect(
-  mapStateToProps,
-  mapDispatchToPorps
-)
 class Root extends React.Component {
   constructor(props) {
     super(props);
-    //添加浏览器缩放事件
-    if (typeof window != 'undefined') {
-      this.resizeFun = () => {
-        instanceFillteringJitter()
-          .then(() => {
-            if (this.props.width != document.body.clientWidth) {
-              this.props.setWindowWidthAct(document.body.clientWidth);
-            }
-          })
-          .catch(err => {});
-      };
-      window.addEventListener('resize', this.resizeFun);
-      this.props.setWindowWidthAct(document.body.clientWidth);
-    }
   }
-  componentWillUnmount() {
-    //移除浏览器缩放事件
-    if (typeof window != 'undefined') {
-      window.removeEventListener('resize', this.resizeFun);
-    }
-  }
+  
   render() {
     return (
       <React.Fragment>
