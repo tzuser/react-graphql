@@ -23,12 +23,12 @@ const Btn=(props)=>{
 })
 class FollowList extends Component{
   render(){
-    let {data:{following,loading}}=this.props;
+    let {data:{following,loading},userName}=this.props;
     if(loading) return <PageLoading />;
     return(
       <div>
         <ListShow 
-        name="FollowingList"
+        name={`FollowingList_${userName}`}
         comp={(props)=>(<UserItem {...props} content={Btn} />)}
         loadItems={(data)=>loadItems({props:this.props,queryName:'following'})} 
         minCols={2} 

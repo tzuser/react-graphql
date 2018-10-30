@@ -16,10 +16,11 @@ class UserPosts extends React.Component {
       data: { posts, refetch, fetchMore, loading },
       minCols,
       history: { push },
+      userName
     } = this.props;
     return (
       <div>
-        <PostList list={posts ? posts.list : []} minCols={minCols} loadItems={data => loadItems({ props: this.props, queryName: 'posts' })} />
+        <PostList  name={`userposts_${userName}`}  list={posts ? posts.list : []} minCols={minCols} loadItems={data => loadItems({ props: this.props, queryName: 'posts' })} />
         <Spinner show={loading} accessibilityLabel="Example spinner" />
         {posts && posts.isEnd && <InTheEnd />}
       </div>

@@ -34,6 +34,7 @@ class Subscribe extends React.Component {
       <div>
         <Header />
         <PostList
+          name="Subscribe"
           list={subscribe ? subscribe.list : []}
           loadItems={data =>
             loadItems({ props: this.props, queryName: 'subscribe' })

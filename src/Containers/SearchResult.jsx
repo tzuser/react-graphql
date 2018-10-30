@@ -124,7 +124,7 @@ class SearchResult extends React.Component {
             </Box>
           </Block>
         </Stacky>
-        <PostList list={searchPost ? searchPost.list : []} 
+        <PostList name={`search_${keyword}_${currentType}`} list={searchPost ? searchPost.list : []} 
         loadItems={data => loadItems({ props: this.props, queryName: 'searchPost' ,condition:{keyword:keyword} })} />
         <Spinner show={loading} accessibilityLabel="Example spinner" />
         {searchPost &&

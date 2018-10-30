@@ -14,6 +14,7 @@ import InTheEnd from 'com_/InTheEnd';
 class UserLikes extends React.Component {
   render() {
     let {
+      userName,
       data: { likes, refetch, fetchMore, loading },
       minCols,
       history: { push },
@@ -23,7 +24,7 @@ class UserLikes extends React.Component {
     }
     return (
       <div>
-        <PostList list={likes ? likes.list : []} minCols={minCols} loadItems={data => loadItems({ props: this.props, queryName: 'likes' })} />
+        <PostList name={`userlikes_${userName}`} list={likes ? likes.list : []} minCols={minCols} loadItems={data => loadItems({ props: this.props, queryName: 'likes' })} />
         <Spinner show={loading} accessibilityLabel="Example spinner" />
         {likes && likes.isEnd && <InTheEnd />}
       </div>

@@ -20,12 +20,12 @@ import FollowUserButton from 'com_/follow/FollowUserButton'
 })
 class FollowList extends Component{
   render(){
-    let {data:{followers,loading}}=this.props;
+    let {data:{followers,loading},userName}=this.props;
     if(loading) return <PageLoading />;
     return(
       <div>
         <ListShow 
-        name="FollowersList"
+        name={`FollowersList_${userName}`}
         comp={(props)=>(<UserItem {...props} content={(props)=>(<FollowUserButton userName={props.data.name} />)} />)} 
         loadItems={(data)=>loadItems({props:this.props,queryName:'followers'})} 
         minCols={2} 

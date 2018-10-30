@@ -61,6 +61,8 @@ export const loadItems = function({ props, queryName, condition = {} }) {
           return fetchMoreResult;
         },
       });
+    }else{
+      reject();
     }
   });
 };

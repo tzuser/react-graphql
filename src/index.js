@@ -24,11 +24,11 @@ const link = new BatchHttpLink({
 	uri: DB_URL,
 	credentials: 'include',
 	batchInterval: 10,
+	batchMax:60,
 });
 const client = new ApolloClient({
 	link,
 	cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
-	ssrForceFetchDelay: 100,
 });
 
 let { store, history } = getCreateStore(reducers); //获取store
