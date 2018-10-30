@@ -25,11 +25,12 @@ class MoreLikes extends React.Component{
   }*/
  
   render(){
-    let { data: { moreLikes, refetch ,fetchMore,loading},history:{push} }=this.props;
+    let { data: { moreLikes, refetch ,fetchMore,loading},history:{push},id }=this.props;
     return (
       <div>
         <Box margin={2} >
           <PostList 
+          name={id}
           list={moreLikes?moreLikes.list:[]}
           minCols={2}
           loadItems={data =>loadItems({ props: this.props, queryName: 'moreLikes' })}

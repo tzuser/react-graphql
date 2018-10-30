@@ -8,7 +8,6 @@ import FollowHeader from 'com_/follow/FollowHeader';
 import PageLoading from 'com_/PageLoading';
 import FollowingList from 'com_/follow/FollowingList';
 
-
 @withRouter
 class Following extends Component {
   render() {

@@ -1,6 +1,8 @@
 //工具不牵扯逻辑及项目
 import host from 'public_/host'
 let {STATIC_URL}=host;
+
+
 //过滤抖动
 export const filteringJitter=(space=200)=>{
     let timer,previousReject;
@@ -19,6 +21,22 @@ export const filteringJitter=(space=200)=>{
     }
 }
 
+//过滤
+export const filteringJitter2=(space=200)=>{
+    let timer;
+    return ()=>{
+      return new Promise((resolve,reject)=>{
+        if(timer){
+          reject();
+        }
+        timer=setTimeout(()=>{
+          clearTimeout(timer);
+          timer=null;
+          resolve()
+        },space)
+      })
+    }
+}
 
 export const imageUrl=(url)=>{
   if(url.startsWith('http'))return url;

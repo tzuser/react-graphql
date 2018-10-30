@@ -159,9 +159,10 @@ class PostList extends React.Component {
     );
   }
   render() {
-    let { list = [], loadItems, store, minCols , virtualize = true } = this.props;
+    let { list = [], loadItems, store, minCols , virtualize = true ,name} = this.props;
     return (
       <ListShow
+        name={name}
         items={list}
         comp={this.renderItem.bind(this)}
         loadItems={loadItems}

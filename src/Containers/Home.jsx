@@ -10,7 +10,6 @@ import homePostsQuery from 'gql_/homePosts.gql';
 import { loadItems } from '_public';
 import InTheEnd from 'com_/InTheEnd';
 
-
 @withRouter
 @graphql(homePostsQuery, {
   options: props => {
@@ -33,7 +32,11 @@ class Home extends React.Component {
     return (
       <React.Fragment>
         <Header />
-        <PostList list={posts ? posts.list : []} loadItems={data => loadItems({ props: this.props, queryName: 'posts' })} />
+        <PostList
+          name="Home"
+          list={posts ? posts.list : []}
+          loadItems={data => loadItems({ props: this.props, queryName: 'posts' })}
+        />
         <Spinner show={loading} accessibilityLabel="Example spinner" />
         {posts && posts.isEnd && <InTheEnd />}
       </React.Fragment>

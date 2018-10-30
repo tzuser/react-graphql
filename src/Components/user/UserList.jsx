@@ -62,6 +62,7 @@ class UserList extends Component {
     return (
       <div>
         <ListShow
+          name="UserList"
           comp={props => <UserItem {...props} content={UserButton} />}
           loadItems={data =>
             loadItems({ props: this.props, queryName: 'users' })

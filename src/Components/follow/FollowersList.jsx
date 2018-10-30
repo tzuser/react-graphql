@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import List from 'com_/List';
+import ListShow from 'com_/ListShow';
 import { graphql } from 'react-apollo';
 import followersQuery from 'gql_/followers.gql';
 import {loadItems} from '_public';
@@ -24,11 +24,13 @@ class FollowList extends Component{
     if(loading) return <PageLoading />;
     return(
       <div>
-        <List 
+        <ListShow 
+        name="FollowersList"
         comp={(props)=>(<UserItem {...props} content={(props)=>(<FollowUserButton userName={props.data.name} />)} />)} 
         loadItems={(data)=>loadItems({props:this.props,queryName:'followers'})} 
         minCols={2} 
         virtualize={true}
+        scrollContainer={()=>window}
         items={followers?followers.list:[]} />
         {followers && followers.isEnd && <InTheEnd/>}
       </div>
