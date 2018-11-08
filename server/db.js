@@ -5,7 +5,7 @@ const ObjectId = Schema.Types.ObjectId;
   return this.toString();
 };*/
 
-let db_url = 'mongodb://web:wysj3910@172.30.13.75:27017/web';
+let db_url = 'mongodb://web:wysj3910@127.0.0.1:27017/web';
 //使用远程数据
 if (process.env.RUN_ENV == 'server-odb') {
   db_url = 'mongodb://web:wysj3910@192.168.1.107:27017/web';
