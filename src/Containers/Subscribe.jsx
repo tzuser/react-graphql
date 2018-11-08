@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import subscribeQuery from 'gql_/subscribe.gql';
 import { loadItems } from '_public';
 import InTheEnd from 'com_/InTheEnd';
-
+import Recommend from 'con_/Recommend';
 
 @withRouter
 @graphql(subscribeQuery, {
@@ -30,15 +30,15 @@ class Subscribe extends React.Component {
       data: { subscribe, refetch, fetchMore, loading },
       history: { push },
     } = this.props;
+    let list = subscribe ? subscribe.list : [];
+    if (list.length == 0) return <Recommend />;
     return (
       <div>
         <Header />
         <PostList
           name="Subscribe"
-          list={subscribe ? subscribe.list : []}
-          loadItems={data =>
-            loadItems({ props: this.props, queryName: 'subscribe' })
-          }
+          list={list}
+          loadItems={data => loadItems({ props: this.props, queryName: 'subscribe' })}
         />
         <Spinner show={loading} accessibilityLabel="Example spinner" />
         {subscribe && subscribe.isEnd && <InTheEnd />}

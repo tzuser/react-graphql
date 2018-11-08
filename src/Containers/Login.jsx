@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import HeaderContainer from '../Components/HeaderContainer';
 import styled from 'styled-components';
 import hiddenFooter from '../Components/HiddenFooter';
-
+import selfQuery from 'gql_/self.gql';
 
 @graphql(gql`
   mutation login($name: String!, $password: String!) {
@@ -52,6 +52,11 @@ class Login extends Component {
                 name: this.state.name,
                 password: this.state.password,
               },
+              refetchQueries: [
+                {
+                  query: selfQuery,
+                },
+              ],
             })
               .then(({ data: { login: { token, user } } }) => {
                 //update cache
@@ -71,7 +76,13 @@ class Login extends Component {
             <Label htmlFor="name">
               <Text>账号</Text>
             </Label>
-            <TextField id="name" onChange={({ value }) => this.setState({ name: value })} type="text" value={this.state.name} placeholder="请输入账号" />
+            <TextField
+              id="name"
+              onChange={({ value }) => this.setState({ name: value })}
+              type="text"
+              value={this.state.name}
+              placeholder="请输入账号"
+            />
           </Box>
           <Box paddingY={2}>
             <Label htmlFor="password">
@@ -87,7 +98,13 @@ class Login extends Component {
             />
           </Box>
           <Box paddingY={2}>
-            <Button accessibilityExpanded={!!this.state.errorOpen} accessibilityHaspopup text="登录" type="submit" color="red" />
+            <Button
+              accessibilityExpanded={!!this.state.errorOpen}
+              accessibilityHaspopup
+              text="登录"
+              type="submit"
+              color="red"
+            />
           </Box>
           <Box paddingY={2}>
             <Link replace to="/join/">

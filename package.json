@@ -8,8 +8,7 @@
     "start": "cross-env RUN_ENV=dev NODE_ENV=development webpack-dev-server --watch --progress --hotOnly  --mode development --config  ./webpack.dev.js",
     "build": "cross-env RUN_ENV=build NODE_ENV=production webpack --mode production --config ./webpack.build.js  --optimize-minimize",
     "server": "cross-env RUN_ENV=server NODE_ENV=production babel-node --harmony  server/index.js",
-    "server2": "cross-env RUN_ENV=server NODE_ENV=development babel-node --harmony  server/index.js",
-    "server-dev": "cross-env RUN_ENV=server NODE_ENV=development nodemon --exec babel-node --harmony  server/index.js"
+    "server-dev": "cross-env RUN_ENV=server NODE_ENV=production nodemon --exec babel-node --harmony  server/index.js"
   },
   "author": "",
   "license": "ISC",

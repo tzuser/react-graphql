@@ -15,29 +15,21 @@ const UserButton = props => {
     <div>
       <Box marginBottom={2}>
         <a href={`https://${props.data.name}.tumblr.com/`} target="_blank">
-          <Text
-            bold
-            size="sm"
-            align="center"
-            truncate={true}
-            overflow="breakWord"
-          >
-            https://{props.data.name}.tumblr.com/
+          <Text bold size="sm" align="center" truncate={true} overflow="breakWord">
+            https://
+            {props.data.name}
+            .tumblr.com/
           </Text>
         </a>
       </Box>
       <Box display="flex" direction="row">
-        <Box flex="grow" marginRight={1}>
-          <UpdateUserButton
-            userName={props.data.name}
-            buttonProps={{ size: 'sm' }}
-          />
-        </Box>
+        {props.isUpdate && (
+          <Box flex="grow" marginRight={1}>
+            <UpdateUserButton userName={props.data.name} buttonProps={{ size: 'sm' }} />
+          </Box>
+        )}
         <Box flex="grow">
-          <FollowUserButton
-            userName={props.data.name}
-            buttonProps={{ size: 'sm' }}
-          />
+          <FollowUserButton userName={props.data.name} buttonProps={{ size: 'sm' }} />
         </Box>
       </Box>
     </div>
@@ -57,17 +49,16 @@ class UserList extends Component {
   render() {
     let {
       data: { users, loading },
+      isUpdate,
     } = this.props;
     if (loading) return <PageLoading />;
     return (
       <div>
         <ListShow
           name="UserList"
-          comp={props => <UserItem {...props} content={UserButton} />}
-          loadItems={data =>
-            loadItems({ props: this.props, queryName: 'users' })
-          }
-          scrollContainer={()=>window}
+          comp={props => <UserItem {...props} content={UserButton} isUpdate={isUpdate} />}
+          loadItems={data => loadItems({ props: this.props, queryName: 'users' })}
+          scrollContainer={() => window}
           minCols={2}
           virtualize={true}
           items={users ? users.list : []}

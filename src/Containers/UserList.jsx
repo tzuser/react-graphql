@@ -9,8 +9,6 @@ import PageLoading from 'com_/PageLoading';
 import UserListComponent from 'com_/user/UserList';
 import HeaderContainer from 'com_/HeaderContainer';
 
-
-
 @withRouter
 class UserList extends Component {
   render() {
@@ -30,7 +28,7 @@ class UserList extends Component {
           </Box>
         </HeaderContainer>
         <Box marginTop={2}>
-          <UserListComponent />
+          <UserListComponent isUpdate={true} />
         </Box>
       </div>
     );

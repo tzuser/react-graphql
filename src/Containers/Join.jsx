@@ -6,6 +6,7 @@ import HeaderContainer from '../Components/HeaderContainer';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import hiddenFooter from '../Components/HiddenFooter';
+import selfQuery from 'gql_/self.gql';
 
 class Join extends Component {
   state = {
@@ -41,6 +42,11 @@ class Join extends Component {
                 password,
                 verify_password,
               },
+              refetchQueries: [
+                {
+                  query: selfQuery,
+                },
+              ],
             })
               .then(data => {
                 replace('/login/');
@@ -76,7 +82,14 @@ class Join extends Component {
             <Label htmlFor="name">
               <Text>账号</Text>
             </Label>
-            <TextField id="name" onChange={({ value }) => this.setState({ name: value })} type="text" value={this.state.name} errorMessage={this.state.name_message} placeholder="请输入账号" />
+            <TextField
+              id="name"
+              onChange={({ value }) => this.setState({ name: value })}
+              type="text"
+              value={this.state.name}
+              errorMessage={this.state.name_message}
+              placeholder="请输入账号"
+            />
           </Box>
           <Box paddingY={2}>
             <Label htmlFor="password">
@@ -95,7 +108,13 @@ class Join extends Component {
             <Label htmlFor="verify_password">
               <Text>确认密码</Text>
             </Label>
-            <TextField id="verify_password" onChange={({ value }) => this.setState({ verify_password: value })} type="password" value={this.state.verify_password} placeholder="再次请输入密码" />
+            <TextField
+              id="verify_password"
+              onChange={({ value }) => this.setState({ verify_password: value })}
+              type="password"
+              value={this.state.verify_password}
+              placeholder="再次请输入密码"
+            />
           </Box>
           <Box paddingY={2}>
             <Button text="注册" type="submit" color="red" />
@@ -112,8 +131,20 @@ class Join extends Component {
 }
 
 export default graphql(gql`
-  mutation join($nick_name: String!, $name: String!, $password: String!, $verify_password: String!) {
-    join(input: { nick_name: $nick_name, name: $name, password: $password, verify_password: $verify_password }) {
+  mutation join(
+    $nick_name: String!
+    $name: String!
+    $password: String!
+    $verify_password: String!
+  ) {
+    join(
+      input: {
+        nick_name: $nick_name
+        name: $name
+        password: $password
+        verify_password: $verify_password
+      }
+    ) {
       name
     }
   }

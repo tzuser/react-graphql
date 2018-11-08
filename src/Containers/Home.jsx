@@ -37,7 +37,7 @@ class Home extends React.Component {
           list={posts ? posts.list : []}
           loadItems={data => loadItems({ props: this.props, queryName: 'posts' })}
         />
-        <Spinner show={loading} accessibilityLabel="Example spinner" />
+        <Spinner show={true} accessibilityLabel="Example spinner" />
         {posts && posts.isEnd && <InTheEnd />}
       </React.Fragment>
     );
