@@ -5,7 +5,7 @@ import { Box } from 'gestalt';
 import { withRouter } from 'react-router-dom';
 import PageLoading from 'com_/PageLoading';
 
-const initSelf = (WrapperComponent, required = false) => {
+const initSelf = (required = false) => WrapperComponent => {
   @withRouter
   class InitSelf extends PureComponent {
     render() {

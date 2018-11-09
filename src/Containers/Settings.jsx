@@ -55,7 +55,7 @@ function Settings(props) {
   );
 }
 
-export default initSelf(hiddenFooter(Settings), true);
+export default initSelf(true)(hiddenFooter(Settings));
 
 function useTextField(initialValue) {
   let [value, setValue] = useState(initialValue);

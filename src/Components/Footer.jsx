@@ -79,7 +79,7 @@ class IconColumn extends Component {
   }
 }
 
-@initSelf
+@initSelf()
 @withRouter
 export class Tabs extends Component {
   state = { active: null };

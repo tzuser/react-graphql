@@ -1,7 +1,18 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Box, Spinner, Text, IconButton, Mask, Image, Avatar, Button, Heading, Column } from 'gestalt';
+import {
+  Box,
+  Spinner,
+  Text,
+  IconButton,
+  Mask,
+  Image,
+  Avatar,
+  Button,
+  Heading,
+  Column,
+} from 'gestalt';
 import Tabs from '../Components/Tabs';
 import HeaderContainer from '../Components/HeaderContainer';
 import PageLoading from '../Components/PageLoading';
@@ -82,7 +93,7 @@ const UserCard = ({ user }) => {
   );
 };
 
-@initSelf
+@initSelf(true)
 @withRouter
 @graphql(userQuery, {
   options: props => {
@@ -141,11 +152,13 @@ class User extends Component {
     }
     let tabsIndex = tabsData.findIndex(item => pathname.startsWith(item.href));
     tabsIndex = tabsIndex < 0 ? 0 : tabsIndex;
-    if(!user)return 'user为空'
     return (
       <div>
-        啥地方来看进来看我
-        {isSlef ? <SelfHeader userName={userName} /> : <UserHeader userName={userName} goBack={goBack} />}
+        {isSlef ? (
+          <SelfHeader userName={userName} />
+        ) : (
+          <UserHeader userName={userName} goBack={goBack} />
+        )}
         {loading && <PageLoading />}
         {!loading && (
           <Box marginTop={2}>
@@ -190,11 +203,9 @@ class User extends Component {
             </Box>
           </Box>
         )}
-
       </div>
     );
   }
 }
 
-
-export default User
+export default User;

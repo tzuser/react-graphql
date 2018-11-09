@@ -58,14 +58,24 @@ const Photo = ({ photos, thumbnail }) => {
       <Mask shape="rounded">
         {photos.length == 0 && (
           <ItemImg>
-            <Image alt="" naturalHeight={thumbnail.height} naturalWidth={thumbnail.width} src={imageUrl(thumbnail.url)} />
+            <Image
+              alt=""
+              naturalHeight={thumbnail.height}
+              naturalWidth={thumbnail.width}
+              src={imageUrl(thumbnail.url)}
+            />
           </ItemImg>
         )}
 
         {photos.length > 0 &&
           photos.map((item, key) => (
             <ItemImg key={key}>
-              <Image alt="" naturalHeight={item.height} naturalWidth={item.width} src={imageUrl(item.url)} />
+              <Image
+                alt=""
+                naturalHeight={item.height}
+                naturalWidth={item.width}
+                src={imageUrl(item.url)}
+              />
             </ItemImg>
           ))}
       </Mask>
@@ -109,7 +119,11 @@ const Content = ({ post, postID, push, isSelf, isAdmin, goBack }) => {
             <Box marginTop={8} display="none" mdDisplay="block">
               <hr />
             </Box>
-            <UserNode user={user} content={type == 'article' ? '' : content} userClick={(e, data) => push(`/${data.name}/`)} />
+            <UserNode
+              user={user}
+              content={type == 'article' ? '' : content}
+              userClick={(e, data) => push(`/${data.name}/`)}
+            />
             <Box direction="row" display="flex" wrap={true}>
               <Box>
                 <Text color="gray" size="xs">
@@ -145,12 +159,18 @@ const Content = ({ post, postID, push, isSelf, isAdmin, goBack }) => {
 const Header = ({ goBack }) => (
   <div style={{ zIndex: 1, position: 'relative' }}>
     <Box marginTop={6} marginLeft={6} position="fixed" display="none" mdDisplay="block">
-      <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={() => goBack()} size="lg" iconColor="darkGray" />
+      <IconButton
+        accessibilityLabel="返回"
+        icon="arrow-back"
+        onClick={() => goBack()}
+        size="lg"
+        iconColor="darkGray"
+      />
     </Box>
   </div>
 );
 
-@initSelf
+@initSelf()
 @withRouter
 @graphql(postQuery, {
   options: props => {
@@ -172,7 +192,7 @@ class Post extends Component {
       },
       selfUser,
     } = this.props;
-    console.log(this.props)
+    console.log(this.props);
     if (error) {
       return <div>文章没找到或已被删除!</div>;
     }
@@ -192,7 +212,14 @@ class Post extends Component {
         {!loading && (
           <div>
             <Box display="none" mdDisplay="block" height={30} />
-            <Content post={post} postID={id} push={push} isSelf={isSelf} isAdmin={isAdmin} goBack={goBack} />
+            <Content
+              post={post}
+              postID={id}
+              push={push}
+              isSelf={isSelf}
+              isAdmin={isAdmin}
+              goBack={goBack}
+            />
             <Block marginTop={8} marginBottom={4} display="none" mdDisplay="block">
               <Text bold size="lg">
                 相似
