@@ -1,26 +1,41 @@
 import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import selfQuery from 'gql_/self.gql';
+import { Box } from 'gestalt';
+import { withRouter } from 'react-router-dom';
+import PageLoading from 'com_/PageLoading';
 
-const initSelf = WrapperComponent => {
-  return class InitSelf extends PureComponent {
+const initSelf = (WrapperComponent, required = false) => {
+  @withRouter
+  class InitSelf extends PureComponent {
     render() {
-      let props=this.props
+      let props = this.props;
+      let {
+        history: { push },
+      } = props;
       return (
         <Query query={selfQuery}>
           {({ loading, error, data }) => {
-            if (error) {
-              console.log('未登录或token过期');
+            if (required) {
+              if (error) {
+                push('/login');
+                return false;
+              }
+              if (loading || !data) {
+                return <PageLoading />;
+              }
+              if (!data.self) {
+                push('/login');
+                return false;
+              }
             }
-            if (loading || !data) {
-              console.log('获取用户资料中..');
-            }
-            return <WrapperComponent {...props} selfUser={data?data.self:null} />;
+            return <WrapperComponent {...props} selfUser={data ? data.self : null} />;
           }}
         </Query>
       );
     }
-  };
+  }
+  return InitSelf;
 };
 
 export default initSelf;
