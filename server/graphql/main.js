@@ -6,6 +6,12 @@ const server = new ApolloServer({
   schema,
   formatError,
   introspection: true,
+  playground: {
+    settings: {
+        "request.credentials": "same-origin",
+    },
+  },
   context: ({ ctx }) => ctx,
 });
+
 export default server;

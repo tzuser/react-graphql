@@ -1,6 +1,8 @@
-fragment UserField on User{
+fragment UserField on User {
   id
   name
   avatar
   nick_name
+  sex
+  website
 }

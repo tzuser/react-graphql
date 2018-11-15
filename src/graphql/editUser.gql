@@ -1,0 +1,20 @@
+#import "./userField.gql"
+mutation EditUser(
+  $nick_name: String
+  $password: String
+  $avatar: String
+  $age: Int
+  $sex: Int
+  $website: String
+) {
+  editUser(
+    nick_name: $nick_name
+    password: $password
+    avatar: $avatar
+    age: $age
+    sex: $sex
+    website: $website
+  ) {
+    ...UserField
+  }
+}

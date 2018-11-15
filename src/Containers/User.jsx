@@ -13,9 +13,9 @@ import {
   Heading,
   Column,
 } from 'gestalt';
-import Tabs from '../Components/Tabs';
-import HeaderContainer from '../Components/HeaderContainer';
-import PageLoading from '../Components/PageLoading';
+import Tabs from 'com_/Tabs';
+import HeaderContainer from 'com_/HeaderContainer';
+import PageLoading from 'com_/PageLoading';
 
 import { imageUrl } from '_tools';
 import { errorReply } from '_public';
@@ -43,18 +43,22 @@ const LoadableUserLikes = Loadable({
   loading: PageLoading,
 });
 
-const UserHeader = ({ userName, goBack }) => (
+const UserHeader = ({ userName, goBack, isAdmin }) => (
   <HeaderContainer>
     <Box marginLeft={-3} flex="grow">
       <IconButton accessibilityLabel="返回" icon="arrow-back" onClick={goBack} />
     </Box>
 
-    <Box>
-      <DeleteButton userName={userName} />
-    </Box>
-    <Box marginLeft={1}>
-      <UpdateUserButton userName={userName} />
-    </Box>
+    {isAdmin && (
+      <Box>
+        <DeleteButton userName={userName} />
+      </Box>
+    )}
+    {isAdmin && (
+      <Box marginLeft={1}>
+        <UpdateUserButton userName={userName} />
+      </Box>
+    )}
 
     <Box marginLeft={1}>
       <FollowUserButton userName={userName} />
@@ -127,6 +131,7 @@ class User extends Component {
     }*/
     const isSlef = selfUser && selfUser.name == userName;
     const isAdmin = selfUser && selfUser.roles.includes('admin');
+    console.log(isSlef, isAdmin);
     //tabs
     let tabsData = [
       /*{
@@ -157,7 +162,7 @@ class User extends Component {
         {isSlef ? (
           <SelfHeader userName={userName} />
         ) : (
-          <UserHeader userName={userName} goBack={goBack} />
+          <UserHeader userName={userName} goBack={goBack} isAdmin={isAdmin} />
         )}
         {loading && <PageLoading />}
         {!loading && (
@@ -186,9 +191,9 @@ class User extends Component {
                   </FollowCountButton>
                 </Column>
                 <Column span={6}>
-                  <a href={`https://${userName}.tumblr.com/`} target="_blank">
+                  <a href={user.website || `https://${userName}.tumblr.com/`} target="_blank">
                     <Text bold size="sm" align="right" truncate={true} overflow="breakWord">
-                      https://metaotushe.tumblr.com/
+                      {user.website}
                     </Text>
                   </a>
                 </Column>

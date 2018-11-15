@@ -14,7 +14,7 @@ const initSelf = (required = false) => WrapperComponent => {
         history: { push },
       } = props;
       return (
-        <Query query={selfQuery}>
+        <Query query={selfQuery} errorPolicy="all">
           {({ loading, error, data }) => {
             if (required) {
               if (error) {

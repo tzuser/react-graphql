@@ -28,6 +28,7 @@ const userSchema = new Schema({
   avatar: String,
   followingCount: { type: Number, default: 0 },
   followersCount: { type: Number, default: 0 },
+  website: String,
   //posts:[{ type: ObjectId, ref: 'Post' }],
   roles: [String],
   isUpdate: { type: Boolean, default: false },

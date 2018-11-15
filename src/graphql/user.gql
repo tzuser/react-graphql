@@ -1,10 +1,12 @@
- query($name:String){
-    user(name:$name){
-      id
-      name
-      nick_name
-      avatar
-      followersCount
-      followingCount
-    }
+query($name: String) {
+  user(name: $name) {
+    id
+    name
+    nick_name
+    avatar
+    followersCount
+    followingCount
+    website
+    sex
   }
+}

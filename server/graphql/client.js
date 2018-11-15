@@ -15,11 +15,12 @@ const getApolloClient=(ctx)=>{
   })
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
-      graphQLErrors.map(({ message, locations, path }) =>
+      graphQLErrors.map(({ message, locations, path ,status}) =>{
+        if(path=="self")return false;
         console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path} Status:${status}`
         )
-      );
+      });
     if (networkError) console.log(`[Network error]: ${networkError}`);
   });
   const link=errorLink.concat(staeLient)

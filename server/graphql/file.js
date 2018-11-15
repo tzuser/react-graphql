@@ -21,14 +21,27 @@ export const resolvers={
     },    
   }
 };
-//创建目录
-const createDir=()=>{
-  if(!fs.existsSync('files'))fs.mkdirSync('files');
-  if(!fs.existsSync('files/thumbnail'))fs.mkdirSync('files/thumbnail');
+
+function mkdirs(dirpath) {
+  if (!fs.existsSync(dirpath)) {
+    if (!fs.existsSync(path.dirname(dirpath))) {
+      mkdirs(path.dirname(dirpath));
+    }
+    fs.mkdirSync(dirpath);
+  }
+}
+
+export const getPath=(type,name)=>{
+  let filesDir=path.resolve(__dirname,"../../files",);
+  let saveUrl=path.join('/',type,name.substr(0, 3));
+  let fileUrl=path.join(saveUrl,name);
+  let saveDir=path.join(filesDir,saveUrl);
+  mkdirs(saveDir);
+  let filePath=path.join(filesDir,fileUrl);
+  return {filePath:filePath,fileUrl:fileUrl};
 }
 //获取远程图片
-export const getImage=async (url,user_name)=>{
-  createDir();
+export const getImage=async (type,url)=>{
   if(url.startsWith('/'))return url;//如果是本地图片
   const types={
     'image/jpeg':'.jpg',
@@ -45,14 +58,13 @@ export const getImage=async (url,user_name)=>{
       reject(err)
     })
   })
-
-  let dir=`files/${user_name}`;
-  if(!fs.existsSync(`./${dir}`))fs.mkdirSync(`./${dir}`);
   let fileName=getName(ext);
-  let filePath=`./${dir}/${fileName}`;
+
+  let {filePath,fileUrl}=getPath(type,fileName);
+
   return new Promise((resolve,reject)=>{
       request({url}).on('end',()=>{
-        resolve(Object.assign({},sizeOf(filePath),{url:`/${user_name}/${fileName}`}))
+        resolve(Object.assign({},sizeOf(filePath),{url:fileUrl}))
       }).on('error', function(err) {
         reject(err)
       }).pipe(fs.createWriteStream(filePath));
@@ -65,25 +77,16 @@ export const getName=(ext)=>{
 }
 
 //获取头像 
-export const getThumbnail=async (photoPath,user_name)=>{
+export const getThumbnail=async (type,photoPath)=>{
   //如果图片是远程 先下载
   if(photoPath.startsWith('http')){
-    let loadImage=await getImage(photoPath,user_name);
+    let loadImage=await getImage(type,photoPath);
+      console.log(loadImage)
     photoPath=loadImage.url;
+    console.log(loadImage)
+    return loadImage
   }
-  let fileName=getName('.jpg');
-  let dirPath=path.resolve(__dirname,`../../files/thumbnail/${user_name}`);
-  let filePath=path.resolve(dirPath,`./${fileName}`);
-  photoPath=path.resolve(__dirname,`../../files/${photoPath}`);
-  if(!fs.existsSync(dirPath))fs.mkdirSync(dirPath);
-  /*let size=await new Promise((resolve,reject)=>{
-    sharp(photoPath).resize(400).jpeg({quality:70}).toFile(filePath, (err, info) =>{
-      err && reject(err);
-      resolve(info);
-    });
-  })*/
-  let size=sizeOf(photoPath)
-  return {...size,url:`/thumbnail/${user_name}/${fileName}`};
+  return false
 }
 
 
