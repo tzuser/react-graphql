@@ -55,7 +55,7 @@ module.exports = {
     }),
     ////new OfflinePlugin(),//离线缓存
     new HTMLWebpackPlugin({
-      title: '固生堂',
+      title: 'TangZuo',
       inject: true,
       filename: 'index.html',
       template: path.join(__dirname, './index.ejs'),

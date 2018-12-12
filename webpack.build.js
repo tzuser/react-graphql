@@ -44,11 +44,7 @@ const config = {
       {
         test: /\.less$/,
         include: /node_modules/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'less-loader'
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
       },
     ],
   },
@@ -61,7 +57,7 @@ const config = {
     new CleanWebpackPlugin(['./build']), //删除打包文件
     new CopyWebpackPlugin([
       //复制静态文件
-      { from: path.join(__dirname, './static'), to: 'static' },
+      { from: path.join(__dirname, './src/static'), to: 'static' },
     ]),
     new InlineManifestWebpackPlugin(),
 

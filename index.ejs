@@ -1,126 +1,136 @@
-
 <!DOCTYPE html>
 
-
 <html>
+  <head>
+    <meta charset="utf-8" />
 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-<head>
-	<meta charset="utf-8">
+    <link
+      rel="icon"
+      href="/static/favicon.ico"
+      mce_href="/static/favicon.ico"
+      type="image/x-icon"
+    />
 
-	<meta http-equiv="X-UA-Compatible"
-		content="IE=edge">
+    <link rel="manifest" href="/static/manifest.json" />
 
-	<link rel="icon"
-		href="/favicon.ico"
-		mce_href="/favicon.ico"
-		type="image/x-icon">
+    <meta name="viewport" content="user-scalable=no" />
 
-	<link rel="manifest"
-		href="/manifest.json">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1" />
 
-	<meta name="viewport"
-		content="user-scalable=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.2/codemirror.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.2/theme/monokai.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/github.min.css"
+    />
 
-	<meta name="viewport"
-		content="initial-scale=1,maximum-scale=1">
+    <title><%= htmlWebpackPlugin.options.title %></title>
 
-	<title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+      }
+      body {
+        position: relative;
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto Oxygen-Sans, Ubuntu,
+          Cantarell, “Fira Sans”, “Droid Sans”, Helvetica Neue, Helvetica,
+          \\30d2\30e9\30ae\30ce\89d2\30b4 Pro W3, Hiragino Kaku Gothic Pro, \\30e1\30a4\30ea\30aa,
+          Meiryo, '\FF2D\FF33 \FF30\30B4\30B7\30C3\30AF', Arial, sans-serif;
+      }
 
-	<style>
-		html,
-		body {
-			padding: 0;
-			margin: 0;
-			height: 100%;
+      hr {
+        background-color: #ccc;
+        border: 1px solid #efefef;
+        display: block;
+        border-bottom: 0;
+        border-left: 0;
+        margin: 0;
+      }
+      #root {
+        z-index: 0;
+        height: auto;
+        height: 100%;
+      }
+      ._25:focus,
+      ._26 {
+        box-shadow: none !important;
+        user-select: none;
+      }
+      ._nn {
+        cursor: inherit !important;
+      }
+      ._t2 {
+        text-decoration: none !important;
+      }
+      html {
+        font-size: 100%; /* 62.5% of 16px = 10px */
+      }
+      img {
+        vertical-align: bottom;
+        user-select: none;
+      }
+      a {
+        user-select: none;
+        text-decoration: none;
+        color: inherit;
+      }
 
-		}
-		body {
-			position: relative;
-			font-family: -apple-system, BlinkMacSystemFont, Segoe UI,
-				Roboto Oxygen-Sans, Ubuntu, Cantarell, “Fira Sans”, “Droid Sans”,
-				Helvetica Neue, Helvetica, \\30d2\30e9\30ae\30ce\89d2\30b4 Pro W3,
-				Hiragino Kaku Gothic Pro, \\30e1\30a4\30ea\30aa, Meiryo,
-				'\FF2D\FF33 \FF30\30B4\30B7\30C3\30AF', Arial, sans-serif;
-		}
+      *:focus {
+        outline: none;
+      }
+      input[type='search'] {
+        -webkit-appearance: none;
+      }
 
-		hr {
-			background-color: #ccc;
-			border: 1px solid #efefef;
-			display: block;
-			border-bottom: 0;
-			border-left: 0;
-			margin: 0;
-		}
-		#root {
-			z-index: 0;
-			height: auto;
-			height:100%;
-		}
-		._25:focus,
-		._26 {
-			box-shadow: none !important;
-			user-select: none;
-		}
-		._nn {
-			cursor: inherit !important;
-		}
-		._t2 {
-			text-decoration: none !important;
-		}
-		html {
-			font-size: 100%; /* 62.5% of 16px = 10px */
-		}
-		img {
-			vertical-align: bottom;
-			user-select: none;
-		}
-		a {
-			user-select: none;
-			text-decoration: none;
-			color:inherit;
-		}
+      @media (min-width: 768px) {
+        ::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+        }
+        ::-webkit-scrollbar-track-piece {
+          background-color: none;
+          -webkit-border-radius: 6px;
+        }
+        ::-webkit-scrollbar-thumb:vertical {
+          background-color: #999999;
+          -webkit-border-radius: 6px;
+        }
+        ::-webkit-scrollbar-thumb:horizontal {
+          background-color: #999999;
+          -webkit-border-radius: 6px;
+        }
+      }
+    </style>
+  </head>
 
-		*:focus {
-			outline: none;
-		}
-		input[type='search'] {
-			-webkit-appearance: none;
-		}
+  <body>
+    <div id="root"></div>
 
-		@media (min-width:768px){
-			::-webkit-scrollbar
-			{
-			    width: 8px;
-			    height: 8px;
-			}
-			::-webkit-scrollbar-track-piece
-			{
-			    background-color: none;
-			    -webkit-border-radius: 6px;
-			}
-			::-webkit-scrollbar-thumb:vertical
-			{
-			    background-color: #999999;
-			    -webkit-border-radius: 6px;
-			}
-			::-webkit-scrollbar-thumb:horizontal
-			{
-			    background-color: #999999;
-			    -webkit-border-radius: 6px;
-			}
-		}
-	</style>
-</head>
-
-<body>
-	<div id="root"></div>
-</body>
-	<script>
-		window.main();
-		/*window.addEventListener('contextmenu', function(e){
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.2/mode/markdown/markdown.min.js"></script>
+  </body>
+  <script>
+    window.main();
+    /*window.addEventListener('contextmenu', function(e){
    e.preventDefault();
  });*/
-
-	</script>
+  </script>
 </html>
