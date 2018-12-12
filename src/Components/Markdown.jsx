@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown';
 
 const Markdown = styled(ReactMarkdown)`
   img {
-    width: 100%;
+    max-width: 100%;
   }
   pre {
     overflow: auto;

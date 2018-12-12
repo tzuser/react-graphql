@@ -1,22 +1,9 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import {
-  Image,
-  Label,
-  Tooltip,
-  Box,
-  Spinner,
-  Text,
-  Button,
-  Icon,
-  TextField,
-  IconButton,
-  TextArea,
-} from 'gestalt';
+import { Image, Box, Text, Button, IconButton } from 'gestalt';
 import HeaderContainer from '../Components/HeaderContainer';
 import styled from 'styled-components';
-import * as configActs from '../actions/config';
 
 import hiddenFooter from '../Components/HiddenFooter';
 import AddPhoto from '../Components/AddPhoto';
