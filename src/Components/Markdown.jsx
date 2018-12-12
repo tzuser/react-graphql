@@ -33,6 +33,9 @@ const Markdown = styled(ReactMarkdown)`
   table tr:nth-child(2n) {
     background: #f6f8fa;
   }
+  a {
+    color: rgb(0, 0, 204);
+  }
 `;
 export default Markdown;
 
