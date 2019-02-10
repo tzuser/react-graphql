@@ -162,10 +162,10 @@ class User extends Component {
         {isSlef ? (
           <SelfHeader userName={userName} />
         ) : (
-          <UserHeader userName={userName} goBack={goBack} isAdmin={isAdmin} />
-        )}
+            <UserHeader userName={userName} goBack={goBack} isAdmin={isAdmin} />
+          )}
         {loading && <PageLoading />}
-        {!loading && (
+        {!loading && user && (
           <Box marginTop={2}>
             <Block>
               <UserCard user={user} />
@@ -199,7 +199,7 @@ class User extends Component {
                 </Column>
               </Box>
               <Box marginTop={4}>
-                <Tabs tabs={tabsData} activeTabIndex={tabsIndex} onChange={e => {}} />
+                <Tabs tabs={tabsData} activeTabIndex={tabsIndex} onChange={e => { }} />
               </Box>
             </Block>
             <Box marginTop={3} paddingX={2}>
