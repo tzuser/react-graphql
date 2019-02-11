@@ -110,7 +110,7 @@ const Content = ({ post, postID, push, isSelf, isAdmin, goBack }) => {
         <Column span={12} mdSpan={8}>
           <Box paddingX={4}>
             {type == 'video' && <Video src={src} />}
-            {type == 'photo' && <Photo photos={photos} thumbnail={thumbnail} />}
+            {photos && photos.length > 0 && <Photo photos={photos} thumbnail={thumbnail} />}
             {type == 'article' && <Article content={content} />}
           </Box>
         </Column>
