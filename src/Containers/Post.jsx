@@ -54,7 +54,7 @@ const Article = ({ content }) => {
 
 const Photo = ({ photos, thumbnail }) => {
   return (
-    <Card onClick={e => console.log('点击')}>
+    <Card onClick={(e) => console.log('点击')}>
       <Mask shape="rounded">
         {photos.length == 0 && (
           <ItemImg>
@@ -173,7 +173,7 @@ const Header = ({ goBack }) => (
 @initSelf()
 @withRouter
 @graphql(postQuery, {
-  options: props => {
+  options: (props) => {
     return {
       variables: {
         id: props.match.params.id,
@@ -220,15 +220,6 @@ class Post extends Component {
               isAdmin={isAdmin}
               goBack={goBack}
             />
-            <Block marginTop={8} marginBottom={4} display="none" mdDisplay="block">
-              <Text bold size="lg">
-                相似
-              </Text>
-            </Block>
-            <Box paddingX={4} mdDisplay="none">
-              <Text bold>相似</Text>
-            </Box>
-            <MoreLikes id={id} />
           </div>
         )}
       </Box>

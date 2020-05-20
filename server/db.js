@@ -5,18 +5,19 @@ const ObjectId = Schema.Types.ObjectId;
   return this.toString();
 };*/
 
-let db_url = 'mongodb://web:wysj3910@127.0.0.1:27017/web';
+let db_url = 'mongodb://127.0.0.1:27017/web';
 //使用远程数据
 if (process.env.RUN_ENV == 'server-odb') {
-  db_url = 'mongodb://web:wysj3910@192.168.1.107:27017/web';
+  db_url = 'mongodb://tz:wysj3910@192.168.1.107:27017/web';
+}
+
+if (process.env.RUN_ENV == 'server-dev') {
+  db_url = 'mongodb://192.168.50.6:27017/web';
 }
 
 // state 通用定义 0 可用 1 禁止
 
-let db = mongoose.connect(
-  db_url,
-  { useNewUrlParser: true, connectTimeoutMS: 120000 }
-);
+let db = mongoose.connect(db_url, { connectTimeoutMS: 120000 });
 //用户
 const userSchema = new Schema({
   name: { type: String, index: true },
