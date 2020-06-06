@@ -21,7 +21,7 @@
     "apollo-link-batch-http": "1.2.2",
     "apollo-link-error": "1.1.1",
     "apollo-link-schema": "1.1.1",
-    "apollo-server-koa": "2.1.0",
+    "apollo-server-koa": "2.14.2",
     "axios": "0.18.0",
     "babel-plugin-import-graphql": "2.6.2",
     "classnames": "2.2.6",
