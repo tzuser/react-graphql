@@ -22,7 +22,7 @@
     "apollo-link-error": "1.1.1",
     "apollo-link-schema": "1.1.1",
     "apollo-server-koa": "2.1.0",
-    "axios": "0.18.0",
+    "axios": "0.21.1",
     "babel-plugin-import-graphql": "2.6.2",
     "classnames": "2.2.6",
     "gestalt": "0.83.0",
